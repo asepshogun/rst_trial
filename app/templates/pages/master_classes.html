@@ -1,24 +1,35 @@
-{% extends "layouts/base.html" %}
+﻿{% extends "layouts/base.html" %}
+
+{% block page_styles %}
+<link rel="stylesheet" href="/assets/css/settings.css" />
+{% endblock %}
 
 {% block content %}
-<div id="masterClassesAlert" class="alert alert-danger hidden"></div>
+<div id="masterClassesAlert" class="alert alert-danger hidden mb-5" role="alert"></div>
 
 <div class="card">
-  <div class="card-header border-0 pt-7">
-    <h3 class="card-title m-0">Master Vehicle Classes</h3>
+  <div class="card-header">
+    <h3 class="card-title">
+      <i class="ti ti-list-details me-2" style="color:var(--nc-primary);font-size:1.1rem;" aria-hidden="true"></i>
+      Master Vehicle Classes
+    </h3>
   </div>
   <form id="masterClassesForm">
-    <div class="card-body pt-3">
-      <div id="masterClassesGrid" class="row g-6"></div>
+    <div class="card-body">
+      <div id="masterClassesGrid" class="row g-5"></div>
     </div>
     <div class="card-footer d-flex justify-content-end gap-3">
-      <button type="button" id="reloadMasterClassesButton" class="btn btn-light">Reload</button>
-      <button type="submit" id="saveMasterClassesButton" class="btn btn-primary">Save Master Vehicle Classes</button>
+      <button type="button" id="reloadMasterClassesButton" class="btn btn-light">
+        <i class="ti ti-refresh me-1" aria-hidden="true"></i> Reload
+      </button>
+      <button type="submit" id="saveMasterClassesButton" class="btn btn-primary">
+        <i class="ti ti-device-floppy me-1" aria-hidden="true"></i> Save Master Vehicle Classes
+      </button>
     </div>
   </form>
 </div>
 {% endblock %}
 
 {% block page_scripts %}
-<script src="/assets/master_classes.js"></script>
+<script src="/assets/js/master_classes.js"></script>
 {% endblock %}

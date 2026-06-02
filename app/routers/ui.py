@@ -58,10 +58,12 @@ def _render_page(
 
 
 @router.get("/")
-def index(user: Optional[User] = Depends(get_current_user_optional)):
-    if not user:
-        return RedirectResponse(url="/login", status_code=302)
-    return RedirectResponse(url="/videos", status_code=302)
+def landing_page(request: Request):
+    return TEMPLATES.TemplateResponse(
+        request=request,
+        name="pages/landing_page.html",
+        context={"request": request},
+    )
 
 
 @router.get("/login")
@@ -78,7 +80,7 @@ def users_page(request: Request, user: Optional[User] = Depends(get_current_user
         return redirect
     if not user.is_admin:
         return RedirectResponse(url="/videos", status_code=302)
-    return _render_page(request, "pages/users.html", user, page_title="Users", active_nav="users")
+    return _render_page(request, "pages/users.html", user, page_title="Users", page_subtitle="Manage user accounts and access permissions.", active_nav="users")
 
 
 @router.get("/settings")
@@ -147,7 +149,7 @@ def videos_page(request: Request, user: Optional[User] = Depends(get_current_use
     redirect = _require_user(user)
     if redirect:
         return redirect
-    return _render_page(request, "pages/videos.html", user, page_title="Videos", active_nav="videos")
+    return _render_page(request, "pages/videos.html", user, page_title="Videos", page_subtitle="Upload and manage your traffic video files for analysis.", active_nav="videos")
 
 
 @router.get("/analysis")

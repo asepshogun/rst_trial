@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import sys
 from importlib import metadata
+from pathlib import Path
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import desc, select
@@ -334,9 +335,25 @@ def update_detection_settings(
     settings_row.working_max_width = payload.working_max_width
     settings_row.preview_max_width = payload.preview_max_width
     settings_row.preview_jpeg_quality = payload.preview_jpeg_quality
+    if payload.model_path is not None:
+        settings_row.model_path = payload.model_path.strip() or "yolov8s.pt"
     db.commit()
     db.refresh(settings_row)
     return DetectionSettingsRead.model_validate(settings_row)
+
+
+@router.get("/available-models")
+def list_available_models(_: User = Depends(require_admin)) -> list[dict]:
+    """Scan the project root for .pt model files."""
+    base_dir = Path(__file__).resolve().parent.parent.parent
+    models: list[dict] = []
+    for pt_file in sorted(base_dir.glob("*.pt")):
+        size_mb = round(pt_file.stat().st_size / (1024 * 1024), 1)
+        models.append({
+            "filename": pt_file.name,
+            "size_mb": size_mb,
+        })
+    return models
 
 
 @router.get("/master-classes", response_model=list[MasterClassRead])

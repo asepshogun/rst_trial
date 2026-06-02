@@ -1,177 +1,31 @@
-﻿{% extends "layouts/auth.html" %} {% block content %}
-<div class="login-split-layout">
-  <!-- ═══════════════════════════════════════════════════════════
-       LEFT PANEL — animated gradient + illustration
-       ═══════════════════════════════════════════════════════════ -->
-  <div class="login-panel-left">
-    <!-- Brand -->
-    <div class="login-panel-brand">
-      <div class="login-panel-badge" aria-hidden="true">NC</div>
-      <div>
-        <div class="login-panel-app-name">NiceCount</div>
-        <div class="login-panel-app-sub">Traffic Video Analysis Platform</div>
+{% extends "layouts/auth.html" %}
+
+{% block content %}
+<div class="d-flex flex-column flex-root">
+  <div class="login-shell d-flex flex-column flex-column-fluid position-relative">
+    <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
+      <div class="login-brand mb-12">
+        <div class="login-brand-badge" aria-hidden="true">NC</div>
+        <div>
+          <div class="login-brand-name">NiceCount</div>
+          <div class="login-brand-subtitle">Traffic Video Analysis Platform</div>
+        </div>
       </div>
-    </div>
+      <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto login-card">
+        <form id="loginForm" class="form w-100" novalidate="novalidate">
+          <div class="text-center mb-10">
+            <h1 class="text-dark mb-3">Sign In to NiceCount</h1>
+            <div class="text-gray-400 fw-bold fs-4">
+              Sign in to manage users, upload videos, and run traffic analysis.
+            </div>
+          </div>
 
-    <!-- Illustration (inline SVG — unDraw style) -->
-    <div class="login-panel-illustration" aria-hidden="true">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 440" fill="none">
-        <!-- Decorative circles -->
-        <circle cx="430" cy="55" r="155" fill="rgba(255,255,255,0.05)" />
-        <circle cx="70" cy="400" r="115" fill="rgba(255,255,255,0.04)" />
+          <div id="loginAlert" class="alert alert-danger hidden"></div>
 
-        <!-- ── City skyline ──────────────────────────────────── -->
-        <rect x="14" y="196" width="46" height="124" rx="4" fill="rgba(255,255,255,0.10)" />
-        <rect x="22" y="208" width="9" height="7" rx="1" fill="rgba(255,255,255,0.22)" />
-        <rect x="38" y="208" width="9" height="7" rx="1" fill="rgba(255,255,255,0.13)" />
-        <rect x="22" y="223" width="9" height="7" rx="1" fill="rgba(255,255,255,0.17)" />
-        <rect x="38" y="223" width="9" height="7" rx="1" fill="rgba(255,255,255,0.28)" />
-        <rect x="22" y="238" width="9" height="7" rx="1" fill="rgba(255,255,255,0.10)" />
-        <rect x="38" y="238" width="9" height="7" rx="1" fill="rgba(255,255,255,0.20)" />
-
-        <rect x="66" y="142" width="54" height="178" rx="4" fill="rgba(255,255,255,0.08)" />
-        <rect x="75" y="155" width="11" height="9" rx="1" fill="rgba(255,255,255,0.20)" />
-        <rect x="93" y="155" width="11" height="9" rx="1" fill="rgba(255,255,255,0.28)" />
-        <rect x="75" y="173" width="11" height="9" rx="1" fill="rgba(255,255,255,0.13)" />
-        <rect x="93" y="173" width="11" height="9" rx="1" fill="rgba(255,255,255,0.20)" />
-        <rect x="75" y="191" width="11" height="9" rx="1" fill="rgba(255,255,255,0.24)" />
-        <rect x="93" y="191" width="11" height="9" rx="1" fill="rgba(255,255,255,0.10)" />
-        <rect x="90" y="130" width="4" height="14" rx="2" fill="rgba(255,255,255,0.30)" />
-        <circle cx="92" cy="128" r="2.5" fill="rgba(255,255,255,0.52)" />
-
-        <rect x="392" y="162" width="48" height="158" rx="4" fill="rgba(255,255,255,0.09)" />
-        <rect x="400" y="175" width="10" height="8" rx="1" fill="rgba(255,255,255,0.22)" />
-        <rect x="417" y="175" width="10" height="8" rx="1" fill="rgba(255,255,255,0.14)" />
-        <rect x="400" y="192" width="10" height="8" rx="1" fill="rgba(255,255,255,0.16)" />
-        <rect x="417" y="192" width="10" height="8" rx="1" fill="rgba(255,255,255,0.27)" />
-
-        <rect x="446" y="110" width="46" height="210" rx="4" fill="rgba(255,255,255,0.07)" />
-        <rect x="454" y="124" width="10" height="8" rx="1" fill="rgba(255,255,255,0.17)" />
-        <rect x="470" y="124" width="10" height="8" rx="1" fill="rgba(255,255,255,0.12)" />
-        <rect x="454" y="141" width="10" height="8" rx="1" fill="rgba(255,255,255,0.20)" />
-        <rect x="470" y="141" width="10" height="8" rx="1" fill="rgba(255,255,255,0.13)" />
-
-        <!-- ── Road ─────────────────────────────────────────── -->
-        <path d="M148 432 L372 432 L310 244 L210 244 Z" fill="rgba(255,255,255,0.11)" />
-        <path d="M148 432 L210 244" stroke="rgba(255,255,255,0.28)" stroke-width="2" stroke-linecap="round" />
-        <path d="M372 432 L310 244" stroke="rgba(255,255,255,0.28)" stroke-width="2" stroke-linecap="round" />
-        <line x1="259" y1="256" x2="259" y2="272" stroke="rgba(255,255,255,0.50)" stroke-width="2.5" stroke-linecap="round" />
-        <line x1="258" y1="284" x2="258" y2="300" stroke="rgba(255,255,255,0.50)" stroke-width="2.5" stroke-linecap="round" />
-        <line x1="257" y1="312" x2="257" y2="328" stroke="rgba(255,255,255,0.50)" stroke-width="2.5" stroke-linecap="round" />
-        <line x1="255" y1="340" x2="255" y2="356" stroke="rgba(255,255,255,0.50)" stroke-width="2.5" stroke-linecap="round" />
-        <line x1="253" y1="369" x2="253" y2="385" stroke="rgba(255,255,255,0.50)" stroke-width="2.5" stroke-linecap="round" />
-        <line x1="251" y1="398" x2="251" y2="414" stroke="rgba(255,255,255,0.50)" stroke-width="2.5" stroke-linecap="round" />
-
-        <!-- ── Vehicle 1: Sedan ─────────────────────────────── -->
-        <g transform="translate(173,326)">
-          <rect x="0" y="13" width="46" height="27" rx="5" fill="white" opacity="0.92" />
-          <rect x="6" y="4" width="34" height="17" rx="7" fill="white" opacity="0.78" />
-          <rect x="9" y="5" width="13" height="11" rx="2" fill="rgba(0,91,200,0.28)" />
-          <rect x="24" y="5" width="13" height="11" rx="2" fill="rgba(0,91,200,0.20)" />
-          <circle cx="11" cy="40" r="5.5" fill="rgba(4,32,88,0.55)" />
-          <circle cx="35" cy="40" r="5.5" fill="rgba(4,32,88,0.55)" />
-          <rect x="0" y="17" width="4" height="7" rx="1" fill="rgba(255,252,200,0.72)" />
-          <rect x="-6" y="-5" width="58" height="56" rx="4" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" stroke-dasharray="5,3" fill="none" />
-          <rect x="-6" y="-22" width="52" height="17" rx="4" fill="white" opacity="0.90" />
-          <text x="-1" y="-8" font-family="Arial,sans-serif" font-size="8.5" font-weight="bold" fill="#0064E0">Sedan • Gol.2</text>
-        </g>
-
-        <!-- ── Vehicle 2: Pickup ────────────────────────────── -->
-        <g transform="translate(263,274)">
-          <rect x="0" y="9" width="37" height="22" rx="4" fill="white" opacity="0.83" />
-          <rect x="4" y="2" width="29" height="14" rx="6" fill="white" opacity="0.68" />
-          <rect x="6" y="3" width="11" height="9" rx="2" fill="rgba(0,91,200,0.26)" />
-          <rect x="19" y="3" width="11" height="9" rx="2" fill="rgba(0,91,200,0.18)" />
-          <circle cx="8" cy="31" r="4.5" fill="rgba(4,32,88,0.50)" />
-          <circle cx="29" cy="31" r="4.5" fill="rgba(4,32,88,0.50)" />
-          <rect x="-5" y="-3" width="47" height="41" rx="4" stroke="rgba(255,224,50,0.92)" stroke-width="1.5" stroke-dasharray="5,3" fill="none" />
-          <rect x="-5" y="-19" width="52" height="16" rx="4" fill="rgba(255,224,50,0.92)" />
-          <text x="-1" y="-6" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#5a3b00">Pickup • Gol.4</text>
-        </g>
-
-        <!-- ── Vehicle 3: far/small ─────────────────────────── -->
-        <g transform="translate(218,250)">
-          <rect x="0" y="7" width="27" height="17" rx="3" fill="white" opacity="0.72" />
-          <rect x="3" y="1" width="21" height="10" rx="5" fill="white" opacity="0.58" />
-          <circle cx="6" cy="24" r="3.5" fill="rgba(4,32,88,0.44)" />
-          <circle cx="21" cy="24" r="3.5" fill="rgba(4,32,88,0.44)" />
-          <rect x="-4" y="-2" width="35" height="32" rx="3" stroke="rgba(255,255,255,0.60)" stroke-width="1.2" stroke-dasharray="4,3" fill="none" />
-        </g>
-
-        <!-- ── Traffic Camera ───────────────────────────────── -->
-        <g transform="translate(321,202)">
-          <rect x="4" y="14" width="6" height="108" rx="3" fill="rgba(255,255,255,0.42)" />
-          <rect x="-42" y="14" width="46" height="5" rx="2" fill="rgba(255,255,255,0.42)" />
-          <rect x="-63" y="4" width="24" height="18" rx="5" fill="white" opacity="0.88" />
-          <circle cx="-51" cy="13" r="5.5" fill="rgba(0,91,200,0.44)" />
-          <circle cx="-51" cy="13" r="2.5" fill="rgba(0,91,200,0.88)" />
-          <circle cx="-51" cy="13" r="1" fill="rgba(255,255,255,0.60)" />
-          <path d="M-30,7 Q-22,13 -30,19" stroke="rgba(255,255,255,0.55)" stroke-width="1.6" stroke-linecap="round" fill="none" />
-          <path d="M-26,3 Q-14,13 -26,23" stroke="rgba(255,255,255,0.36)" stroke-width="1.6" stroke-linecap="round" fill="none" />
-          <path d="M-22,-1 Q-6,13 -22,27" stroke="rgba(255,255,255,0.18)" stroke-width="1.6" stroke-linecap="round" fill="none" />
-        </g>
-
-        <!-- ── Analytics card ──────────────────────────────── -->
-        <g transform="translate(342,42)">
-          <rect x="0" y="0" width="136" height="84" rx="14" fill="rgba(255,255,255,0.12)" />
-          <rect x="0" y="0" width="136" height="84" rx="14" stroke="rgba(255,255,255,0.25)" stroke-width="1" fill="none" />
-          <text x="12" y="19" font-family="Arial,sans-serif" font-size="8" fill="rgba(255,255,255,0.62)">Live Vehicle Count</text>
-          <text x="12" y="42" font-family="Arial,sans-serif" font-size="23" font-weight="bold" fill="white">1,247</text>
-          <rect x="12" y="64" width="7" height="14" rx="2" fill="rgba(255,255,255,0.30)" />
-          <rect x="23" y="57" width="7" height="21" rx="2" fill="rgba(255,255,255,0.45)" />
-          <rect x="34" y="50" width="7" height="28" rx="2" fill="rgba(255,255,255,0.72)" />
-          <rect x="45" y="55" width="7" height="23" rx="2" fill="rgba(255,255,255,0.54)" />
-          <rect x="56" y="59" width="7" height="19" rx="2" fill="rgba(255,255,255,0.38)" />
-          <rect x="67" y="46" width="7" height="32" rx="2" fill="white" opacity="0.84" />
-          <rect x="78" y="52" width="7" height="26" rx="2" fill="rgba(255,255,255,0.50)" />
-          <rect x="89" y="61" width="7" height="17" rx="2" fill="rgba(255,255,255,0.36)" />
-          <rect x="100" y="48" width="7" height="30" rx="2" fill="rgba(255,255,255,0.62)" />
-          <rect x="111" y="55" width="7" height="23" rx="2" fill="rgba(255,255,255,0.42)" />
-        </g>
-
-        <!-- ── Stats pill ──────────────────────────────────── -->
-        <g transform="translate(20,54)">
-          <rect x="0" y="0" width="114" height="60" rx="12" fill="rgba(255,255,255,0.10)" />
-          <rect x="0" y="0" width="114" height="60" rx="12" stroke="rgba(255,255,255,0.20)" stroke-width="1" fill="none" />
-          <text x="12" y="18" font-family="Arial,sans-serif" font-size="7.5" fill="rgba(255,255,255,0.62)">Kendaraan Hari Ini</text>
-          <text x="12" y="41" font-family="Arial,sans-serif" font-size="21" font-weight="bold" fill="white">4,832</text>
-          <text x="12" y="54" font-family="Arial,sans-serif" font-size="7" fill="rgba(100,255,150,0.88)">▲ +12% dari kemarin</text>
-        </g>
-
-        <!-- ── Connecting lines ──────────────────────────────── -->
-        <line x1="134" y1="84" x2="323" y2="228" stroke="rgba(255,255,255,0.10)" stroke-width="1" stroke-dasharray="6,5" />
-        <line x1="342" y1="100" x2="327" y2="222" stroke="rgba(255,255,255,0.10)" stroke-width="1" stroke-dasharray="6,5" />
-      </svg>
-    </div>
-
-    <!-- Tagline -->
-    <div class="login-panel-tagline">
-      <h2>Monitor smarter.<br />Count with confidence.</h2>
-      <p>AI-Based Analysis of Autonomous Vehicles for Indonesian Traffic.</p>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════════════
-       RIGHT PANEL — login form
-       ═══════════════════════════════════════════════════════════ -->
-  <div class="login-panel-right">
-    <div class="login-form-inner">
-      <h1 class="login-form-title">Sign in</h1>
-      <p class="login-form-subtitle">Sign in to manage videos and analyze traffic.</p>
-
-      <div id="loginAlert" class="alert alert-danger hidden mb-4" role="alert"></div>
-
-      <form id="loginForm" novalidate>
-        <div class="mb-4">
-          <label class="form-label" for="loginUsername">Username</label>
-          <div class="input-group">
-            <span class="input-group-text bg-transparent border-end-0" style="border-color: var(--nc-hairline); border-radius: 8px 0 0 8px">
-              <i class="ti ti-user" style="color: var(--nc-stone); font-size: 1rem"></i>
-            </span>
+          <div class="fv-row mb-10">
+            <label class="form-label fs-6 fw-bolder text-dark">Username</label>
             <input
-              id="loginUsername"
-              class="form-control border-start-0"
-              style="border-radius: 0 8px 8px 0"
+              class="form-control form-control-lg form-control-solid"
               type="text"
               name="username"
               placeholder="Enter username"
@@ -179,20 +33,14 @@
               required
             />
           </div>
-        </div>
 
-        <div class="mb-5">
-          <div class="d-flex justify-content-between align-items-center mb-1">
-            <label class="form-label mb-0" for="loginPassword">Password</label>
-          </div>
-          <div class="input-group">
-            <span class="input-group-text bg-transparent border-end-0" style="border-color: var(--nc-hairline); border-radius: 8px 0 0 8px">
-              <i class="ti ti-lock" style="color: var(--nc-stone); font-size: 1rem"></i>
-            </span>
+          <div class="fv-row mb-10">
+            <div class="d-flex flex-stack mb-2">
+              <label class="form-label fw-bolder text-dark fs-6 mb-0">Password</label>
+              <span class="text-muted fs-7">Local application access</span>
+            </div>
             <input
-              id="loginPassword"
-              class="form-control border-start-0"
-              style="border-radius: 0 8px 8px 0"
+              class="form-control form-control-lg form-control-solid"
               type="password"
               name="password"
               placeholder="Enter password"
@@ -200,15 +48,27 @@
               required
             />
           </div>
-        </div>
 
-        <button type="submit" class="btn btn-primary w-100 py-3 fw-bold"><i class="ti ti-arrow-right me-1" aria-hidden="true"></i> Continue</button>
-      </form>
+          <div class="text-center">
+            <button type="submit" class="btn btn-lg btn-primary w-100 mb-5">
+              <span class="indicator-label">Continue</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
 
-      <p class="text-center soft-note mt-5" style="font-size: 0.78rem">NiceCount &mdash; Traffic Video Analysis &mdash; &copy; 2026</p>
+    <div class="d-flex flex-center flex-column-auto p-10">
+      <div class="d-flex align-items-center fw-bold fs-6">
+        <a href="/login" class="text-muted text-hover-primary px-2">NiceCount</a>
+        <a href="/videos" class="text-muted text-hover-primary px-2">Videos</a>
+        <a href="/analysis" class="text-muted text-hover-primary px-2">Analysis</a>
+      </div>
     </div>
   </div>
 </div>
-{% endblock %} {% block page_scripts %}
-<script src="/assets/js/login.js"></script>
+{% endblock %}
+
+{% block page_scripts %}
+<script src="/assets/login.js"></script>
 {% endblock %}

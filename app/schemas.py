@@ -65,6 +65,7 @@ class DetectionSettingsRead(ORMModel):
     working_max_width: int = Field(ge=0, le=7680)
     preview_max_width: int = Field(ge=0, le=3840)
     preview_jpeg_quality: int = Field(ge=30, le=95)
+    model_path: Optional[str] = None
     created_at: datetime
     updated_at: datetime
 
@@ -82,6 +83,7 @@ class DetectionSettingsUpdate(BaseModel):
     working_max_width: int = Field(ge=0, le=7680)
     preview_max_width: int = Field(ge=0, le=3840)
     preview_jpeg_quality: int = Field(ge=30, le=95)
+    model_path: Optional[str] = None
 
 
 class GpuAuditRuntimeRead(BaseModel):

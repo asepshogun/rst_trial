@@ -114,7 +114,11 @@ def classify_vehicle(
         frame_width=frame_width,
         frame_height=frame_height,
     )
-    vehicle_type_code = _classify_vehicle_type(vehicle_class=vehicle_class, geometry=geometry)
+    vehicle_type_code = _classify_vehicle_type(
+        vehicle_class=vehicle_class,
+        geometry=geometry,
+        source_label=source_label,
+    )
     golongan_code = VEHICLE_TYPE_TO_GOLONGAN[vehicle_type_code]
     golongan_payload = master_class_lookup.get(golongan_code) or {}
     return VehicleClassificationResult(
@@ -166,9 +170,23 @@ def _build_geometry(
     )
 
 
-def _classify_vehicle_type(*, vehicle_class: str, geometry: VehicleGeometry) -> str:
+def _classify_vehicle_type(
+    *,
+    vehicle_class: str,
+    geometry: VehicleGeometry,
+    source_label: str | None = None,
+) -> str:
     normalized_class = str(vehicle_class or "").strip().lower()
+    normalized_source = str(source_label or "").strip().lower()
 
+    # ----- Custom IF model source hints (bypass geometry when possible) -----
+    if "angkot" in normalized_source:
+        return VEHICLE_TYPE_MEDIUM_PASSENGER
+
+    if "pickup" in normalized_source:
+        return VEHICLE_TYPE_PICKUP_MICRO_DELIVERY
+
+    # ----- Standard classification path -----
     if normalized_class == VEHICLE_CLASS_BICYCLE:
         return VEHICLE_TYPE_NON_MOTORIZED
 
@@ -182,6 +200,11 @@ def _classify_vehicle_type(*, vehicle_class: str, geometry: VehicleGeometry) -> 
         return _classify_bus_like(geometry)
 
     if normalized_class == VEHICLE_CLASS_TRUCK:
+        # Custom IF model differentiates small vs large trucks.
+        if "trukbesar" in normalized_source.replace(" ", ""):
+            return _classify_truck_large(geometry)
+        if "trukkecil" in normalized_source.replace(" ", ""):
+            return _classify_truck_small(geometry)
         return _classify_truck_like(geometry)
 
     return VEHICLE_TYPE_PASSENGER_CAR
@@ -259,3 +282,47 @@ def _classify_truck_like(geometry: VehicleGeometry) -> str:
         return VEHICLE_TYPE_MEDIUM_TRUCK_2_AXLE
 
     return VEHICLE_TYPE_LIGHT_TRUCK_2_AXLE
+
+
+def _classify_truck_small(geometry: VehicleGeometry) -> str:
+    """Sub-classify a custom IF 'TrukKecil' detection.
+
+    Biased toward lighter truck classes (golongan 6a / 6b) while still
+    allowing promotion to a heavier class when geometry is very large.
+    """
+    # Very large geometry overrides the "small truck" hint.
+    if geometry.aspect_ratio >= 2.2 or geometry.normalized_width >= 0.55 or geometry.normalized_area >= 0.27:
+        return VEHICLE_TYPE_SEMITRAILER_TRUCK
+
+    if geometry.aspect_ratio >= 1.55 or geometry.normalized_width >= 0.40 or geometry.normalized_area >= 0.18:
+        return VEHICLE_TYPE_ARTICULATED_TRUCK
+
+    if geometry.normalized_height >= 0.47 or geometry.normalized_width >= 0.28 or geometry.normalized_area >= 0.13:
+        return VEHICLE_TYPE_TRUCK_3_AXLE
+
+    if geometry.normalized_height >= 0.38 or geometry.normalized_width >= 0.23 or geometry.normalized_area >= 0.09:
+        return VEHICLE_TYPE_MEDIUM_TRUCK_2_AXLE
+
+    return VEHICLE_TYPE_LIGHT_TRUCK_2_AXLE
+
+
+def _classify_truck_large(geometry: VehicleGeometry) -> str:
+    """Sub-classify a custom IF 'TrukBesar' detection.
+
+    Biased toward heavier truck classes (golongan 7a / 7b / 7c) while
+    allowing fallback to a lighter class only when geometry is very small.
+    """
+    if geometry.aspect_ratio >= 2.2 or geometry.normalized_width >= 0.55 or geometry.normalized_area >= 0.27:
+        return VEHICLE_TYPE_SEMITRAILER_TRUCK
+
+    if geometry.aspect_ratio >= 1.55 or geometry.normalized_width >= 0.40 or geometry.normalized_area >= 0.18:
+        return VEHICLE_TYPE_ARTICULATED_TRUCK
+
+    # TrukBesar hint — default to 3-axle unless geometry is tiny.
+    if geometry.normalized_height >= 0.30 or geometry.normalized_width >= 0.18 or geometry.normalized_area >= 0.06:
+        return VEHICLE_TYPE_TRUCK_3_AXLE
+
+    if geometry.normalized_height >= 0.22 or geometry.normalized_width >= 0.14 or geometry.normalized_area >= 0.04:
+        return VEHICLE_TYPE_MEDIUM_TRUCK_2_AXLE
+
+    return VEHICLE_TYPE_TRUCK_3_AXLE

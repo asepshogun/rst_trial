@@ -16,7 +16,6 @@ from app.config import get_settings
 from app.constants import (
     DEFAULT_BUS_MIN_CONFIDENCE,
     DEFAULT_CAR_MIN_CONFIDENCE,
-    COCO_CLASS_TO_VEHICLE_CLASS,
     DEFAULT_MOTORCYCLE_MIN_CONFIDENCE,
     DEFAULT_TRUCK_MIN_CONFIDENCE,
     DEFAULT_VEHICLE_MIN_CONFIDENCE,
@@ -27,7 +26,6 @@ from app.constants import (
     JOB_STATUS_PENDING,
     JOB_STATUS_PROCESSING,
     RAW_DETECTION_LABELS,
-    TRACKABLE_CLASS_IDS,
     VEHICLE_CLASS_BICYCLE,
     VEHICLE_CLASS_BUS,
     VEHICLE_CLASS_CAR,
@@ -42,6 +40,7 @@ from app.database import SessionLocal
 from app.models import AnalysisGolonganTotal, AnalysisJob, CountLine, Site, VehicleEvent, VideoCountAggregate, VideoCountLine, VideoUpload
 from app.services.live_preview import clear_preview, delete_preview_artifacts, finish_preview, publish_preview_frame, start_preview
 from app.services.master_classes import build_master_class_lookup, get_or_create_master_classes
+from app.services.model_adapter import detect_model_type, get_motorcycle_class_id, get_trackable_class_ids, map_class_to_vehicle
 from app.services.storage import delete_relative_file, ensure_storage_layout
 from app.services.vehicle_classification import classify_vehicle
 from app.services.video_conversion import resolve_analysis_video_path
@@ -564,6 +563,9 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             )
 
         model = YOLO(config.model_path)
+        model_type = detect_model_type(model)
+        trackable_ids = get_trackable_class_ids(model_type)
+        motorcycle_class_id = get_motorcycle_class_id(model_type)
         supplemental_motorcycle_model = YOLO(config.model_path) if motorcycle_focus_rois else None
         inference_device = _resolve_inference_device(config.inference_device)
         try:
@@ -589,6 +591,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             "working_resolution": {"width": working_width, "height": working_height},
             "analysis_roi": analysis_roi.to_summary(),
             "small_object_strategy": "road_roi_plus_motorcycle_focus_tiles",
+            "model_type": model_type.value,
             "motorcycle_focus_rois": [roi.to_summary() for roi in motorcycle_focus_rois],
             "inference_imgsz": config.inference_imgsz,
             "inference_device": inference_device,
@@ -676,7 +679,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 imgsz=config.inference_imgsz,
                 conf=config.confidence_threshold,
                 iou=config.iou_threshold,
-                classes=list(TRACKABLE_CLASS_IDS),
+                classes=list(trackable_ids),
             )
 
             result = results[0]
@@ -693,7 +696,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 performance_meta["raw_detection_total"] += len(track_ids)
 
                 for track_id, class_id, confidence, xyxy in zip(track_ids, class_ids, confidences, box_values):
-                    vehicle_class = COCO_CLASS_TO_VEHICLE_CLASS.get(class_id)
+                    vehicle_class = map_class_to_vehicle(model_type, class_id)
                     if not vehicle_class:
                         continue
                     performance_meta["raw_detection_by_class"][vehicle_class] = (
@@ -742,6 +745,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 focus_rois=motorcycle_focus_rois,
                 config=config,
                 inference_device=inference_device,
+                motorcycle_class_id=motorcycle_class_id,
             )
             _prune_supplemental_motorcycle_tracks(supplemental_motorcycle_tracks, frame_number)
             performance_meta["supplemental_motorcycle_raw_total"] += len(supplemental_motorcycle_detections)
@@ -1290,6 +1294,7 @@ def _collect_supplemental_motorcycle_detections(
     focus_rois: list[AnalysisRoi],
     config: ProcessConfig,
     inference_device: str,
+    motorcycle_class_id: int = 3,
 ) -> list[dict]:
     if model is None or not focus_rois:
         return []
@@ -1314,7 +1319,7 @@ def _collect_supplemental_motorcycle_detections(
         imgsz=SUPPLEMENTAL_MOTORCYCLE_IMGSZ,
         conf=_supplemental_motorcycle_confidence(config),
         iou=max(config.iou_threshold, 0.55),
-        classes=[3],
+        classes=[motorcycle_class_id],
     )
 
     detections: list[dict] = []

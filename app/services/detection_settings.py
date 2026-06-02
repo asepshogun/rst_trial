@@ -63,6 +63,9 @@ def get_or_create_detection_settings(db: Session) -> DetectionSettings:
         if settings_row.preview_jpeg_quality is None:
             settings_row.preview_jpeg_quality = DEFAULT_PREVIEW_JPEG_QUALITY
             updated = True
+        if settings_row.model_path is None:
+            settings_row.model_path = "yolov8s.pt"
+            updated = True
         if updated:
             db.commit()
             db.refresh(settings_row)
@@ -83,6 +86,7 @@ def get_or_create_detection_settings(db: Session) -> DetectionSettings:
         working_max_width=DEFAULT_WORKING_MAX_WIDTH,
         preview_max_width=DEFAULT_PREVIEW_MAX_WIDTH,
         preview_jpeg_quality=DEFAULT_PREVIEW_JPEG_QUALITY,
+        model_path="yolov8s.pt",
     )
     db.add(settings_row)
     db.commit()
@@ -105,4 +109,5 @@ def build_detection_settings_overrides(db: Session) -> dict:
         "working_max_width": int(settings_row.working_max_width),
         "preview_max_width": int(settings_row.preview_max_width),
         "preview_jpeg_quality": int(settings_row.preview_jpeg_quality),
+        "model_path": str(settings_row.model_path or "yolov8s.pt"),
     }

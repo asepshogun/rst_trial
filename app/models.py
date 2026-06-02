@@ -100,6 +100,11 @@ class DetectionSettings(TimestampMixin, Base):
         nullable=False,
         default=DEFAULT_PREVIEW_JPEG_QUALITY,
     )
+    model_path: Mapped[Optional[str]] = mapped_column(
+        String(255),
+        nullable=True,
+        default="yolov8s.pt",
+    )
 
 
 class MasterClass(TimestampMixin, Base):

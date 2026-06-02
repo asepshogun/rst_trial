@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const workingMaxWidthInput = document.getElementById("workingMaxWidthInput");
   const previewMaxWidthInput = document.getElementById("previewMaxWidthInput");
   const previewJpegQualityInput = document.getElementById("previewJpegQualityInput");
+  const modelPathSelect = document.getElementById("modelPathSelect");
 
   function setSaving(isSaving) {
     saveButton.disabled = isSaving;
@@ -36,6 +37,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     workingMaxWidthInput.value = String(Number(payload.working_max_width || 0));
     previewMaxWidthInput.value = String(Number(payload.preview_max_width || 0));
     previewJpegQualityInput.value = String(Number(payload.preview_jpeg_quality || 70));
+
+    // Set model dropdown value if it exists in the options
+    if (modelPathSelect && payload.model_path) {
+      modelPathSelect.value = payload.model_path;
+    }
   }
 
   function validateRange(label, value, min, max) {
@@ -52,6 +58,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     return "";
   }
 
+  async function loadAvailableModels() {
+    try {
+      const models = await app.apiFetch("/api/settings/available-models");
+      modelPathSelect.innerHTML = "";
+      if (!models || models.length === 0) {
+        const option = document.createElement("option");
+        option.value = "yolov8s.pt";
+        option.textContent = "yolov8s.pt (default)";
+        modelPathSelect.appendChild(option);
+        return;
+      }
+      for (const model of models) {
+        const option = document.createElement("option");
+        option.value = model.filename;
+        option.textContent = `${model.filename} (${model.size_mb} MB)`;
+        modelPathSelect.appendChild(option);
+      }
+    } catch (error) {
+      console.warn("Failed to load available models:", error);
+    }
+  }
+
   async function loadDetectionSettings() {
     const payload = await app.apiFetch("/api/settings/detection");
     fillForm(payload);
@@ -63,6 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.location.href = "/videos";
       return;
     }
+    await loadAvailableModels();
     await loadDetectionSettings();
   } catch (error) {
     app.setAlert(settingsAlert, "danger", error.message);
@@ -72,6 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   reloadButton.addEventListener("click", async () => {
     app.setAlert(settingsAlert, "danger", "");
     try {
+      await loadAvailableModels();
       await loadDetectionSettings();
       app.setAlert(settingsAlert, "success", "Detection settings reloaded");
     } catch (error) {
@@ -96,6 +126,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       working_max_width: Number(workingMaxWidthInput.value || 0),
       preview_max_width: Number(previewMaxWidthInput.value || 0),
       preview_jpeg_quality: Number(previewJpegQualityInput.value || 0),
+      model_path: modelPathSelect.value || "yolov8s.pt",
     };
 
     const validationError = [

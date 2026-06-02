@@ -10,6 +10,26 @@
   <form id="detectionSettingsForm">
     <div class="card-body pt-3">
       <div class="mb-6">
+        <div class="fw-bold fs-5">YOLO Model</div>
+        <div class="text-muted fs-7">Select which model file to use for new analysis jobs.</div>
+      </div>
+      <div class="row g-6 mb-8">
+        <div class="col-xl-6 col-md-8">
+          <label class="form-label fw-semibold" for="modelPathSelect">Model File</label>
+          <select
+            id="modelPathSelect"
+            name="model_path"
+            class="form-select form-select-solid"
+          >
+            <option value="yolov8s.pt">Loading...</option>
+          </select>
+          <div class="form-text">Available <code>.pt</code> model files detected in the project root directory.</div>
+        </div>
+      </div>
+
+      <div class="separator my-8"></div>
+
+      <div class="mb-6">
         <div class="fw-bold fs-5">Class Detection Thresholds</div>
         <div class="text-muted fs-7">Controls which detections are accepted before tracking and counting.</div>
       </div>

@@ -1557,6 +1557,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const displayJobStatus = isStaleRunning ? "stale" : jobStatus;
     statusText.innerHTML = `
       <span class="badge ${app.statusBadge(displayJobStatus)} status-pill me-2">${app.escapeHtml(displayJobStatus)}</span>
+      ${job && job.model_name ? `<span class="badge badge-light-info status-pill me-2" title="Detection model">${app.escapeHtml(job.model_name)}</span>` : ""}
       <span class="soft-note">Video status: ${app.escapeHtml(video.status)}</span>
     `;
     setProgress(payload.progress_percent || 0);

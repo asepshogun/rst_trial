@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Pemantauan Lalu Lintas</title>
+    <meta
+      name="description"
+      content="Platform terpadu pemantauan lalu lintas Area Traffic Control System (ATCS) Kota Bandung. Deteksi kemacetan, analisis volume kendaraan secara real-time."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="/assets/css/landing.css" />
+  </head>
+  <body>
+    <!-- ── NAVBAR ─────────────────────────────────────────────────── -->
+    <nav class="lp-navbar" id="lpNavbar">
+      <div class="container-xl">
+        <div class="lp-nav-inner">
+          <a class="lp-brand" href="/">
+            <div class="lp-brand-badge" aria-hidden="true">NC</div>
+            <div class="lp-brand-text">
+              <span class="lp-brand-name">NiceCount</span>
+              <span class="lp-brand-sub">Traffic Video Analysis</span>
+            </div>
+          </a>
+          <ul class="lp-nav-links">
+            <li><a href="#beranda" class="lp-nav-link active">Beranda</a></li>
+            <li><a href="#peta" class="lp-nav-link">Peta CCTV</a></li>
+            <li><a href="#statistik" class="lp-nav-link">Statistik</a></li>
+            <li><a href="#prediksi" class="lp-nav-link">Prediksi Kemacetan</a></li>
+            <li><a href="#cuaca" class="lp-nav-link">Prakiraan Cuaca</a></li>
+          </ul>
+          <div class="lp-nav-right">
+            <a href="/login" class="lp-btn-login"> <i class="ti ti-login me-1"></i> Masuk </a>
+          </div>
+          <button class="lp-mobile-toggle" id="lpMobileToggle" aria-label="Toggle menu">
+            <i class="ti ti-menu-2"></i>
+          </button>
+        </div>
+      </div>
+      <div class="lp-mobile-menu" id="lpMobileMenu">
+        <a href="#beranda" class="lp-mobile-link">Beranda</a>
+        <a href="#peta" class="lp-mobile-link">Peta CCTV</a>
+        <a href="#statistik" class="lp-mobile-link">Statistik</a>
+        <a href="#prediksi" class="lp-mobile-link">Prediksi Kemacetan</a>
+        <a href="#cuaca" class="lp-mobile-link">Prakiraan Cuaca</a>
+        <a href="/login" class="lp-mobile-link lp-mobile-link--primary">Masuk ke Dashboard</a>
+      </div>
+    </nav>
+
+    <!-- ── 2. HERO ────────────────────────────────────────────────── -->
+    <section class="lp-hero" id="beranda">
+      <div class="lp-hero-grid" aria-hidden="true"></div>
+      <div class="lp-hero-glow" aria-hidden="true"></div>
+      <div class="container-xl">
+        <div class="lp-hero-inner">
+          <!-- Left content -->
+          <div class="lp-hero-content fade-up">
+            <h1 class="lp-hero-h1">
+              Pantau Kota Bandung<br />
+              <span class="lp-gradient-text">Secara Real-Time</span>
+            </h1>
+            <p class="lp-hero-sub">
+              Platform terpadu Area Traffic Control System (ATCS) Kota Bandung. Deteksi kemacetan, analisis volume kendaraan, dan optimalkan mobilitas
+              warga kota berbasis data yang akurat dan cepat.
+            </p>
+            <div class="lp-hero-ctas">
+              <a href="#peta" class="lp-btn-primary"> <i class="ti ti-map-pin me-2"></i> Lihat Peta CCTV </a>
+              <a href="#statistik" class="lp-btn-outline"> <i class="ti ti-chart-bar me-2"></i> Lihat Statistik </a>
+            </div>
+            <div class="lp-stat-pills">
+              <div class="lp-stat-pill">
+                <i class="ti ti-camera lp-stat-pill-icon"></i>
+                <span>47 Kamera Aktif</span>
+              </div>
+              <div class="lp-stat-pill">
+                <i class="ti ti-road lp-stat-pill-icon"></i>
+                <span>29 Simpang Terpantau</span>
+              </div>
+              <div class="lp-stat-pill">
+                <i class="ti ti-clock-24 lp-stat-pill-icon"></i>
+                <span>24/7 Monitoring</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: City monitoring SVG illustration -->
+          <!-- TODO: Replace with undraw illustration if desired -->
+          <div class="lp-hero-visual fade-up fade-up--d2">
+            <svg class="lp-city-svg" viewBox="0 0 520 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <!-- City buildings silhouette (light colors) -->
+              <g opacity="0.55">
+                <rect x="12" y="250" width="48" height="170" rx="3" fill="#CBD5E1" />
+                <rect x="28" y="200" width="32" height="220" rx="3" fill="#BFCBD8" />
+                <rect x="68" y="265" width="52" height="155" rx="3" fill="#CBD5E1" />
+                <rect x="84" y="215" width="36" height="205" rx="3" fill="#BFCBD8" />
+                <rect x="145" y="275" width="48" height="145" rx="3" fill="#CBD5E1" />
+                <rect x="160" y="230" width="38" height="190" rx="3" fill="#BFCBD8" />
+                <rect x="355" y="255" width="54" height="165" rx="3" fill="#CBD5E1" />
+                <rect x="372" y="205" width="32" height="215" rx="3" fill="#BFCBD8" />
+                <rect x="420" y="272" width="58" height="148" rx="3" fill="#CBD5E1" />
+                <rect x="440" y="225" width="38" height="195" rx="3" fill="#BFCBD8" />
+                <rect x="480" y="285" width="40" height="135" rx="3" fill="#CBD5E1" />
+                <rect x="220" y="290" width="42" height="130" rx="3" fill="#CBD5E1" />
+                <rect x="230" y="255" width="28" height="165" rx="3" fill="#BFCBD8" />
+              </g>
+              <!-- Roads -->
+              <g opacity="0.2">
+                <rect x="0" y="345" width="520" height="10" rx="2" fill="#94A3B8" />
+                <rect x="0" y="390" width="520" height="6" rx="2" fill="#94A3B8" />
+                <rect x="205" y="0" width="10" height="420" rx="2" fill="#94A3B8" />
+                <rect x="355" y="0" width="6" height="420" rx="2" fill="#94A3B8" />
+              </g>
+              <!-- Network connection lines -->
+              <g opacity="0.45">
+                <line x1="130" y1="95" x2="260" y2="55" stroke="#3B82F6" stroke-width="1.2" />
+                <line x1="260" y1="55" x2="390" y2="85" stroke="#3B82F6" stroke-width="1.2" />
+                <line x1="390" y1="85" x2="465" y2="138" stroke="#3B82F6" stroke-width="1" />
+                <line x1="130" y1="95" x2="210" y2="168" stroke="#3B82F6" stroke-width="1" />
+                <line x1="260" y1="55" x2="318" y2="138" stroke="#3B82F6" stroke-width="1" />
+                <line x1="390" y1="85" x2="318" y2="138" stroke="#3B82F6" stroke-width="1" />
+                <line x1="210" y1="168" x2="318" y2="138" stroke="#3B82F6" stroke-width="1" />
+                <line x1="210" y1="168" x2="92" y2="195" stroke="#3B82F6" stroke-width="0.8" />
+                <line x1="318" y1="138" x2="428" y2="188" stroke="#3B82F6" stroke-width="0.8" />
+                <line x1="260" y1="55" x2="260" y2="20" stroke="#3B82F6" stroke-width="0.8" stroke-dasharray="4 3" />
+                <line x1="130" y1="95" x2="75" y2="65" stroke="#3B82F6" stroke-width="0.8" stroke-dasharray="4 3" />
+                <line x1="390" y1="85" x2="455" y2="58" stroke="#3B82F6" stroke-width="0.8" stroke-dasharray="4 3" />
+              </g>
+              <!-- Monitoring nodes (light fills) -->
+              <!-- Central node (blue) -->
+              <circle cx="260" cy="55" r="16" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2" />
+              <circle cx="260" cy="55" r="24" fill="none" stroke="#3B82F6" stroke-width="0.8" opacity="0.35" />
+              <circle class="lp-pulse-ring" cx="260" cy="55" r="0" fill="none" stroke="#3B82F6" stroke-width="1.5" opacity="0" />
+              <text x="260" y="59" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#2563EB" font-weight="700">1</text>
+              <!-- Left node (green) -->
+              <circle cx="130" cy="95" r="12" fill="#F0FDF4" stroke="#10B981" stroke-width="2" />
+              <circle cx="130" cy="95" r="20" fill="none" stroke="#10B981" stroke-width="0.8" opacity="0.3" />
+              <text x="130" y="99" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#059669" font-weight="700">2</text>
+              <!-- Right node (green) -->
+              <circle cx="390" cy="85" r="12" fill="#F0FDF4" stroke="#10B981" stroke-width="2" />
+              <circle cx="390" cy="85" r="20" fill="none" stroke="#10B981" stroke-width="0.8" opacity="0.3" />
+              <text x="390" y="89" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#059669" font-weight="700">3</text>
+              <!-- Middle node (blue) -->
+              <circle cx="318" cy="138" r="11" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5" />
+              <circle cx="318" cy="138" r="18" fill="none" stroke="#3B82F6" stroke-width="0.6" opacity="0.25" />
+              <text x="318" y="142" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#2563EB" font-weight="700">4</text>
+              <!-- Mid-left node (amber) -->
+              <circle cx="210" cy="168" r="10" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5" />
+              <text x="210" y="172" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#D97706" font-weight="700">5</text>
+              <!-- Far right node -->
+              <circle cx="465" cy="138" r="8" fill="#F0FDF4" stroke="#10B981" stroke-width="1.5" />
+              <circle cx="92" cy="195" r="8" fill="#F0FDF4" stroke="#10B981" stroke-width="1.5" />
+              <circle cx="428" cy="188" r="7" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5" />
+              <!-- Floating data dots -->
+              <circle cx="195" cy="75" r="2.5" fill="#3B82F6" opacity="0.7" />
+              <circle cx="228" cy="62" r="2" fill="#3B82F6" opacity="0.5" />
+              <circle cx="298" cy="98" r="2.5" fill="#10B981" opacity="0.7" />
+              <circle cx="348" cy="112" r="2" fill="#3B82F6" opacity="0.5" />
+              <circle cx="355" cy="62" r="2.5" fill="#10B981" opacity="0.6" />
+              <!-- Location pins -->
+              <g>
+                <path
+                  d="M210 345 C210 336 197 329 197 320 C197 311 203 305 210 305 C217 305 223 311 223 320 C223 329 210 336 210 345Z"
+                  fill="#EF4444"
+                  opacity="0.85"
+                />
+                <circle cx="210" cy="320" r="4.5" fill="#fff" opacity="0.9" />
+              </g>
+              <g>
+                <path
+                  d="M318 332 C318 324 306 317 306 309 C306 301 312 295 318 295 C324 295 330 301 330 309 C330 317 318 324 318 332Z"
+                  fill="#10B981"
+                  opacity="0.85"
+                />
+                <circle cx="318" cy="309" r="4.5" fill="#fff" opacity="0.9" />
+              </g>
+              <g>
+                <path
+                  d="M390 352 C390 343 378 337 378 328 C378 320 384 314 390 314 C396 314 402 320 402 328 C402 337 390 343 390 352Z"
+                  fill="#3B82F6"
+                  opacity="0.85"
+                />
+                <circle cx="390" cy="328" r="4.5" fill="#fff" opacity="0.9" />
+              </g>
+              <!-- Mini dashboard overlay (light card) -->
+              <rect x="185" y="3" width="150" height="42" rx="8" fill="#ffffff" stroke="#E2E8F0" stroke-width="1.5" opacity="0.96" />
+              <text
+                x="260"
+                y="18"
+                text-anchor="middle"
+                font-family="Inter,sans-serif"
+                font-size="8.5"
+                fill="#64748B"
+                font-weight="700"
+                letter-spacing="0.08em"
+              >
+                KENDARAAN HARI INI
+              </text>
+              <text x="260" y="36" text-anchor="middle" font-family="Inter,sans-serif" font-size="17" fill="#0F172A" font-weight="800">128.450</text>
+              <!-- Status bar at bottom (light card) -->
+              <rect x="80" y="390" width="360" height="28" rx="8" fill="#ffffff" stroke="#E2E8F0" stroke-width="1.5" opacity="0.95" />
+              <circle cx="105" cy="404" r="5" fill="#10B981" />
+              <text x="116" y="408" font-family="Inter,sans-serif" font-size="9" fill="#475569" font-weight="600">47 KAMERA AKTIF</text>
+              <text x="270" y="408" font-family="Inter,sans-serif" font-size="9" fill="#059669" font-weight="600" text-anchor="middle">
+                ● KONDISI NORMAL
+              </text>
+              <text x="415" y="408" font-family="Inter,sans-serif" font-size="9" fill="#D97706" font-weight="600" text-anchor="end">● 3 OFFLINE</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 3. STATS BAR ───────────────────────────────────────────── -->
+    <!-- <section class="lp-stats">
+      <div class="container-xl">
+        <div class="lp-stats-grid">
+          <div class="lp-stat-card fade-up">
+            <div class="lp-stat-icon"><i class="ti ti-car"></i></div>
+            <div class="lp-stat-num" data-count="128450">0</div>
+            <div class="lp-stat-label">Total Kendaraan Hari Ini</div>
+          </div>
+          <div class="lp-stat-card fade-up fade-up--d1">
+            <div class="lp-stat-icon lp-stat-icon--green"><i class="ti ti-gauge"></i></div>
+            <div class="lp-stat-num" data-count="32" data-suffix=" km/h">0</div>
+            <div class="lp-stat-label">Rata-rata Kecepatan</div>
+          </div>
+          <div class="lp-stat-card fade-up fade-up--d2">
+            <div class="lp-stat-icon lp-stat-icon--amber"><i class="ti ti-road"></i></div>
+            <div class="lp-stat-num" data-count="29">0</div>
+            <div class="lp-stat-label">Simpang Terpantau</div>
+          </div>
+          <div class="lp-stat-card fade-up fade-up--d3">
+            <div class="lp-stat-icon lp-stat-icon--blue"><i class="ti ti-camera"></i></div>
+            <div class="lp-stat-num" data-count="47">0</div>
+            <div class="lp-stat-label">Kamera Online</div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <div class="lp-section-divider"></div>
+
+    <!-- ── 4. PETA CCTV ──────────────────────────────────────────── -->
+    <section class="lp-section" id="peta">
+      <div class="container-xl">
+        <div class="mb-5 fade-up">
+          <div class="lp-section-label"><i class="ti ti-map-pin"></i> Pemantauan Langsung</div>
+          <h2 class="lp-section-title">Peta CCTV Kota Bandung</h2>
+          <p class="lp-section-sub">
+            Pantau kondisi lalu lintas di 29 simpang strategis Kota Bandung secara real-time. Klik marker untuk melihat live stream kamera.
+            <!-- TODO: Connect to dynamic camera endpoint in production -->
+          </p>
+        </div>
+        <div class="lp-map-wrap fade-up fade-up--d1">
+          <div id="lp-map"></div>
+        </div>
+        <div id="lpCameraPills" class="lp-camera-scroll fade-up fade-up--d2"></div>
+      </div>
+    </section>
+
+    <div class="lp-section-divider"></div>
+
+    <!-- ── 5. STATISTIK ──────────────────────────────────────────── -->
+    <section class="lp-section lp-section-alt" id="statistik">
+      <div class="container-xl">
+        <div class="mb-5 fade-up">
+          <div class="lp-section-label"><i class="ti ti-chart-bar"></i> Analitik Data</div>
+          <h2 class="lp-section-title">Statistik Lalu Lintas</h2>
+          <p class="lp-section-sub">
+            Data agregasi real-time dari seluruh kamera CCTV di Kota Bandung.
+            <!-- TODO: Connect to /api/analytics endpoint in production -->
+          </p>
+        </div>
+        <div class="lp-chart-grid">
+          <!-- A. Volume per Jam -->
+          <div class="lp-chart-card fade-up">
+            <div class="lp-chart-card-head">
+              <div class="lp-chart-card-title">Volume Kendaraan per Jam</div>
+              <div class="lp-chart-updated">
+                <i class="ti ti-clock" style="font-size: 0.75rem"></i>
+                Diperbarui 5 menit lalu
+              </div>
+            </div>
+            <div class="lp-chart-body">
+              <div id="chartHourly"></div>
+            </div>
+          </div>
+          <!-- B. Distribusi Jenis -->
+          <div class="lp-chart-card fade-up fade-up--d1">
+            <div class="lp-chart-card-head">
+              <div class="lp-chart-card-title">Distribusi Jenis Kendaraan</div>
+              <div class="lp-chart-updated">
+                <i class="ti ti-clock" style="font-size: 0.75rem"></i>
+                Hari ini
+              </div>
+            </div>
+            <div class="lp-chart-body">
+              <div id="chartDonut"></div>
+            </div>
+          </div>
+          <!-- C. Volume per Lokasi -->
+          <div class="lp-chart-card fade-up fade-up--d2">
+            <div class="lp-chart-card-head">
+              <div class="lp-chart-card-title">Volume per Lokasi (Top 8)</div>
+              <div class="lp-chart-updated">
+                <i class="ti ti-clock" style="font-size: 0.75rem"></i>
+                Hari ini
+              </div>
+            </div>
+            <div class="lp-chart-body">
+              <div id="chartLocation"></div>
+            </div>
+          </div>
+          <!-- D. Tren 7 Hari -->
+          <div class="lp-chart-card fade-up fade-up--d3">
+            <div class="lp-chart-card-head">
+              <div class="lp-chart-card-title">Tren Volume 7 Hari Terakhir</div>
+              <div class="lp-chart-updated">
+                <i class="ti ti-clock" style="font-size: 0.75rem"></i>
+                Minggu ini
+              </div>
+            </div>
+            <div class="lp-chart-body">
+              <div id="chartTrend"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="lp-section-divider"></div>
+
+    <!-- ── 6. PREDIKSI KEMACETAN ──────────────────────────────────── -->
+    <section class="lp-section" id="prediksi">
+      <div class="container-xl">
+        <div class="mb-5 fade-up">
+          <div class="lp-section-label"><i class="ti ti-brain"></i> AI-Powered</div>
+          <h2 class="lp-section-title">Prediksi Kemacetan</h2>
+          <p class="lp-section-sub">Pilih tanggal &amp; waktu untuk melihat prediksi kondisi lalu lintas di titik-titik utama Kota Bandung.</p>
+        </div>
+
+        <!-- ── Prediction UI Layout ─────────────────────────── -->
+        <div class="lp-pred-layout fade-up fade-up--d1">
+          <!-- LEFT: Input Panel -->
+          <div class="lp-pred-panel">
+            <div class="lp-pred-panel-head"><i class="ti ti-calendar-search"></i> Pilih Waktu Prediksi</div>
+            <div class="lp-pred-panel-body">
+              <!-- Date picker -->
+              <div class="lp-pred-field">
+                <label class="lp-pred-label" for="predDateInput">Tanggal</label>
+                <input type="date" id="predDateInput" class="lp-pred-date" />
+              </div>
+
+              <!-- Day info card -->
+              <div class="lp-pred-day-card">
+                <div class="lp-pred-day-name" id="predDayName">—</div>
+                <div class="lp-pred-day-hint" id="predDayHint">Pilih tanggal terlebih dahulu</div>
+              </div>
+
+              <!-- Time segment -->
+              <div class="lp-pred-field">
+                <label class="lp-pred-label">Waktu</label>
+                <div class="lp-pred-time-grid">
+                  <button class="lp-pred-time active" data-time="pagi" type="button">
+                    <i class="ti ti-sunrise"></i>
+                    <span>Pagi</span>
+                    <small>06–10</small>
+                  </button>
+                  <button class="lp-pred-time" data-time="siang" type="button">
+                    <i class="ti ti-sun-high"></i>
+                    <span>Siang</span>
+                    <small>10–14</small>
+                  </button>
+                  <button class="lp-pred-time" data-time="sore" type="button">
+                    <i class="ti ti-sunset-2"></i>
+                    <span>Sore</span>
+                    <small>14–18</small>
+                  </button>
+                  <button class="lp-pred-time" data-time="malam" type="button">
+                    <i class="ti ti-moon-stars"></i>
+                    <span>Malam</span>
+                    <small>18–22</small>
+                  </button>
+                </div>
+              </div>
+
+              <!-- CTA -->
+              <button class="lp-pred-cta" id="predCta" type="button"><i class="ti ti-search"></i> Lihat Prediksi</button>
+            </div>
+          </div>
+
+          <!-- RIGHT: Result Panel -->
+          <div class="lp-pred-panel">
+            <div class="lp-pred-panel-head lp-pred-panel-head--result">
+              <div>
+                <div class="lp-pred-result-title" id="predResultTitle">Hasil Prediksi</div>
+                <div class="lp-pred-result-sub" id="predResultSub">Pilih tanggal &amp; waktu, lalu tekan Lihat Prediksi</div>
+              </div>
+              <div class="lp-pred-legend">
+                <span><span class="lp-pred-dot lp-pred-dot--red"></span>Macet</span>
+                <span><span class="lp-pred-dot lp-pred-dot--amber"></span>Padat</span>
+                <span><span class="lp-pred-dot lp-pred-dot--green"></span>Lancar</span>
+              </div>
+            </div>
+
+            <!-- Empty state -->
+            <div class="lp-pred-empty" id="predEmpty">
+              <i class="ti ti-map-search"></i>
+              <p>Belum ada prediksi.<br />Pilih tanggal &amp; waktu, lalu<br />tekan <strong>Lihat Prediksi</strong>.</p>
+            </div>
+
+            <!-- Result rows -->
+            <div id="predRows" class="lp-pred-rows" style="display: none"></div>
+          </div>
+        </div>
+
+        <!-- Info note -->
+        <p class="lp-pred-note fade-up fade-up--d2">
+          <i class="ti ti-info-circle"></i>
+          Prediksi dihasilkan berdasarkan pola data historis volume kendaraan. Fitur masih dalam tahap pengembangan — data di atas merupakan simulasi.
+        </p>
+      </div>
+    </section>
+
+    <div class="lp-section-divider"></div>
+
+    <!-- ── 7. PRAKIRAAN CUACA ─────────────────────────────────────── -->
+    <section class="lp-section" id="cuaca">
+      <div class="container-xl">
+        <div class="mb-5 fade-up">
+          <div class="lp-section-label"><i class="ti ti-cloud"></i> Kondisi Lingkungan</div>
+          <h2 class="lp-section-title">Prakiraan Cuaca Bandung</h2>
+          <p class="lp-section-sub">Data real-time dari <strong>Open-Meteo</strong></p>
+        </div>
+        <div id="lpWeatherGrid" class="lp-weather-grid fade-up fade-up--d1">
+          <!-- Diisi oleh Open-Meteo API via landing.js -->
+        </div>
+        <div id="lpWeatherUpdated" class="lp-weather-updated"></div>
+      </div>
+    </section>
+
+    <!-- ── 8. FOOTER ─────────────────────────────────────────────── -->
+    <footer class="lp-footer">
+      <img src="/assets/illustrations/footer.png" alt="" class="lp-footer-img" />
+    </footer>
+
+    <!-- ── CAMERA MODAL ───────────────────────────────────────────── -->
+    <div class="modal fade lp-modal" id="lpCameraModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="ti ti-camera me-2" style="color: #3b82f6"></i>
+              <span id="lpModalCamName">—</span>
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+          </div>
+          <div class="modal-body">
+            <div class="lp-modal-video">
+              <i class="ti ti-player-play lp-modal-video-icon"></i>
+              <!-- TODO: Replace with actual embed: <iframe src="cam.stream_url" ...></iframe> -->
+            </div>
+            <div class="lp-modal-info-grid">
+              <div class="lp-modal-info-item">
+                <div class="lp-modal-info-label">Lokasi</div>
+                <div class="lp-modal-info-value" id="lpModalCamLocation" style="font-size: 0.875rem">—</div>
+              </div>
+              <div class="lp-modal-info-item">
+                <div class="lp-modal-info-label">Status</div>
+                <div class="lp-modal-info-value" id="lpModalCamStatus" style="color: #10b981">—</div>
+              </div>
+              <div class="lp-modal-info-item">
+                <div class="lp-modal-info-label">Kendaraan Terdeteksi</div>
+                <div class="lp-modal-info-value" id="lpModalCamVehicles">—</div>
+              </div>
+              <div class="lp-modal-info-item">
+                <div class="lp-modal-info-label">Terakhir Diperbarui</div>
+                <div class="lp-modal-info-value" id="lpModalCamTime">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SCRIPTS ────────────────────────────────────────────────── -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3/dist/apexcharts.min.js"></script>
+    <script src="/assets/js/landing.js"></script>
+  </body>
+</html>

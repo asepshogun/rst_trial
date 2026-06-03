@@ -1,0 +1,176 @@
+/* ================================================================
+   NiceCount – Login Page Styles
+   Scope: layouts/auth.html + pages/login.html only
+   ================================================================ */
+
+/* Override global body background for auth pages */
+html, body {
+  background: #020d28 !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Split layout ── */
+.login-split-layout {
+  display: flex !important;
+  flex-direction: row !important;
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  background: #020d28;
+}
+
+/* ── Left panel ── */
+.login-panel-left {
+  flex: 0 0 58%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 48px;
+  background: linear-gradient(135deg,
+    #020d28 0%,
+    #082268 18%,
+    #0457cb 42%,
+    #0064E0 60%,
+    #0091ff 80%,
+    #1050c0 100%
+  );
+  background-size: 300% 300%;
+  animation: loginGradientFlow 14s ease infinite;
+}
+
+@keyframes loginGradientFlow {
+  0%   { background-position: 0%   0%;   }
+  33%  { background-position: 100% 60%;  }
+  66%  { background-position: 40%  100%; }
+  100% { background-position: 0%   0%;   }
+}
+
+.login-panel-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.login-panel-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.32);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.login-panel-app-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.login-panel-app-sub {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.58);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.login-panel-illustration {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;
+  min-height: 0;
+}
+
+.login-panel-illustration svg {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+}
+
+.login-panel-tagline {
+  flex-shrink: 0;
+}
+
+.login-panel-tagline h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+}
+
+.login-panel-tagline p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.62);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* ── Right panel ── */
+.login-panel-right {
+  flex: 1;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+  overflow-y: auto;
+}
+
+.login-form-inner {
+  width: 100%;
+  max-width: 360px;
+}
+
+.login-form-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--nc-ink-deep);
+  letter-spacing: -0.4px;
+  margin-bottom: 6px;
+}
+
+.login-form-subtitle {
+  font-size: 14px;
+  color: var(--nc-stone);
+  margin-bottom: 32px;
+  font-weight: 400;
+}
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .login-panel-left  { flex: 0 0 50%; padding: 32px; }
+  .login-panel-tagline h2 { font-size: 22px; }
+  .login-panel-right { padding: 40px 28px; }
+}
+
+@media (max-width: 680px) {
+  .login-panel-left { display: none; }
+  .login-panel-right {
+    min-height: 100vh;
+    background: var(--nc-surface-soft, #F8F9FB);
+    padding: 48px 24px;
+  }
+}
+
+/* Legacy classes (kept for compatibility) */
+.login-shell        { min-height: 100vh; background: linear-gradient(160deg, #f1f4f7 0%, #e8edf3 100%); }
+.login-card         { width: min(460px, 100%); border-radius: 20px; }
+.login-brand        { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+.login-brand-badge  { width: 56px; height: 56px; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; color: #fff; background: var(--nc-primary); flex-shrink: 0; }
+.login-brand-name     { color: var(--nc-ink-deep); font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+.login-brand-subtitle { color: var(--nc-stone); font-size: 0.875rem; margin-top: 0.15rem; }

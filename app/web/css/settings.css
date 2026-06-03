@@ -1,0 +1,29 @@
+/* ================================================================
+   NiceCount – Settings Page Styles
+   Scope: pages/settings.html, pages/gpu_audit.html, pages/master_classes.html
+   ================================================================ */
+
+.app-gpu-audit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+.app-gpu-audit-item {
+  padding: 1.25rem;
+  border: 1px solid var(--nc-hairline-soft);
+  border-radius: 14px;
+  background: var(--nc-canvas);
+  min-height: 170px;
+}
+.app-gpu-command { display: flex; flex-direction: column; gap: 0.5rem; }
+.app-gpu-command-box {
+  margin: 0;
+  padding: 1rem;
+  border-radius: 10px;
+  background: var(--nc-ink-deep);
+  color: #f1f4f7;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}

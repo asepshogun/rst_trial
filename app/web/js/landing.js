@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
       road: "Tol Purbaleunyi — Exit Cileunyi",
       direction: "Timur — Cileunyi / Sumedang",
       lat: -6.9424, lng: 107.7523,
-      innerLat: -6.9420, innerLng: 107.7515,   // ~0.08km ke barat
+      innerLat: -6.9422, innerLng: 107.7519,   // ~0.04km ke barat
       status: "macet", statusInner: "padat", splitAt: 0.50,
       vehicles: 2650,
     },
@@ -308,15 +308,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const outer = gate.status;
           const inner = gate.statusInner || gate.status;
 
-          if (outer === inner || coords.length < 4) {
-            // Satu warna — tidak perlu split
-            renderLine(coords, outer);
-          } else {
-            // Dua warna — belah koordinat di splitAt
-            const splitIdx = Math.max(1, Math.floor(coords.length * (gate.splitAt || 0.5)));
-            renderLine(coords.slice(0, splitIdx + 1), outer);
-            renderLine(coords.slice(splitIdx), inner);
-          }
+          // TEMP: satu warna per line (pakai status outer)
+          renderLine(coords, outer);
         } catch (err) {
           console.warn(`[OSRM] Fallback untuk ${gate.name}:`, err.message);
           drawFallbackLine(gate);

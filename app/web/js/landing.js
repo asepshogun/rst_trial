@@ -5,28 +5,89 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ── Dummy camera data ──────────────────────────────────────── */
-  // TODO: Replace with fetch("/api/cameras") in production
-  const CAMERAS = [
-    { id:1,  name:"Simpang Dago – Ir. H. Juanda",          lat:-6.8847, lng:107.6100, status:"online",  vehicles:15200 },
-    { id:2,  name:"Simpang Lima – Jl. Merdeka",             lat:-6.9175, lng:107.6191, status:"online",  vehicles:8200  },
-    { id:3,  name:"Simpang Pasteur – Jl. Dr. Djundjunan",  lat:-6.8971, lng:107.5785, status:"online",  vehicles:13800 },
-    { id:4,  name:"Jl. Asia Afrika – Alun-alun",            lat:-6.9218, lng:107.6072, status:"offline", vehicles:0     },
-    { id:5,  name:"Simpang Buah Batu – Jl. Terusan",       lat:-6.9499, lng:107.6387, status:"online",  vehicles:10200 },
-    { id:6,  name:"Jl. Soekarno-Hatta – Kiaracondong",     lat:-6.9326, lng:107.6560, status:"online",  vehicles:12600 },
-    { id:7,  name:"Simpang Antapani – Jl. Jakarta",         lat:-6.9169, lng:107.6638, status:"online",  vehicles:11400 },
-    { id:8,  name:"Jl. Sudirman – Kosambi",                 lat:-6.9120, lng:107.5987, status:"offline", vehicles:0     },
-    { id:9,  name:"Jl. Setiabudi – UNPAD",                  lat:-6.8740, lng:107.6219, status:"online",  vehicles:7400  },
-    { id:10, name:"Simpang Gatot Subroto",                   lat:-6.9065, lng:107.5842, status:"online",  vehicles:9100  },
-    { id:11, name:"Jl. Riau – Departemen Store",             lat:-6.9068, lng:107.6302, status:"online",  vehicles:9800  },
-    { id:12, name:"Simpang Cicendo – PDAM",                  lat:-6.9052, lng:107.5977, status:"online",  vehicles:8600  },
-    { id:13, name:"Jl. Rajawali – Batas Cimahi",             lat:-6.9123, lng:107.5603, status:"online",  vehicles:6800  },
-    { id:14, name:"Simpang Pasirkoja – Jl. Astana Anyar",   lat:-6.9352, lng:107.5908, status:"online",  vehicles:7100  },
-    { id:15, name:"Jl. Ibrahim Adjie – Kopo",                lat:-6.9445, lng:107.5812, status:"offline", vehicles:0     },
-    { id:16, name:"Simpang Leuwipanjang – Terminal",          lat:-6.9562, lng:107.5754, status:"online",  vehicles:6200  },
-    { id:17, name:"Jl. Cihampelas – Punclut",                lat:-6.8999, lng:107.5968, status:"online",  vehicles:5900  },
-    { id:18, name:"Simpang Suci – Jl. Surapati",             lat:-6.9015, lng:107.6398, status:"online",  vehicles:9800  },
+  /* ── 8 Titik Keluar-Masuk Kota Bandung ─────────────────────── */
+  // lat/lng      = koordinat gerbang (luar kota)
+  // innerLat/Lng = titik dalam kota sebagai ujung garis OSRM
+  // status: "macet" | "padat" | "lancar"
+  // status      = kondisi di dekat gerbang (outer) — dipakai juga di marker & popup
+  // statusInner = kondisi mendekati kota (inner) — jika beda, garis akan terbagi 2 warna
+  // splitAt     = posisi pembelahan (0.0–1.0), default 0.5
+  const GATES = [
+    {
+      id: 1, name: "Gerbang Tol Pasteur",
+      road: "Tol Purbaleunyi (Jakarta – Bandung)",
+      direction: "Barat — Jakarta / Cimahi",
+      lat: -6.8906, lng: 107.5747,
+      innerLat: -6.8960, innerLng: 107.5830,   // ~1km ke arah kota
+      status: "macet", statusInner: "padat", splitAt: 0.40,
+      vehicles: 2840,
+    },
+    {
+      id: 2, name: "Terminal Ledeng",
+      road: "Jl. Setiabudhi (Kawasan Ledeng)",
+      direction: "Utara — Lembang / Cisarua",
+      lat: -6.8593, lng: 107.5950,
+      innerLat: -6.8670, innerLng: 107.5958,   // ~0.9km ke selatan
+      status: "padat", statusInner: "lancar", splitAt: 0.50,
+      vehicles: 1420,
+    },
+    {
+      id: 3, name: "Gerbang Tol Pasir Koja",
+      road: "Tol Padaleunyi — Exit Pasir Koja",
+      direction: "Barat Daya — Padalarang / Cimahi",
+      lat: -6.9314, lng: 107.5706,
+      innerLat: -6.9280, innerLng: 107.5800,   // ~0.9km ke timur laut
+      status: "padat", statusInner: "lancar", splitAt: 0.45,
+      vehicles: 890,
+    },
+    {
+      id: 4, name: "Gerbang Tol Kopo",
+      road: "Tol SOROJA — Exit Kopo",
+      direction: "Selatan — Soreang / Katapang",
+      lat: -6.9557, lng: 107.5802,
+      innerLat: -6.9490, innerLng: 107.5808,   // ~0.75km ke utara
+      status: "lancar", statusInner: "lancar", splitAt: 0.50,
+      vehicles: 760,
+    },
+    {
+      id: 5, name: "Gerbang Tol Muhammad Toha",
+      road: "Tol SOROJA — Exit Muhammad Toha",
+      direction: "Selatan — Dayeuhkolot / Banjaran",
+      lat: -6.9566, lng: 107.6097,
+      innerLat: -6.9490, innerLng: 107.6097,   // ~0.85km ke utara
+      status: "macet", statusInner: "padat", splitAt: 0.40,
+      vehicles: 1380,
+    },
+    {
+      id: 6, name: "Gerbang Tol Buah Batu",
+      road: "Tol SOROJA — Exit Buah Batu",
+      direction: "Selatan — Soreang / Majalaya",
+      lat: -6.9614, lng: 107.6365,
+      innerLat: -6.9545, innerLng: 107.6373,   // ~0.77km ke utara
+      status: "macet", statusInner: "padat", splitAt: 0.35,
+      vehicles: 1820,
+    },
+    {
+      id: 7, name: "Gerbang Tol Cileunyi",
+      road: "Tol Purbaleunyi — Exit Cileunyi",
+      direction: "Timur — Cileunyi / Sumedang",
+      lat: -6.9424, lng: 107.7523,
+      innerLat: -6.9420, innerLng: 107.7515,   // ~0.08km ke barat
+      status: "macet", statusInner: "padat", splitAt: 0.50,
+      vehicles: 2650,
+    },
+    {
+      id: 8, name: "Bunderan Cibiru",
+      road: "Jl. Soekarno-Hatta Timur",
+      direction: "Timur — Cibiru / Rancaekek",
+      lat: -6.9351, lng: 107.7174,
+      innerLat: -6.9343, innerLng: 107.7082,   // ~0.95km ke barat
+      status: "padat", statusInner: "lancar", splitAt: 0.50,
+      vehicles: 1200,
+    },
   ];
+  // Alias agar kode modal lama tetap jalan
+  const CAMERAS = GATES;
 
   /* ── 1. NAVBAR scroll behavior ──────────────────────────────── */
   const navbar = document.getElementById("lpNavbar");
@@ -138,29 +199,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     L.control.zoom({ position: "bottomright" }).addTo(lpMap);
 
-    function makeCameraIcon(cam) {
-      const cls = cam.status === "online" ? "lp-marker--online" : "lp-marker--offline";
-      const html = `<div class="lp-marker ${cls}"><i class="ti ti-camera" style="font-size:0.9rem;"></i></div>`;
+    function makeCameraIcon(gate) {
+      const cls = gate.status === "macet" ? "lp-marker--macet"
+                : gate.status === "padat" ? "lp-marker--padat"
+                : "lp-marker--lancar";
+      const html = `<div class="lp-marker ${cls}"><i class="ti ti-traffic-lights" style="font-size:0.9rem;"></i></div>`;
       return L.divIcon({ html, className: "", iconSize: [32, 32], iconAnchor: [16, 16], popupAnchor: [0, -18] });
     }
 
-    function makePopupHtml(cam) {
-      const badge = cam.status === "online"
-        ? `<span class="lp-popup-badge lp-popup-badge--online">● Online</span>`
-        : `<span class="lp-popup-badge lp-popup-badge--offline">● Offline</span>`;
+    function makePopupHtml(gate) {
+      const statusLabel = gate.status === "macet" ? "Macet Parah"
+                        : gate.status === "padat" ? "Padat"
+                        : "Lancar";
+      const badgeCls = `lp-popup-badge--${gate.status}`;
       return `
         <div class="lp-popup">
           <div class="lp-popup-header">
-            <div class="lp-popup-name">${cam.name}</div>
-            ${badge}
+            <div class="lp-popup-name">${gate.name}</div>
+            <span class="lp-popup-badge ${badgeCls}">● ${statusLabel}</span>
           </div>
-          <div class="lp-popup-preview">
-            <i class="ti ti-player-play lp-popup-preview-icon"></i>
-            <span class="lp-popup-preview-label">Live stream</span>
+          <div style="font-size:0.75rem;color:#64748B;margin:4px 0 2px;">${gate.direction}</div>
+          <div style="font-size:0.75rem;color:#94A3B8;margin-bottom:10px;">${gate.road}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;margin-bottom:10px;">
+            <span style="color:#64748B;">Volume kendaraan</span>
+            <strong style="color:#0F172A;">${gate.vehicles.toLocaleString("id-ID")}/jam</strong>
           </div>
           <div class="lp-popup-actions">
-            <button class="lp-popup-btn lp-popup-btn--primary" onclick="window.lpOpenCameraModal(${cam.id})">
-              <i class="ti ti-arrows-maximize"></i> Perbesar
+            <button class="lp-popup-btn lp-popup-btn--primary" onclick="window.lpOpenCameraModal(${gate.id})">
+              <i class="ti ti-info-circle"></i> Detail
             </button>
             <button class="lp-popup-btn lp-popup-btn--ghost" onclick="if(window.lpMap){window.lpMap.closePopup()}">
               Tutup
@@ -169,26 +235,112 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>`;
     }
 
-    CAMERAS.forEach(cam => {
-      const marker = L.marker([cam.lat, cam.lng], { icon: makeCameraIcon(cam) });
-      marker.bindPopup(makePopupHtml(cam), { maxWidth: 320, className: "" });
+    GATES.forEach(gate => {
+      const marker = L.marker([gate.lat, gate.lng], { icon: makeCameraIcon(gate) });
+      marker.bindPopup(makePopupHtml(gate), { maxWidth: 300, className: "" });
       marker.addTo(lpMap);
-      cam._marker = marker;
+      gate._marker = marker;
     });
+
+    // ── Garis kemacetan via OSRM (mengikuti jalan asli) ─────────
+    const LINE_COLOR  = { macet: "#EF4444", padat: "#F59E0B", lancar: "#22C55E" };
+    const LINE_WEIGHT = { macet: 7, padat: 6, lancar: 5 };
+
+    async function fetchOsrmRoute(gate) {
+      // Cek cache sessionStorage agar tidak refetch tiap reload
+      const cacheKey = `lp_osrm_v5_${gate.id}`;
+      const cached = sessionStorage.getItem(cacheKey);
+      if (cached) return JSON.parse(cached);
+
+      // OSRM pakai urutan lng,lat (bukan lat,lng)
+      const url =
+        `https://router.project-osrm.org/route/v1/driving/` +
+        `${gate.lng},${gate.lat};${gate.innerLng},${gate.innerLat}` +
+        `?overview=full&geometries=geojson`;
+
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      if (data.code !== "Ok" || !data.routes || !data.routes[0]) {
+        throw new Error("No route returned");
+      }
+
+      // OSRM kembalikan [lng, lat] — balik ke [lat, lng] untuk Leaflet
+      const coords = data.routes[0].geometry.coordinates.map(([lng, lat]) => [lat, lng]);
+      sessionStorage.setItem(cacheKey, JSON.stringify(coords));
+      return coords;
+    }
+
+    function drawFallbackLine(gate) {
+      // Fallback garis lurus jika OSRM gagal
+      L.polyline(
+        [[gate.lat, gate.lng], [gate.innerLat, gate.innerLng]],
+        {
+          color: LINE_COLOR[gate.status] || "#94A3B8",
+          weight: LINE_WEIGHT[gate.status] || 5,
+          opacity: 0.55,
+          dashArray: "8 5",
+        }
+      ).addTo(lpMap);
+    }
+
+    function renderLine(coords, status) {
+      L.polyline(coords, {
+        color:    LINE_COLOR[status]  || "#94A3B8",
+        weight:   LINE_WEIGHT[status] || 5,
+        opacity:  0.85,
+        lineCap:  "round",
+        lineJoin: "round",
+      }).addTo(lpMap);
+    }
+
+    // Potong coords hanya 40% pertama dari panjang route
+    function trimCoords(coords, fraction = 0.40) {
+      const end = Math.max(2, Math.ceil(coords.length * fraction));
+      return coords.slice(0, end);
+    }
+
+    async function drawCongestionLines() {
+      await Promise.all(GATES.map(async (gate) => {
+        try {
+          const rawCoords = await fetchOsrmRoute(gate);
+          const coords = trimCoords(rawCoords);
+          const outer = gate.status;
+          const inner = gate.statusInner || gate.status;
+
+          if (outer === inner || coords.length < 4) {
+            // Satu warna — tidak perlu split
+            renderLine(coords, outer);
+          } else {
+            // Dua warna — belah koordinat di splitAt
+            const splitIdx = Math.max(1, Math.floor(coords.length * (gate.splitAt || 0.5)));
+            renderLine(coords.slice(0, splitIdx + 1), outer);
+            renderLine(coords.slice(splitIdx), inner);
+          }
+        } catch (err) {
+          console.warn(`[OSRM] Fallback untuk ${gate.name}:`, err.message);
+          drawFallbackLine(gate);
+        }
+      }));
+    }
+
+    drawCongestionLines();
 
     // Expose map globally for popup buttons
     window.lpMap = lpMap;
 
-    // Camera pills
+    // Gate pills
     const pillsContainer = document.getElementById("lpCameraPills");
     if (pillsContainer) {
-      CAMERAS.filter(c => c.status === "online").forEach(cam => {
+      const PILL_COLOR = { macet: "#EF4444", padat: "#F59E0B", lancar: "#22C55E" };
+      GATES.forEach(gate => {
         const pill = document.createElement("button");
         pill.className = "lp-camera-pill";
-        pill.innerHTML = `<span class="lp-camera-pill-dot"></span>${cam.name.split("–")[0].trim()}`;
+        const dotColor = PILL_COLOR[gate.status] || "#94A3B8";
+        pill.innerHTML = `<span class="lp-camera-pill-dot" style="background:${dotColor};"></span>${gate.name.split("—")[0].trim()}`;
         pill.addEventListener("click", () => {
-          lpMap.flyTo([cam.lat, cam.lng], 16, { duration: 1.2 });
-          setTimeout(() => cam._marker && cam._marker.openPopup(), 1400);
+          lpMap.flyTo([gate.lat, gate.lng], 15, { duration: 1.2 });
+          setTimeout(() => gate._marker && gate._marker.openPopup(), 1400);
         });
         pillsContainer.appendChild(pill);
       });
@@ -207,10 +359,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const vehiclesEl = document.getElementById("lpModalCamVehicles");
     const timeEl   = document.getElementById("lpModalCamTime");
 
+    const statusLabel = cam.status === "macet" ? "Macet Parah"
+                      : cam.status === "padat" ? "Padat"
+                      : "Lancar";
     if (nameEl)     nameEl.textContent = cam.name;
-    if (locEl)      locEl.textContent  = cam.name;
-    if (statusEl)   statusEl.textContent = cam.status === "online" ? "Online" : "Offline";
-    if (vehiclesEl) vehiclesEl.textContent = cam.vehicles > 0 ? cam.vehicles.toLocaleString("id-ID") : "-";
+    if (locEl)      locEl.textContent  = cam.direction || cam.name;
+    if (statusEl)   statusEl.textContent = statusLabel;
+    if (vehiclesEl) vehiclesEl.textContent = cam.vehicles > 0 ? `${cam.vehicles.toLocaleString("id-ID")}/jam` : "-";
     if (timeEl)     timeEl.textContent  = new Date().toLocaleTimeString("id-ID", { hour:"2-digit", minute:"2-digit" });
 
     if (lpMap) lpMap.closePopup();

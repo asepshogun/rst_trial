@@ -4,6 +4,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const form = document.getElementById("detectionSettingsForm");
   const reloadButton = document.getElementById("reloadDetectionSettingsButton");
   const saveButton = document.getElementById("saveDetectionSettingsButton");
+  const modelPathSelect = document.getElementById("modelPathSelect");
+  const modelInfoBox = document.getElementById("modelInfoBox");
+  const modelInfoName = document.getElementById("modelInfoName");
+  const modelInfoBadge = document.getElementById("modelInfoBadge");
+  const modelInfoSize = document.getElementById("modelInfoSize");
   const globalConfidenceInput = document.getElementById("globalConfidenceInput");
   const motorcycleMinConfidenceInput = document.getElementById("motorcycleMinConfidenceInput");
   const carMinConfidenceInput = document.getElementById("carMinConfidenceInput");
@@ -17,6 +22,51 @@ document.addEventListener("DOMContentLoaded", async () => {
   const previewMaxWidthInput = document.getElementById("previewMaxWidthInput");
   const previewJpegQualityInput = document.getElementById("previewJpegQualityInput");
 
+  let availableModels = [];
+
+  const MODEL_LABELS = {
+    "yolov8n.pt": "YOLOv8 Nano — ringan, cepat",
+    "yolov8s.pt": "YOLOv8 Small — default, seimbang",
+    "yolov8m.pt": "YOLOv8 Medium — lebih akurat",
+    "yolov8l.pt": "YOLOv8 Large — akurasi tinggi",
+    "yolov8x.pt": "YOLOv8 XLarge — paling akurat",
+    "best.pt":    "Custom Trained — model lokal terbaik",
+  };
+
+  function updateModelInfoBox() {
+    const selected = availableModels.find(m => m.filename === modelPathSelect.value);
+    if (!selected) { modelInfoBox.style.setProperty("display", "none", "important"); return; }
+    modelInfoName.textContent = selected.filename;
+    modelInfoSize.textContent = `Ukuran: ${selected.size_mb} MB`;
+    if (selected.filename === "best.pt") {
+      modelInfoBadge.textContent = "Custom";
+      modelInfoBadge.style.display = "";
+    } else {
+      modelInfoBadge.style.display = "none";
+    }
+    modelInfoBox.style.removeProperty("display");
+  }
+
+  async function loadAvailableModels(activeModel) {
+    try {
+      availableModels = await app.apiFetch("/api/settings/available-models");
+      modelPathSelect.innerHTML = "";
+      availableModels.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m.filename;
+        const label = MODEL_LABELS[m.filename] || m.filename;
+        opt.textContent = `${m.filename}  (${m.size_mb} MB)`;
+        modelPathSelect.appendChild(opt);
+      });
+      if (activeModel) modelPathSelect.value = activeModel;
+      updateModelInfoBox();
+    } catch {
+      modelPathSelect.innerHTML = `<option value="">Gagal memuat daftar model</option>`;
+    }
+  }
+
+  modelPathSelect.addEventListener("change", updateModelInfoBox);
+
   function setSaving(isSaving) {
     saveButton.disabled = isSaving;
     saveButton.textContent = isSaving ? "Saving..." : "Save Settings";
@@ -24,6 +74,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function fillForm(payload) {
+    if (payload.model_path) {
+      modelPathSelect.value = payload.model_path;
+      updateModelInfoBox();
+    }
     globalConfidenceInput.value = Number(payload.global_confidence || 0).toFixed(2);
     motorcycleMinConfidenceInput.value = Number(payload.motorcycle_min_confidence || 0).toFixed(2);
     carMinConfidenceInput.value = Number(payload.car_min_confidence || 0).toFixed(2);
@@ -54,6 +108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   async function loadDetectionSettings() {
     const payload = await app.apiFetch("/api/settings/detection");
+    await loadAvailableModels(payload.model_path);
     fillForm(payload);
   }
 
@@ -84,6 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     app.setAlert(settingsAlert, "danger", "");
 
     const payload = {
+      model_path: modelPathSelect.value || null,
       global_confidence: Number(globalConfidenceInput.value || 0),
       motorcycle_min_confidence: Number(motorcycleMinConfidenceInput.value || 0),
       car_min_confidence: Number(carMinConfidenceInput.value || 0),

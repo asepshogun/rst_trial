@@ -19,6 +19,33 @@
   <form id="detectionSettingsForm">
     <div class="card-body">
 
+      <!-- Model Selection -->
+      <div class="mb-5">
+        <div class="fw-bold mb-1" style="color:var(--nc-ink-deep);">YOLO Model</div>
+        <div class="soft-note">Model yang dipilih akan digunakan untuk semua analisis baru.</div>
+      </div>
+      <div class="row g-5 mb-6">
+        <div class="col-xl-6 col-md-8">
+          <label class="form-label" for="modelPathSelect">Active Model</label>
+          <select id="modelPathSelect" name="model_path" class="form-select">
+            <option value="">Loading models…</option>
+          </select>
+          <div class="form-text">File <code>.pt</code> yang tersedia di root project. Perubahan berlaku untuk analisis berikutnya.</div>
+        </div>
+        <div class="col-xl-6 col-md-4 d-flex align-items-end">
+          <div id="modelInfoBox" class="p-3 rounded-3 w-100" style="background:var(--nc-surface-soft);display:none!important;">
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <i class="ti ti-brain" style="color:var(--nc-primary);font-size:1.1rem;" aria-hidden="true"></i>
+              <span class="fw-semibold" id="modelInfoName" style="color:var(--nc-ink-deep);"></span>
+              <span id="modelInfoBadge" class="badge badge-light-primary ms-1" style="display:none;"></span>
+            </div>
+            <div class="soft-note" id="modelInfoSize"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="separator" />
+
       <!-- Confidence thresholds -->
       <div class="mb-5">
         <div class="fw-bold mb-1" style="color:var(--nc-ink-deep);">Class Detection Thresholds</div>

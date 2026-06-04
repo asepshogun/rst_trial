@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const analysisDistributionLegend = document.getElementById("analysisDistributionLegend");
   const analysisOverallBar = document.getElementById("analysisOverallBar");
   const analysisOverallLegend = document.getElementById("analysisOverallLegend");
+  const analysisBusiestClassIcon = document.getElementById("analysisBusiestClassIcon");
   const analysisBusiestClassLabel = document.getElementById("analysisBusiestClassLabel");
   const analysisBusiestClassSub = document.getElementById("analysisBusiestClassSub");
   const analysisClassesDetectedValue = document.getElementById("analysisClassesDetectedValue");
@@ -86,11 +87,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     "#3F4254",
   ];
   const CATEGORY_GROUPS = [
-    { key: "motorcycles", label: "Motorcycles",    codes: ["1"],                          color: "#22C55E" },
-    { key: "cars",        label: "Cars & light",   codes: ["2", "3", "4"],               color: "#3B82F6" },
-    { key: "buses",       label: "Buses",          codes: ["5a", "5b"],                  color: "#F59E0B" },
+    { key: "cars",        label: "Cars & light",   codes: ["2", "3", "4"],                color: "#3B82F6" },
+    { key: "motorcycles", label: "Motorcycles",    codes: ["1"],                           color: "#22C55E" },
     { key: "trucks",      label: "Trucks",         codes: ["6a", "6b", "7a", "7b", "7c"], color: "#EF4444" },
-    { key: "nonmotor",    label: "Non-motorized",  codes: ["8"],                          color: "#94A3B8" },
+    { key: "buses",       label: "Buses",          codes: ["5a", "5b"],                   color: "#F59E0B" },
+    { key: "nonmotor",    label: "Non-motorized",  codes: ["8"],                           color: "#94A3B8" },
   ];
   function getCategoryForCode(code) {
     return CATEGORY_GROUPS.find((g) => g.codes.includes(String(code || ""))) || null;
@@ -295,6 +296,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (analysisDistributionLegend) analysisDistributionLegend.innerHTML = "";
     if (analysisOverallBar) analysisOverallBar.innerHTML = "";
     if (analysisOverallLegend) analysisOverallLegend.innerHTML = "";
+    if (analysisBusiestClassIcon) analysisBusiestClassIcon.className = "ti ti-car";
     if (analysisBusiestClassLabel) analysisBusiestClassLabel.textContent = "—";
     if (analysisBusiestClassSub) analysisBusiestClassSub.textContent = "—";
     if (analysisClassesDetectedValue) analysisClassesDetectedValue.textContent = "—";
@@ -330,14 +332,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (analysisDistributionBody) {
-      analysisDistributionBody.innerHTML = state.masterClasses.map((item, index) => {
+      analysisDistributionBody.innerHTML = state.masterClasses.map((item) => {
         const code = String(item.code || "");
         const cat = getCategoryForCode(code);
         const barColor = cat ? cat.color : "#94A3B8";
         const icon = getVehicleIcon(code);
         return `
           <div class="an-dist-row" id="dist_row_${code}">
-            <span class="an-dist-rank">${index + 1}</span>
+            <span class="an-dist-rank">${code}</span>
             <span class="an-dist-icon"><i class="ti ${icon}" aria-hidden="true"></i></span>
             <span class="an-dist-name" title="${app.escapeHtml(item.label || code)}">${app.escapeHtml(item.label || code)}</span>
             <div class="an-dist-bar-wrap">
@@ -383,10 +385,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (countB === 0) return -1;
         return countB - countA;
       });
-      rows.forEach((r, i) => {
+      rows.forEach((r) => {
         analysisDistributionBody.appendChild(r);
         const rank = r.querySelector(".an-dist-rank");
-        if (rank) rank.textContent = String(i + 1);
+        if (rank) rank.textContent = r.id.replace("dist_row_", "");
       });
     }
 
@@ -424,6 +426,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         busiestClass = item;
       }
     });
+    if (analysisBusiestClassIcon) {
+      const iconClass = busiestClass ? getVehicleIcon(String(busiestClass.code || "")) : "ti-car";
+      analysisBusiestClassIcon.className = `ti ${iconClass}`;
+    }
     if (analysisBusiestClassLabel) {
       analysisBusiestClassLabel.textContent = busiestClass ? (busiestClass.label || busiestClass.code) : "—";
     }

@@ -1023,7 +1023,7 @@
 
 .an-dist-row {
   display: grid;
-  grid-template-columns: 1.75rem 1.75rem 1fr minmax(100px, 200px) 3rem 2.75rem;
+  grid-template-columns: 2.25rem 1.75rem 1fr minmax(120px, 1fr) 3.25rem 2.75rem;
   align-items: center;
   gap: 0.625rem;
   padding: 0.55rem 0.875rem;
@@ -1040,10 +1040,18 @@
 }
 
 .an-dist-rank {
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.65rem;
+  font-weight: 800;
   color: var(--nc-stone);
   text-align: center;
+  background: var(--nc-surface-soft);
+  border: 1px solid var(--nc-hairline-soft);
+  border-radius: 6px;
+  padding: 0.15rem 0.25rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
 }
 
 .an-dist-icon {
@@ -1064,7 +1072,7 @@
 }
 
 .an-dist-bar-wrap {
-  height: 6px;
+  height: 10px;
   background: var(--nc-surface-soft);
   border-radius: 100px;
   overflow: hidden;
@@ -1391,6 +1399,6 @@
   }
 
   .an-dist-row {
-    grid-template-columns: 1.5rem 1.5rem 1fr auto auto;
+    grid-template-columns: 2rem 1.5rem 1fr auto auto;
   }
 }

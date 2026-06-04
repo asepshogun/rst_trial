@@ -242,7 +242,7 @@ a { text-decoration: none; color: inherit; }
 .lp-hero-inner {
   display: flex;
   align-items: center;
-  gap: 4rem;
+  gap: 2.5rem;
 }
 .lp-hero-content { flex: 1; min-width: 0; }
 
@@ -273,6 +273,9 @@ a { text-decoration: none; color: inherit; }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+.lp-blue-text {
+  color: var(--lp-primary);
 }
 .lp-hero-sub {
   font-size: 1.0625rem;
@@ -344,17 +347,22 @@ a { text-decoration: none; color: inherit; }
 .lp-stat-pill-icon { color: var(--lp-primary); font-size: 0.9rem; }
 
 .lp-hero-visual {
-  flex: 0 0 480px;
-  max-width: 480px;
+  flex: 0 0 780px;
+  max-width: 780px;
+  margin-right: -10rem;
 }
 .lp-city-svg {
   width: 100%;
   height: auto;
   filter: drop-shadow(0 8px 32px rgba(59,130,246,0.1));
-  animation: lp-float 6s ease-in-out infinite;
 }
-@keyframes lp-float {
-  0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)}
+.lp-hero-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 32px rgba(59,130,246,0.12));
 }
 .lp-pulse-ring {
   animation: lp-pulse-anim 2.5s ease-out infinite;
@@ -547,6 +555,29 @@ a { text-decoration: none; color: inherit; }
   border-color: #CBD5E1;
   color: #94A3B8;
 }
+/* Congestion status markers */
+.lp-marker--macet {
+  background: #EF4444;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(239,68,68,0.4), 0 2px 6px rgba(0,0,0,0.15);
+  color: #fff;
+}
+.lp-marker--padat {
+  background: #F59E0B;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(245,158,11,0.4), 0 2px 6px rgba(0,0,0,0.15);
+  color: #fff;
+}
+.lp-marker--lancar {
+  background: #22C55E;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(34,197,94,0.4), 0 2px 6px rgba(0,0,0,0.15);
+  color: #fff;
+}
+/* Popup badges for congestion */
+.lp-popup-badge--macet  { background: rgba(239,68,68,0.1);   color: #DC2626; }
+.lp-popup-badge--padat  { background: rgba(245,158,11,0.12); color: #B45309; }
+.lp-popup-badge--lancar { background: rgba(34,197,94,0.1);   color: #16A34A; }
 
 /* Camera pills scroll */
 .lp-camera-scroll {
@@ -1025,14 +1056,14 @@ a { text-decoration: none; color: inherit; }
    12. RESPONSIVE
    ================================================================ */
 @media (max-width: 1199px) {
-  .lp-hero-visual { flex: 0 0 380px; max-width: 380px; }
+  .lp-hero-visual { flex: 0 0 560px; max-width: 560px; margin-right: -3rem; }
   .lp-weather-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 991px) {
   .lp-nav-links, .lp-nav-right { display: none; }
   .lp-mobile-toggle { display: flex; }
   .lp-hero-inner { flex-direction: column; text-align: center; gap: 3rem; }
-  .lp-hero-visual { flex: none; width: 100%; max-width: 360px; margin: 0 auto; }
+  .lp-hero-visual { flex: none; width: 100%; max-width: 420px; margin: 0 auto; }
   .lp-hero-sub, .lp-section-sub { max-width: 100%; }
   .lp-hero-ctas, .lp-stat-pills { justify-content: center; }
   .lp-stats-grid { grid-template-columns: repeat(2, 1fr); }

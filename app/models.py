@@ -174,6 +174,11 @@ class VideoUpload(TimestampMixin, Base):
     processing_error: Mapped[Optional[str]] = mapped_column(Text)
 
     site: Mapped["Site"] = relationship(back_populates="videos")
+    fd_results: Mapped[list["FdResult"]] = relationship(
+        back_populates="video_upload",
+        cascade="all, delete-orphan",
+        order_by="FdResult.created_at.desc()",
+    )
     analysis_job: Mapped[Optional["AnalysisJob"]] = relationship(
         back_populates="video_upload",
         cascade="all, delete-orphan",
@@ -198,6 +203,28 @@ class VideoUpload(TimestampMixin, Base):
         cascade="all, delete-orphan",
         order_by="AnalysisGolonganTotal.golongan_code",
     )
+
+
+class FdResult(Base):
+    __tablename__ = "fd_results"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    video_upload_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("video_uploads.id", ondelete="CASCADE"), nullable=False
+    )
+    line_spacing_m: Mapped[float] = mapped_column(Float, nullable=False)
+    direction: Mapped[str] = mapped_column(String(20), nullable=False, default="normal")
+    interval_s: Mapped[int] = mapped_column(Integer, nullable=False, default=60)
+    greenshields_vf: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    greenshields_kj: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    greenshields_q_cap: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    matched_pairs_count: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    intervals_json: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+
+    video_upload: Mapped["VideoUpload"] = relationship(back_populates="fd_results")
 
 
 class VideoCountLine(TimestampMixin, Base):

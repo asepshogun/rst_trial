@@ -69,8 +69,27 @@ def landing_page(request: Request):
 @router.get("/login")
 def login_page(request: Request, user: Optional[User] = Depends(get_current_user_optional)):
     if user:
+        if user.is_admin:
+            return RedirectResponse(url="/dashboard", status_code=302)
         return RedirectResponse(url="/videos", status_code=302)
     return _render_page(request, "pages/login.html", user, page_title="Sign In")
+
+
+@router.get("/dashboard")
+def dashboard_page(request: Request, user: Optional[User] = Depends(get_current_user_optional)):
+    redirect = _require_user(user)
+    if redirect:
+        return redirect
+    if not user.is_admin:
+        return RedirectResponse(url="/videos", status_code=302)
+    return _render_page(
+        request,
+        "pages/dashboard.html",
+        user,
+        page_title="Dashboard",
+        page_subtitle="NiceCount data summary, statistics, and monitoring location distribution.",
+        active_nav="dashboard",
+    )
 
 
 @router.get("/users")

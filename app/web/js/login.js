@@ -20,11 +20,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     try {
-      await app.apiFetch("/api/auth/login", {
+      const data = await app.apiFetch("/api/auth/login", {
         method: "POST",
         body: JSON.stringify(payload),
       });
-      window.location.href = "/videos";
+      window.location.href = data.user && data.user.is_admin ? "/dashboard" : "/videos";
     } catch (error) {
       app.setAlert(alertBox, "danger", error.message);
     }

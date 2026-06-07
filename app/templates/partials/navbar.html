@@ -3,7 +3,7 @@
   <div class="container-xxl app-topbar">
 
     <!-- Brand -->
-    <a class="app-topbar-brand-group" href="/videos">
+    <a class="app-topbar-brand-group" href="{% if current_user and current_user.is_admin %}/dashboard{% else %}/videos{% endif %}">
       <div class="app-topbar-badge" aria-hidden="true">NC</div>
       <div>
         <div class="app-topbar-brand">NiceCount</div>
@@ -13,6 +13,11 @@
 
     <!-- Nav -->
     <nav class="app-topbar-nav">
+      {% if current_user and current_user.is_admin %}
+      <a class="app-topbar-link{% if active_nav == 'dashboard' %} active{% endif %}" data-app-admin-only href="/dashboard">
+        <i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard
+      </a>
+      {% endif %}
       <a class="app-topbar-link{% if active_nav == 'videos' %} active{% endif %}" href="/videos">
         <i class="ti ti-video" aria-hidden="true"></i> Videos
       </a>

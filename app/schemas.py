@@ -282,6 +282,29 @@ class GolonganTotalRead(ORMModel):
     updated_at: datetime
 
 
+class FdComputeRequest(BaseModel):
+    line_spacing_m: float = Field(gt=0, description="Jarak antar garis hitung dalam meter")
+    direction: str = Field(default="normal", pattern="^(normal|opposite|all)$")
+    interval_s: int = Field(default=60, ge=10, le=3600)
+    max_match_dt_s: float = Field(default=5.0, gt=0, le=60)
+    min_speed_kmh: float = Field(default=1.0, ge=0)
+    max_speed_kmh: float = Field(default=120.0, gt=0)
+
+
+class FdResultRead(ORMModel):
+    id: UUID
+    video_upload_id: UUID
+    line_spacing_m: float
+    direction: str
+    interval_s: int
+    greenshields_vf: Optional[float]
+    greenshields_kj: Optional[float]
+    greenshields_q_cap: Optional[float]
+    matched_pairs_count: Optional[int]
+    intervals_json: list
+    created_at: datetime
+
+
 class VideoAnalysisRead(BaseModel):
     video: VideoUploadRead
     video_url: str

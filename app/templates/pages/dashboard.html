@@ -1,0 +1,582 @@
+{% extends "layouts/base.html" %} {% block page_styles %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="/assets/css/analysis.css" />
+<link rel="stylesheet" href="/assets/css/dashboard.css" />
+{% endblock %} {% block content %}
+
+<!-- ── Loading ─────────────────────────────────────────────────── -->
+<div id="dashLoading" class="dash-loading">
+  <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading…</span></div>
+  <p class="mb-0" style="font-size: 0.875rem; color: var(--nc-ink-3)">Loading dashboard data…</p>
+</div>
+
+<!-- ── Error ────────────────────────────────────────────────────── -->
+<div id="dashError" class="d-none mb-4">
+  <div class="alert alert-danger d-flex align-items-center gap-2 mb-0">
+    <i class="ti ti-alert-circle fs-5"></i>
+    <span id="dashErrorMsg">Failed to load data.</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════════════════ -->
+<div id="dashContent" class="d-none">
+
+  <!-- ── Dashboard toolbar ────────────────────────────────────── -->
+  <div class="dash-toolbar mb-4">
+    <div class="dash-toolbar-left">
+      <div class="dash-last-refresh">
+        <i class="ti ti-clock"></i>
+        <span id="lastRefreshTime">—</span>
+      </div>
+      <div class="dash-live-dot" id="dashLiveDot" title="Live data"></div>
+    </div>
+    <div class="dash-toolbar-right">
+      <div class="dash-range-pills">
+        <button class="dash-range-pill" data-range="7"  onclick="DashRange.set(7)">7H</button>
+        <button class="dash-range-pill" data-range="30" onclick="DashRange.set(30)">30H</button>
+        <button class="dash-range-pill active" data-range="90" onclick="DashRange.set(90)">90H</button>
+      </div>
+      <button class="dash-refresh-btn--solid" id="dashRefreshBtn" onclick="DashRefresh.run()">
+        <i class="ti ti-refresh" id="dashRefreshIcon"></i>
+        <span>Refresh</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── ROW 1 · Stat cards ─────────────────────────────────────── -->
+  <div class="row g-3 mb-4">
+    <!-- Converting Videos -->
+    <div class="col-sm-6 col-xl-3">
+      <div class="stat-card stat-card--vehicles">
+        <div class="stat-card-icon"><i class="ti ti-rotate-clockwise-2"></i></div>
+        <div class="stat-value" id="statVehicles">0</div>
+        <div class="stat-label">Converting Videos</div>
+        <div class="stat-sub" id="statVehiclesSub">in processing queue</div>
+      </div>
+    </div>
+
+    <!-- Analyses Run -->
+    <div class="col-sm-6 col-xl-3">
+      <div class="stat-card stat-card--analyses">
+        <div class="stat-card-icon"><i class="ti ti-cpu"></i></div>
+        <div class="stat-value" id="statAnalyses">0</div>
+        <div class="stat-label">Analyses Run</div>
+        <div class="stat-sub" id="statAnalysesSub">&nbsp;</div>
+      </div>
+    </div>
+
+    <!-- Processed Videos -->
+    <div class="col-sm-6 col-xl-3">
+      <div class="stat-card stat-card--processed">
+        <div class="stat-card-icon"><i class="ti ti-circle-check"></i></div>
+        <div class="stat-value" id="statProcessed">0</div>
+        <div class="stat-label">Processed Videos</div>
+        <div class="stat-sub" id="statProcessedSub">&nbsp;</div>
+      </div>
+    </div>
+
+    <!-- Total Sites -->
+    <div class="col-sm-6 col-xl-3">
+      <div class="stat-card stat-card--sites">
+        <div class="stat-card-icon"><i class="ti ti-map-pin"></i></div>
+        <div class="stat-value" id="statSites">0</div>
+        <div class="stat-label">Total Sites</div>
+        <div class="stat-sub">active monitoring points</div>
+      </div>
+    </div>
+  </div>
+  <!-- /stat cards -->
+
+  <!-- ── ROW 2 · Global charts ──────────────────────────────────── -->
+  <div class="row g-3 mb-4">
+
+    <!-- Volume per Lokasi — col-lg-6 -->
+    <div class="col-lg-6">
+      <div class="nc-card h-100">
+        <div class="nc-card-header">
+          <span class="label"><i class="ti ti-map-pin"></i> Volume per Location</span>
+          <div class="d-flex align-items-center gap-2">
+            <!-- Day filter -->
+            <div class="dropdown">
+              <button class="dash-pill-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="volLokasiDayBtn">
+                <span id="volLokasiDayLabel">Semua Hari</span>
+                <i class="ti ti-chevron-down dash-pill-chevron"></i>
+              </button>
+              <ul class="dash-dropdown-menu dropdown-menu">
+                <li><button class="dash-dropdown-item active" type="button" data-vol-day="all">Semua Hari</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-vol-day="1">Senin</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-vol-day="2">Selasa</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-vol-day="3">Rabu</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-vol-day="4">Kamis</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-vol-day="5">Jumat</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-vol-day="6">Sabtu</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-vol-day="0">Minggu</button></li>
+              </ul>
+            </div>
+            <!-- Sort -->
+            <div class="dropdown">
+              <button class="dash-pill-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="volLokasiSortBtn">
+                <span id="volLokasiSortLabel">Tertinggi</span>
+                <i class="ti ti-chevron-down dash-pill-chevron"></i>
+              </button>
+              <ul class="dash-dropdown-menu dropdown-menu">
+                <li><button class="dash-dropdown-item active" type="button" data-vol-sort="desc">Tertinggi</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-vol-sort="asc">Terendah</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-vol-sort="name">A–Z</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="chart-scroll-body">
+          <div id="chart-vol-lokasi"></div>
+          <div id="chartVolLokasiEmpty" class="dash-empty d-none py-5">
+            <i class="ti ti-map-off"></i>
+            <p>Belum ada data lokasi</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global Temporal Heatmap — col-lg-6 -->
+    <div class="col-lg-6">
+      <div class="nc-card h-100">
+        <div class="nc-card-header">
+          <span class="label"><i class="ti ti-flame"></i> Global Temporal Matrix</span>
+          <div class="d-flex align-items-center gap-2">
+            <button class="dash-pill-btn dash-pill-btn--active" id="heatmapPillAll" onclick="HeatmapPeriod.setAll()">Semua</button>
+            <!-- Bulan -->
+            <div class="dropdown">
+              <button class="dash-pill-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="heatmapMonthBtn">
+                <span id="heatmapMonthLabel">Pilih Bulan</span>
+                <i class="ti ti-chevron-down dash-pill-chevron"></i>
+              </button>
+              <ul class="dash-dropdown-menu dropdown-menu">
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="">Semua Bulan</button></li>
+                <li><hr class="dropdown-divider my-1"></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="1">Januari</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="2">Februari</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="3">Maret</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="4">April</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="5">Mei</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="6">Juni</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="7">Juli</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="8">Agustus</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="9">September</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="10">Oktober</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="11">November</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-month="12">Desember</button></li>
+              </ul>
+            </div>
+            <!-- Minggu -->
+            <div class="dropdown" id="heatmapWeekDropdown">
+              <button class="dash-pill-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="heatmapWeekBtn" disabled>
+                <span id="heatmapWeekLabel">Pilih Minggu</span>
+                <i class="ti ti-chevron-down dash-pill-chevron"></i>
+              </button>
+              <ul class="dash-dropdown-menu dropdown-menu">
+                <li><button class="dash-dropdown-item" type="button" data-hm-week="">Semua Minggu</button></li>
+                <li><hr class="dropdown-divider my-1"></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-week="1">Minggu ke-1</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-week="2">Minggu ke-2</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-week="3">Minggu ke-3</button></li>
+                <li><button class="dash-dropdown-item" type="button" data-hm-week="4">Minggu ke-4</button></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div id="heatmapLabel" class="heatmap-label d-none"></div>
+        <div id="chart-heatmap" style="height:320px"></div>
+        <div id="chartHeatmapEmpty" class="dash-empty d-none py-5">
+          <i class="ti ti-flame-off"></i><p>No vehicle data yet</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- /global charts -->
+
+
+  <!-- ── ROW 3 · Leaflet map ────────────────────────────────────── -->
+  <div class="row g-3 mb-4">
+    <div class="col-12">
+      <div class="nc-card">
+        <div class="nc-card-header">
+          <span class="label"><i class="ti ti-map-2"></i> Monitoring Site Map</span>
+          <div style="display: flex; align-items: center; gap: 14px; font-size: 11.5px; color: var(--nc-ink-3)">
+            <span><span class="lm-dot" style="background: #e34935"></span>High Volume</span>
+            <span><span class="lm-dot" style="background: #d98b1a"></span>Medium Volume</span>
+            <span><span class="lm-dot" style="background: #2e9e63"></span>Low Volume</span>
+            <span><span class="lm-dot" style="background: #94a3b8"></span>No data</span>
+          </div>
+        </div>
+        <!-- map card intentionally has no overflow:hidden so Leaflet layers render correctly -->
+        <div id="dash-map" style="position: relative; z-index: 0"></div>
+        <!-- pill strip -->
+        <div id="dashMapPills" class="dash-map-pills"></div>
+      </div>
+    </div>
+  </div>
+  <!-- /map -->
+
+  <!-- ════════════════════════════════════════════════════════════
+       SITE-DETAIL SECTION  (hidden until a site is selected)
+  ════════════════════════════════════════════════════════════ -->
+  <div id="siteSection" class="d-none">
+    <!-- sticky header -->
+    <div class="site-section-header" id="siteSectionHeader">
+      <div class="site-section-title-wrap">
+        <div class="site-section-badge">
+          <i class="ti ti-map-pin"></i>
+        </div>
+        <div>
+          <div class="site-section-name" id="siteName">—</div>
+          <div class="site-section-desc" id="siteDesc">—</div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-3 flex-wrap">
+        <div class="dropdown">
+          <button class="dash-pill-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="siteSelectorBtn">
+            <span id="siteSelectorLabel">— Select Site —</span>
+            <i class="ti ti-chevron-down dash-pill-chevron"></i>
+          </button>
+          <ul class="dash-dropdown-menu dropdown-menu" id="siteSelectorMenu">
+            <li><button class="dash-dropdown-item" type="button" data-site-id="">— Select Site —</button></li>
+          </ul>
+        </div>
+        <button
+          class="btn btn-sm btn-light-primary"
+          id="editSiteBtn"
+          onclick="DashSite.openEditModal()"
+          style="border-radius: 100px; font-size: 0.8rem"
+        >
+          <i class="ti ti-map-pin me-1"></i>Edit Coordinates
+        </button>
+        <button
+          class="btn btn-sm btn-light"
+          onclick="document.getElementById('siteSection').classList.add('d-none')"
+          style="border-radius: 100px; font-size: 0.8rem"
+        >
+          <i class="ti ti-x me-1"></i>Close
+        </button>
+      </div>
+    </div>
+
+    <!-- site loading -->
+    <div id="siteLoading" class="dash-loading" style="min-height: 200px">
+      <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+      <p class="mb-0" style="font-size: 0.8rem; color: var(--nc-ink-3)">Loading site data…</p>
+    </div>
+
+    <!-- site content -->
+    <div id="siteContent" class="d-none">
+      <!-- ── Site stat cards ──────────────────────────────────── -->
+      <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-3">
+          <div class="site-stat-card site-stat-card--videos">
+            <div class="site-stat-icon"><i class="ti ti-video"></i></div>
+            <div class="site-stat-val" id="siteStatVideos">0</div>
+            <div class="site-stat-label">Videos at <span class="dynamic-site-name">This Site</span></div>
+            <div class="site-stat-sub" id="siteStatProcessed">&nbsp;</div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="site-stat-card site-stat-card--vehicles">
+            <div class="site-stat-icon"><i class="ti ti-car"></i></div>
+            <div class="site-stat-val" id="siteStatVehicles">0</div>
+            <div class="site-stat-label">Total Vehicles</div>
+            <div class="site-stat-sub">from all analyses</div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="site-stat-card site-stat-card--avg">
+            <div class="site-stat-icon"><i class="ti ti-chart-bar"></i></div>
+            <div class="site-stat-val" id="siteStatAvg">0</div>
+            <div class="site-stat-label">Avg. per Video</div>
+            <div class="site-stat-sub">analysed videos</div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="site-stat-card site-stat-card--fd">
+            <div class="site-stat-icon"><i class="ti ti-wave-square"></i></div>
+            <div class="site-stat-val" id="siteStatFd">—</div>
+            <div class="site-stat-label">Greenshields Model</div>
+            <div class="site-stat-sub" id="siteStatFdSub">vf (km/h)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Site analysis panel ──────────────────────────────── -->
+      {% include "components/site_analysis_panel.html" %}
+
+      <!-- ── FD section per site ──────────────────────────────── -->
+      <div id="siteFdSection" class="row g-3 mb-4">
+        <div class="col-12">
+          <div class="fd-wrapper">
+            <div class="section-eyebrow" style="padding: 16px 22px 0 22px; margin-bottom: 0;">
+              <i class="ti ti-atom-2" style="font-size: 13px"></i>
+              Fundamental Diagram — <span class="dynamic-site-name">This Site</span>
+            </div>
+            <div id="siteFdLoading" style="padding: 2rem; text-align: center">
+              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+              <span style="font-size: 0.875rem; color: var(--nc-ink-3)">Loading…</span>
+            </div>
+
+            <div id="siteFdEmpty" class="d-none">
+              <div class="dash-empty py-5">
+                <i class="ti ti-wave-square"></i>
+                <p>No Fundamental Diagram for this site yet</p>
+                <p style="font-size: 0.8rem; max-width: 400px; text-align: center; color: var(--nc-ink-3); margin-top: -0.25rem">
+                  Compute one from the <a href="/analysis" style="color: var(--nc-accent)">Analysis</a> page on a video with two count lines.
+                </p>
+              </div>
+            </div>
+
+            <div id="siteFdContent" class="d-none">
+              <div class="fd-topbar">
+                <div>
+                  <div class="fd-title">Greenshields Model</div>
+                  <div class="fd-subtitle" id="siteFdSubtitle">—</div>
+                </div>
+              </div>
+
+              <div class="fd-metrics">
+                <div class="fd-metric">
+                  <div class="fd-metric-sym">v<sub>f</sub></div>
+                  <div class="fd-metric-body">
+                    <div class="fd-metric-val" id="siteFdVf">—</div>
+                    <div class="fd-metric-unit">km / h</div>
+                    <div class="fd-metric-desc">Free-flow speed</div>
+                  </div>
+                </div>
+                <div class="fd-metric">
+                  <div class="fd-metric-sym">k<sub>j</sub></div>
+                  <div class="fd-metric-body">
+                    <div class="fd-metric-val" id="siteFdKj">—</div>
+                    <div class="fd-metric-unit">veh / km</div>
+                    <div class="fd-metric-desc">Jam density</div>
+                  </div>
+                </div>
+                <div class="fd-metric">
+                  <div class="fd-metric-sym">q<sub>max</sub></div>
+                  <div class="fd-metric-body">
+                    <div class="fd-metric-val" id="siteFdQmax">—</div>
+                    <div class="fd-metric-unit">veh / h</div>
+                    <div class="fd-metric-desc">Road capacity</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fd-charts">
+                <div class="fd-chart-col">
+                  <div class="fd-chart-label">v – k · Speed vs Density</div>
+                  <div id="siteFdChartVK" style="height: 260px"></div>
+                </div>
+                <div class="fd-chart-col">
+                  <div class="fd-chart-label">q – k · Flow vs Density</div>
+                  <div id="siteFdChartQK" style="height: 260px"></div>
+                </div>
+                <div class="fd-chart-col">
+                  <div class="fd-chart-label">v – q · Speed vs Flow</div>
+                  <div id="siteFdChartVQ" style="height: 260px"></div>
+                </div>
+              </div>
+
+              <div class="fd-metabar">
+                <div class="fd-meta-item"><i class="ti ti-database"></i><strong id="siteFdMetaPairs">—</strong> observation pairs</div>
+                <div class="fd-meta-item"><i class="ti ti-clock-hour-3"></i>Interval <strong id="siteFdMetaInterval">—</strong></div>
+                <div class="fd-meta-item"><i class="ti ti-ruler-measure"></i>Spacing <strong id="siteFdMetaSpacing">—</strong></div>
+                <div class="fd-meta-item"><i class="ti ti-arrow-right"></i>Direction <strong id="siteFdMetaDir">—</strong></div>
+                <div class="fd-meta-item" style="margin-left: auto; border-right: none">
+                  <i class="ti ti-clock"></i>Computed <strong id="siteFdMetaDate">—</strong>
+                </div>
+              </div>
+            </div>
+            <!-- /siteFdContent -->
+          </div>
+          <!-- /fd-wrapper -->
+        </div>
+      </div>
+      <!-- /FD row -->
+
+      <!-- ── Recent analyses table per site ──────────────────── -->
+      <div class="row g-3 mb-4">
+        <div class="col-12">
+          <div class="nc-card">
+            <div class="nc-card-header">
+              <span class="label"><i class="ti ti-history"></i> Recent Analyses — <span class="dynamic-site-name">This Site</span></span>
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <div class="dropdown">
+                  <button class="dash-pill-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span id="siteSortLabel">Date</span>
+                    <i class="ti ti-chevron-down dash-pill-chevron"></i>
+                  </button>
+                  <ul class="dash-dropdown-menu dropdown-menu">
+                    <li><button class="dash-dropdown-item active" type="button" data-site-sort="started_at">Date</button></li>
+                    <li><button class="dash-dropdown-item" type="button" data-site-sort="total_vehicles">Vehicles</button></li>
+                    <li><button class="dash-dropdown-item" type="button" data-site-sort="status">Status</button></li>
+                    <li><button class="dash-dropdown-item" type="button" data-site-sort="filename">Filename</button></li>
+                  </ul>
+                </div>
+                <button class="dash-pill-btn dash-pill-btn--icon" id="siteSortDir" onclick="DashSite.toggleSortDir()" title="Toggle direction">
+                  <i class="ti ti-sort-descending" id="siteSortDirIcon"></i>
+                </button>
+                <a id="siteAnalysisLink" href="/analysis" class="nc-card-link">View all →</a>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="nc-table">
+                <thead>
+                  <tr>
+                    <th class="th-sort" data-col="filename"       onclick="DashSite.sortBy('filename')">Filename <i class="ti ti-selector th-sort-icon"></i></th>
+                    <th class="th-sort" data-col="status"         onclick="DashSite.sortBy('status')">Status <i class="ti ti-selector th-sort-icon"></i></th>
+                    <th class="th-sort" data-col="started_at"     onclick="DashSite.sortBy('started_at')">Started <i class="ti ti-selector th-sort-icon"></i></th>
+                    <th class="th-sort" data-col="finished_at"    onclick="DashSite.sortBy('finished_at')">Finished <i class="ti ti-selector th-sort-icon"></i></th>
+                    <th class="th-sort" data-col="total_vehicles" onclick="DashSite.sortBy('total_vehicles')" style="text-align:right">Vehicles <i class="ti ti-selector th-sort-icon"></i></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="siteAnalysesBody">
+                  <tr><td colspan="6" class="text-center text-muted py-4" style="font-size:.875rem">Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="dash-pagination" id="siteAnalysesPagination" style="display:none!important"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /siteContent -->
+  </div>
+  <!-- /siteSection -->
+</div>
+<!-- /#dashContent -->
+
+<!-- Compute FD Modal -->
+<div class="modal fade" id="fdComputeModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold"><i class="ti ti-calculator me-2" style="color: var(--nc-accent)"></i>Compute Fundamental Diagram</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="fdModalAlert" class="d-none mb-3"></div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Analysis Video <span class="text-danger">*</span></label>
+          <select class="form-select" id="fdModalVideoSelect">
+            <option value="">— Select video —</option>
+          </select>
+          <div class="form-text">Only videos with two count lines are listed.</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Line Spacing (meters) <span class="text-danger">*</span></label>
+          <input type="number" class="form-control" id="fdLineSpacing" min="0.1" max="500" step="0.1" placeholder="e.g. 5.0" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Traffic Direction</label>
+          <select class="form-select" id="fdDirection">
+            <option value="normal">Normal</option>
+            <option value="opposite">Opposite</option>
+            <option value="all">All Directions</option>
+          </select>
+        </div>
+        <details>
+          <summary class="fw-semibold" style="font-size: 0.875rem; cursor: pointer; color: var(--nc-ink-2); user-select: none">
+            <i class="ti ti-settings-2 me-1"></i>Advanced Parameters
+          </summary>
+          <div class="mt-3 p-3 rounded-3" style="background: var(--nc-surface-2); border: 1px solid var(--nc-line)">
+            <div class="row g-3">
+              <div class="col-6">
+                <label class="form-label fw-semibold" style="font-size: 0.8rem">Interval (seconds)</label
+                ><input type="number" class="form-control form-control-sm" id="fdIntervalS" value="60" min="10" max="3600" />
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold" style="font-size: 0.8rem">Max Match Δt (seconds)</label
+                ><input type="number" class="form-control form-control-sm" id="fdMaxMatchDt" value="5" min="0.5" max="60" step="0.5" />
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold" style="font-size: 0.8rem">Min Speed (km/h)</label
+                ><input type="number" class="form-control form-control-sm" id="fdMinSpeed" value="1" min="0" max="50" />
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold" style="font-size: 0.8rem">Max Speed (km/h)</label
+                ><input type="number" class="form-control form-control-sm" id="fdMaxSpeed" value="120" min="10" max="300" />
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="fdComputeSubmit">
+          <span id="fdComputeSpinner" class="spinner-border spinner-border-sm me-1 d-none" role="status"></span>
+          <i class="ti ti-calculator me-1" id="fdComputeIcon"></i>Compute
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Site Coordinates Modal -->
+<div class="modal fade" id="editSiteModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold"><i class="ti ti-map-pin me-2" style="color: var(--nc-accent)"></i>Edit Site Information</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="editSiteAlert" class="alert alert-danger d-none mb-3"></div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Site Name</label>
+            <input type="text" id="editSiteName" class="form-control" placeholder="CCTV site name" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Location Description</label>
+            <input type="text" id="editSiteDesc" class="form-control" placeholder="e.g. Jl. Soekarno Hatta eastbound" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Latitude</label>
+            <input type="number" id="editSiteLat" class="form-control" step="0.000001" placeholder="-6.917" />
+            <div class="form-text">Example: -6.917464 (Bandung)</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Longitude</label>
+            <input type="number" id="editSiteLng" class="form-control" step="0.000001" placeholder="107.619" />
+            <div class="form-text">Example: 107.619123 (Bandung)</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Normal Direction Label</label>
+            <input type="text" id="editSiteDirNormal" class="form-control" placeholder="e.g. Northbound / to Jakarta" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Opposite Direction Label</label>
+            <input type="text" id="editSiteDirOpp" class="form-control" placeholder="e.g. Southbound / to Bandung" />
+          </div>
+        </div>
+        <div class="mt-3 p-3 rounded-3" style="background: var(--nc-surface-soft); font-size: 0.82rem; color: var(--nc-ink-3)">
+          <i class="ti ti-info-circle me-1"></i>
+          Coordinates are used to place markers on the map. Right-click a location on
+          <a href="https://www.openstreetmap.org" target="_blank" rel="noopener" style="color: var(--nc-accent)">OpenStreetMap</a>
+          to copy its coordinates.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal" style="border-radius: 100px">Cancel</button>
+        <button type="button" class="btn btn-primary" id="editSiteSubmit" style="border-radius: 100px">
+          <span id="editSiteSpinner" class="spinner-border spinner-border-sm me-1 d-none" role="status"></span>
+          <i class="ti ti-device-floppy me-1" id="editSiteIcon"></i>Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block page_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@3.54.0/dist/apexcharts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/assets/js/dashboard.js"></script>
+{% endblock %}

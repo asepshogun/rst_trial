@@ -11,7 +11,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import desc, select
 from sqlalchemy.orm import Session
 
-from app.auth import require_admin
+from app.auth import get_current_user, require_admin
 from app.config import get_settings
 from app.constants import DEFAULT_MASTER_CLASSES
 from app.database import get_db
@@ -422,3 +422,39 @@ def get_gpu_audit(_: User = Depends(require_admin), db: Session = Depends(get_db
         recent_jobs=recent_jobs,
         commands=_build_gpu_commands(runtime),
     )
+
+
+@router.get("/gpu-status")
+def get_gpu_status(_: User = Depends(get_current_user)) -> dict:
+    """Lightweight GPU availability check for the analysis UI.
+
+    Returns whether a GPU accelerator is available so the frontend
+    can conditionally show a CPU / GPU device selector.
+    """
+    gpu_available = False
+    gpu_type: str | None = None
+    gpu_devices: list[str] = []
+
+    try:
+        import torch
+
+        if torch.cuda.is_available():
+            gpu_available = True
+            gpu_type = "cuda"
+            count = int(torch.cuda.device_count())
+            gpu_devices = [str(torch.cuda.get_device_name(i)) for i in range(count)]
+        else:
+            mps_backend = getattr(torch.backends, "mps", None)
+            if mps_backend and mps_backend.is_available():
+                gpu_available = True
+                gpu_type = "mps"
+                gpu_devices = ["Apple Silicon GPU"]
+    except Exception:
+        pass
+
+    return {
+        "gpu_available": gpu_available,
+        "gpu_type": gpu_type,
+        "gpu_devices": gpu_devices,
+    }
+

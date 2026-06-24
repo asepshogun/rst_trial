@@ -3,6 +3,9 @@
    Scope: pages/analysis.html only
    ================================================================ */
 
+.ti-spin { animation: _tiSpin 1s linear infinite; }
+@keyframes _tiSpin { to { transform: rotate(360deg); } }
+
 .metric-card {
   --metric-accent: var(--nc-primary);
   --metric-track: rgba(59, 130, 246, 0.18);
@@ -681,6 +684,56 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.an-device-selector-wrap {
+  padding: 0.625rem 0.75rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e8f4fd 100%);
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: opacity 0.22s ease;
+}
+
+.an-device-selector-wrap.hidden {
+  display: none;
+}
+
+.an-device-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--nc-primary, #3b82f6);
+  letter-spacing: 0.03em;
+  display: flex;
+  align-items: center;
+}
+
+.an-device-select {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border-color: rgba(59, 130, 246, 0.2);
+  color: var(--nc-ink-deep, #0f172a);
+  background-color: #ffffff;
+  padding: 0.35rem 2rem 0.35rem 0.625rem;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.an-device-select:focus {
+  border-color: var(--nc-primary, #3b82f6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.an-device-hint {
+  font-size: 0.68rem;
+  color: var(--nc-stone, #64748b);
+  line-height: 1.4;
+}
+
+.an-device-hint:empty {
+  display: none;
 }
 
 /* ── Nav card ────────────────────────────────────────────────── */

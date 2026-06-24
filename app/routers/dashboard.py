@@ -1,18 +1,22 @@
 from __future__ import annotations
 
+import csv
 from typing import Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from sqlalchemy import case, cast, func, select, text, Float as SAFloat, Integer as SAInteger
 from sqlalchemy.orm import Session
 
 from app.auth import require_admin
+from app.config import get_settings
 from app.database import get_db
 from app.models import (
     AnalysisGolonganTotal,
     AnalysisJob,
+    CsvReport,
     FdResult,
     Site,
     User,
@@ -29,7 +33,17 @@ class SiteUpdate(BaseModel):
     direction_normal_label: str = "Normal"
     direction_opposite_label: str = "Opposite"
 
+
 router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
+
+
+@router.get("/sites")
+def list_sites(
+    _: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+) -> list[dict]:
+    sites = db.scalars(select(Site).order_by(Site.name)).all()
+    return [{"id": str(s.id), "name": s.name} for s in sites]
 
 
 @router.get("/stats")
@@ -37,11 +51,12 @@ def get_dashboard_stats(
     _: User = Depends(require_admin),
     db: Session = Depends(get_db),
 ) -> dict:
+    settings = get_settings()
+    
     total_videos = db.scalar(select(func.count()).select_from(VideoUpload)) or 0
     total_users = db.scalar(select(func.count()).select_from(User)) or 0
     total_sites = db.scalar(select(func.count()).select_from(Site)) or 0
-    total_events = db.scalar(select(func.count()).select_from(VehicleEvent)) or 0
-
+    
     status_rows = db.execute(
         select(VideoUpload.status, func.count().label("count"))
         .group_by(VideoUpload.status)
@@ -49,109 +64,110 @@ def get_dashboard_stats(
     ).all()
     videos_by_status = [{"status": r.status, "count": r.count} for r in status_rows]
 
-    golongan_rows = db.execute(
-        select(
-            AnalysisGolonganTotal.golongan_code,
-            AnalysisGolonganTotal.golongan_label,
-            func.sum(AnalysisGolonganTotal.vehicle_count).label("total"),
-        )
-        .group_by(
-            AnalysisGolonganTotal.golongan_code,
-            AnalysisGolonganTotal.golongan_label,
-        )
-        .order_by(func.sum(AnalysisGolonganTotal.vehicle_count).desc())
-        .limit(12)
-    ).all()
-    golongan_totals = [
-        {
-            "golongan_code": r.golongan_code,
-            "golongan_label": r.golongan_label,
-            "total": int(r.total or 0),
-        }
-        for r in golongan_rows
-    ]
-
-    top_videos_rows = db.execute(
-        select(
-            VideoUpload.id,
-            VideoUpload.original_filename,
-            VideoUpload.status,
-            func.sum(AnalysisGolonganTotal.vehicle_count).label("total_vehicles"),
-        )
-        .join(AnalysisGolonganTotal, AnalysisGolonganTotal.video_upload_id == VideoUpload.id)
-        .group_by(VideoUpload.id, VideoUpload.original_filename, VideoUpload.status)
-        .order_by(func.sum(AnalysisGolonganTotal.vehicle_count).desc())
-        .limit(10)
-    ).all()
-    top_videos = [
-        {
-            "video_id": str(r.id),
-            "filename": r.original_filename,
-            "status": r.status,
-            "total_vehicles": int(r.total_vehicles or 0),
-        }
-        for r in top_videos_rows
-    ]
-
     site_rows = list(db.scalars(select(Site).order_by(Site.name)))
-    sites_with_stats = []
-    for site in site_rows:
-        video_count = (
-            db.scalar(
-                select(func.count())
-                .select_from(VideoUpload)
-                .where(VideoUpload.site_id == site.id)
-            )
-            or 0
-        )
-        total_vehicles = (
-            db.scalar(
-                select(func.sum(AnalysisGolonganTotal.vehicle_count))
-                .join(VideoUpload, VideoUpload.id == AnalysisGolonganTotal.video_upload_id)
-                .where(VideoUpload.site_id == site.id)
-            )
-            or 0
-        )
-        sites_with_stats.append(
-            {
-                "site_id": str(site.id),
-                "name": site.name,
-                "code": site.code,
-                "location_description": site.location_description,
-                "latitude": site.latitude,
-                "longitude": site.longitude,
-                "video_count": video_count,
-                "total_vehicles": int(total_vehicles),
-            }
-        )
+    site_lookup = {
+        str(s.id): {
+            "site_id": str(s.id),
+            "name": s.name,
+            "code": s.code,
+            "location_description": s.location_description,
+            "latitude": s.latitude,
+            "longitude": s.longitude,
+            "video_count": 0,
+            "total_vehicles": 0,
+        }
+        for s in site_rows
+    }
 
-    recent_rows = db.execute(
-        select(AnalysisJob, VideoUpload.original_filename)
-        .join(VideoUpload, VideoUpload.id == AnalysisJob.video_upload_id)
-        .order_by(AnalysisJob.updated_at.desc())
-        .limit(10)
+    total_events = 0
+    golongan_map = {}
+    video_map = {}
+    job_map = {}
+
+    csv_reports = db.scalars(
+        select(CsvReport)
+        .where(CsvReport.status.in_(["completed", "processing"]))
     ).all()
-    recent_analyses = []
-    for job, filename in recent_rows:
-        total_vehicles = (
-            db.scalar(
-                select(func.sum(AnalysisGolonganTotal.vehicle_count)).where(
-                    AnalysisGolonganTotal.analysis_job_id == job.id
-                )
-            )
-            or 0
-        )
-        recent_analyses.append(
-            {
-                "job_id": str(job.id),
-                "video_id": str(job.video_upload_id),
-                "filename": filename,
-                "status": job.status,
-                "started_at": job.started_at.isoformat() if job.started_at else None,
-                "finished_at": job.finished_at.isoformat() if job.finished_at else None,
-                "total_vehicles": int(total_vehicles),
-            }
-        )
+
+    has_partial_data = any(r.status == "processing" for r in csv_reports)
+
+    for report in csv_reports:
+        if not report.csv_relative_path:
+            continue
+            
+        csv_path = settings.storage_root / report.csv_relative_path
+        if not csv_path.exists():
+            continue
+            
+        if str(report.site_id) in site_lookup:
+            site_lookup[str(report.site_id)]["video_count"] += 1
+            
+        job_id_str = str(report.analysis_job_id)
+        video_id_str = str(report.video_upload_id)
+        
+        job = db.get(AnalysisJob, report.analysis_job_id)
+        job_started = job.started_at.isoformat() if job and job.started_at else None
+        job_finished = job.finished_at.isoformat() if job and job.finished_at else None
+        job_status = job.status if job else "completed"
+            
+        with csv_path.open("r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                total_events += 1
+                g_code = row.get("golongan_code", "")
+                g_label = row.get("golongan_label", "")
+                vid_id = row.get("video_id", video_id_str)
+                fname = row.get("video_filename", "")
+                s_id = row.get("site_id", "")
+                
+                if g_code:
+                    if g_code not in golongan_map:
+                        golongan_map[g_code] = {"label": g_label, "count": 0}
+                    golongan_map[g_code]["count"] += 1
+                    
+                if vid_id not in video_map:
+                    video_map[vid_id] = {"filename": fname, "total": 0}
+                video_map[vid_id]["total"] += 1
+                
+                if s_id in site_lookup:
+                    site_lookup[s_id]["total_vehicles"] += 1
+                    
+                if job_id_str not in job_map:
+                    job_map[job_id_str] = {
+                        "job_id": job_id_str,
+                        "video_id": vid_id,
+                        "filename": fname,
+                        "status": job_status,
+                        "started_at": job_started,
+                        "finished_at": job_finished,
+                        "total_vehicles": 0,
+                    }
+                job_map[job_id_str]["total_vehicles"] += 1
+
+    golongan_totals = [
+        {"golongan_code": k, "golongan_label": v["label"], "total": v["count"]}
+        for k, v in sorted(golongan_map.items(), key=lambda x: x[1]["count"], reverse=True)[:12]
+    ]
+
+    top_videos_list = sorted(video_map.items(), key=lambda x: x[1]["total"], reverse=True)[:10]
+    top_videos = []
+    for vid, data in top_videos_list:
+        v_db = db.get(VideoUpload, UUID(vid))
+        status = v_db.status if v_db else "processed"
+        top_videos.append({
+            "video_id": vid,
+            "filename": data["filename"],
+            "status": status,
+            "total_vehicles": data["total"]
+        })
+
+    sites_with_stats = list(site_lookup.values())
+    
+    recent_analyses = sorted(
+        job_map.values(), 
+        key=lambda x: x["finished_at"] or x["started_at"] or "", 
+        reverse=True
+    )[:10]
 
     return {
         "summary": {
@@ -165,6 +181,7 @@ def get_dashboard_stats(
         "top_videos": top_videos,
         "sites": sites_with_stats,
         "recent_analyses": recent_analyses,
+        "is_partial": has_partial_data,
     }
 
 
@@ -174,112 +191,103 @@ def get_site_detail(
     _: User = Depends(require_admin),
     db: Session = Depends(get_db),
 ) -> dict:
+    settings = get_settings()
     site = db.get(Site, site_id)
     if not site:
         raise HTTPException(status_code=404, detail="Site not found")
 
-    # ── summary counts ────────────────────────────────────────────
     video_count = db.scalar(
         select(func.count()).select_from(VideoUpload).where(VideoUpload.site_id == site_id)
     ) or 0
-
-    total_vehicles = db.scalar(
-        select(func.sum(AnalysisGolonganTotal.vehicle_count))
-        .join(VideoUpload, VideoUpload.id == AnalysisGolonganTotal.video_upload_id)
-        .where(VideoUpload.site_id == site_id)
-    ) or 0
-
     processed_count = db.scalar(
         select(func.count())
         .select_from(VideoUpload)
         .where(VideoUpload.site_id == site_id, VideoUpload.status == "processed")
     ) or 0
 
-    avg_per_video = round(int(total_vehicles) / processed_count, 1) if processed_count else 0
+    total_vehicles = 0
+    golongan_map = {}
+    video_map = {}
+    job_map = {}
 
-    # ── golongan breakdown for this site ─────────────────────────
-    golongan_rows = db.execute(
-        select(
-            AnalysisGolonganTotal.golongan_code,
-            AnalysisGolonganTotal.golongan_label,
-            func.sum(AnalysisGolonganTotal.vehicle_count).label("total"),
-        )
-        .join(VideoUpload, VideoUpload.id == AnalysisGolonganTotal.video_upload_id)
-        .where(VideoUpload.site_id == site_id)
-        .group_by(
-            AnalysisGolonganTotal.golongan_code,
-            AnalysisGolonganTotal.golongan_label,
-        )
-        .order_by(func.sum(AnalysisGolonganTotal.vehicle_count).desc())
+    csv_reports = db.scalars(
+        select(CsvReport)
+        .where(CsvReport.site_id == site_id, CsvReport.status.in_(["completed", "processing"]))
     ).all()
+
+    has_partial_data = any(r.status == "processing" for r in csv_reports)
+
+    for report in csv_reports:
+        if not report.csv_relative_path:
+            continue
+        csv_path = settings.storage_root / report.csv_relative_path
+        if not csv_path.exists():
+            continue
+            
+        job = db.get(AnalysisJob, report.analysis_job_id)
+        job_started = job.started_at.isoformat() if job and job.started_at else None
+        job_finished = job.finished_at.isoformat() if job and job.finished_at else None
+        job_status = job.status if job else "completed"
+        
+        job_id_str = str(report.analysis_job_id)
+        vid_id_str = str(report.video_upload_id)
+
+        with csv_path.open("r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                total_vehicles += 1
+                g_code = row.get("golongan_code", "")
+                g_label = row.get("golongan_label", "")
+                fname = row.get("video_filename", "")
+                recorded_at = row.get("recorded_at", "")
+                
+                if g_code:
+                    if g_code not in golongan_map:
+                        golongan_map[g_code] = {"label": g_label, "count": 0}
+                    golongan_map[g_code]["count"] += 1
+                    
+                if vid_id_str not in video_map:
+                    video_map[vid_id_str] = {"filename": fname, "recorded_at": recorded_at, "total": 0}
+                video_map[vid_id_str]["total"] += 1
+                
+                if job_id_str not in job_map:
+                    job_map[job_id_str] = {
+                        "job_id": job_id_str,
+                        "video_id": vid_id_str,
+                        "filename": fname,
+                        "status": job_status,
+                        "started_at": job_started,
+                        "finished_at": job_finished,
+                        "total_vehicles": 0,
+                    }
+                job_map[job_id_str]["total_vehicles"] += 1
+
+    avg_per_video = round(total_vehicles / processed_count, 1) if processed_count else 0
+
     golongan_totals = [
-        {
-            "golongan_code": r.golongan_code,
-            "golongan_label": r.golongan_label,
-            "total": int(r.total or 0),
-        }
-        for r in golongan_rows
+        {"golongan_code": k, "golongan_label": v["label"], "total": v["count"]}
+        for k, v in sorted(golongan_map.items(), key=lambda x: x[1]["count"], reverse=True)
     ]
 
-    # ── top 10 videos for this site ───────────────────────────────
-    top_videos_rows = db.execute(
-        select(
-            VideoUpload.id,
-            VideoUpload.original_filename,
-            VideoUpload.status,
-            VideoUpload.recorded_at,
-            func.sum(AnalysisGolonganTotal.vehicle_count).label("total_vehicles"),
-        )
-        .join(AnalysisGolonganTotal, AnalysisGolonganTotal.video_upload_id == VideoUpload.id)
-        .where(VideoUpload.site_id == site_id)
-        .group_by(
-            VideoUpload.id,
-            VideoUpload.original_filename,
-            VideoUpload.status,
-            VideoUpload.recorded_at,
-        )
-        .order_by(func.sum(AnalysisGolonganTotal.vehicle_count).desc())
-        .limit(10)
-    ).all()
-    top_videos = [
-        {
-            "video_id": str(r.id),
-            "filename": r.original_filename,
-            "status": r.status,
-            "recorded_at": r.recorded_at.isoformat() if r.recorded_at else None,
-            "total_vehicles": int(r.total_vehicles or 0),
-        }
-        for r in top_videos_rows
-    ]
+    top_videos_list = sorted(video_map.items(), key=lambda x: x[1]["total"], reverse=True)[:10]
+    top_videos = []
+    for vid, data in top_videos_list:
+        v_db = db.get(VideoUpload, UUID(vid))
+        status = v_db.status if v_db else "processed"
+        top_videos.append({
+            "video_id": vid,
+            "filename": data["filename"],
+            "status": status,
+            "recorded_at": data["recorded_at"] or None,
+            "total_vehicles": data["total"]
+        })
 
-    # ── recent analyses for this site ────────────────────────────
-    recent_rows = db.execute(
-        select(AnalysisJob, VideoUpload.original_filename, VideoUpload.id.label("vid_id"))
-        .join(VideoUpload, VideoUpload.id == AnalysisJob.video_upload_id)
-        .where(VideoUpload.site_id == site_id)
-        .order_by(AnalysisJob.updated_at.desc())
-        .limit(10)
-    ).all()
-    recent_analyses = []
-    for job, filename, vid_id in recent_rows:
-        tv = db.scalar(
-            select(func.sum(AnalysisGolonganTotal.vehicle_count)).where(
-                AnalysisGolonganTotal.analysis_job_id == job.id
-            )
-        ) or 0
-        recent_analyses.append(
-            {
-                "job_id": str(job.id),
-                "video_id": str(vid_id),
-                "filename": filename,
-                "status": job.status,
-                "started_at": job.started_at.isoformat() if job.started_at else None,
-                "finished_at": job.finished_at.isoformat() if job.finished_at else None,
-                "total_vehicles": int(tv),
-            }
-        )
+    recent_analyses = sorted(
+        job_map.values(), 
+        key=lambda x: x["finished_at"] or x["started_at"] or "", 
+        reverse=True
+    )[:10]
 
-    # ── latest FD result for this site ───────────────────────────
     fd_row = db.execute(
         select(FdResult, VideoUpload.original_filename)
         .join(VideoUpload, VideoUpload.id == FdResult.video_upload_id)
@@ -326,91 +334,92 @@ def get_site_detail(
         "top_videos": top_videos,
         "recent_analyses": recent_analyses,
         "fd_result": fd_result,
+        "is_partial": has_partial_data,
     }
 
 
 @router.get("/heatmap")
 def get_dashboard_heatmap(
-    month: Optional[int] = None,   # 1–12; None = all months
-    week: Optional[int] = None,    # 1–4; requires month to be set
+    month: Optional[int] = None,
+    week: Optional[int] = None,
     _: User = Depends(require_admin),
     db: Session = Depends(get_db),
 ) -> dict:
     import calendar as _cal
-    from datetime import date as _date
+    from datetime import date as _date, datetime as _dt, timedelta as _td, timezone as _tz
+    
+    settings = get_settings()
 
     DAY_NAMES = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
     MONTH_NAMES = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni",
                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
 
-    now_wib = __import__("datetime").datetime.now(__import__("datetime").timezone(__import__("datetime").timedelta(hours=7)))
+    wib_tz = _tz(_td(hours=7))
+    now_wib = _dt.now(wib_tz)
     current_year = now_wib.year
 
-    # Resolve label and WHERE clause
     label = "Semua Data"
-    where = ""
+    date_start = None
+    date_end = None
 
     if month and 1 <= month <= 12:
         year = current_year
         month_name = MONTH_NAMES[month]
 
         if week and 1 <= week <= 4:
-            # Week N of the given month — split month into 4 chunks of ~7 days
-            # Week 1: day 1–7, Week 2: 8–14, Week 3: 15–21, Week 4: 22–end
             day_start = (week - 1) * 7 + 1
             if week < 4:
                 day_end = week * 7
             else:
-                day_end = _cal.monthrange(year, month)[1]  # last day of month
+                day_end = _cal.monthrange(year, month)[1]
             date_start = _date(year, month, day_start)
             date_end   = _date(year, month, day_end)
             label = f"{month_name} {year} · Minggu ke-{week} ({day_start}–{day_end} {month_name[:3]})"
-            where = f"""
-                AND (COALESCE(
-                    v.recorded_at + (ve.crossed_at_seconds || ' seconds')::interval,
-                    ve.created_at
-                ) AT TIME ZONE 'Asia/Jakarta')::date
-                BETWEEN '{date_start}' AND '{date_end}'
-            """
         else:
-            # Whole month
+            date_start = _date(year, month, 1)
+            date_end   = _date(year, month, _cal.monthrange(year, month)[1])
             label = f"{month_name} {year}"
-            where = f"""
-                AND EXTRACT(year  FROM (COALESCE(
-                    v.recorded_at + (ve.crossed_at_seconds || ' seconds')::interval,
-                    ve.created_at
-                ) AT TIME ZONE 'Asia/Jakarta')) = {year}
-                AND EXTRACT(month FROM (COALESCE(
-                    v.recorded_at + (ve.crossed_at_seconds || ' seconds')::interval,
-                    ve.created_at
-                ) AT TIME ZONE 'Asia/Jakarta')) = {month}
-            """
-
-    rows = db.execute(
-        text(f"""
-            SELECT
-                EXTRACT(dow  FROM (COALESCE(
-                    v.recorded_at + (ve.crossed_at_seconds || ' seconds')::interval,
-                    ve.created_at
-                ) AT TIME ZONE 'Asia/Jakarta'))::int AS dow,
-                EXTRACT(hour FROM (COALESCE(
-                    v.recorded_at + (ve.crossed_at_seconds || ' seconds')::interval,
-                    ve.created_at
-                ) AT TIME ZONE 'Asia/Jakarta'))::int AS hour,
-                COUNT(*) AS cnt
-            FROM vehicle_events ve
-            JOIN video_uploads v ON v.id = ve.video_upload_id
-            WHERE 1=1 {where}
-            GROUP BY 1, 2
-            ORDER BY 1, 2
-        """)
-    ).all()
 
     lookup: dict[int, dict[int, int]] = {d: {h: 0 for h in range(24)} for d in range(7)}
-    for row in rows:
-        lookup[row.dow][row.hour] = row.cnt
 
-    # pg DOW: 0=Sunday … 6=Saturday; reorder to Senin(1)…Minggu(0)
+    csv_reports = db.scalars(
+        select(CsvReport).where(CsvReport.status.in_(["completed", "processing"]))
+    ).all()
+
+    for report in csv_reports:
+        if not report.csv_relative_path:
+            continue
+        csv_path = settings.storage_root / report.csv_relative_path
+        if not csv_path.exists():
+            continue
+            
+        with csv_path.open("r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                rec_at_str = row.get("recorded_at")
+                cross_sec = float(row.get("crossed_at_seconds") or 0.0)
+                
+                try:
+                    if rec_at_str:
+                        base_dt = _dt.fromisoformat(rec_at_str)
+                    else:
+                        job = db.get(AnalysisJob, report.analysis_job_id)
+                        base_dt = job.created_at if job else _dt.now(wib_tz)
+                        
+                    event_dt = base_dt + _td(seconds=cross_sec)
+                    event_wib = event_dt.astimezone(wib_tz)
+                    
+                    if date_start and date_end:
+                        if not (date_start <= event_wib.date() <= date_end):
+                            continue
+                            
+                    dow = event_wib.isoweekday() % 7
+                    hour = event_wib.hour
+                    
+                    lookup[dow][hour] += 1
+                except Exception:
+                    pass
+
     dow_order = [1, 2, 3, 4, 5, 6, 0]
     heatmap = []
     for dow in dow_order:
@@ -454,3 +463,52 @@ def update_site_info(
         "direction_normal_label": site.direction_normal_label,
         "direction_opposite_label": site.direction_opposite_label,
     }
+
+@router.get("/csv-reports")
+def get_csv_reports(
+    _: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+) -> dict:
+    reports = db.scalars(
+        select(CsvReport)
+        .order_by(CsvReport.created_at.desc())
+        .limit(100)
+    ).all()
+    
+    return {
+        "reports": [
+            {
+                "id": str(r.id),
+                "job_id": str(r.analysis_job_id),
+                "site_id": str(r.site_id),
+                "status": r.status,
+                "segments_completed": r.segments_completed,
+                "segment_count": r.segment_count,
+                "total_rows": r.total_rows,
+                "error": r.error_message,
+                "created_at": r.created_at.isoformat() if r.created_at else None,
+            }
+            for r in reports
+        ]
+    }
+
+@router.get("/csv-download/{report_id}")
+def download_csv_report(
+    report_id: UUID,
+    _: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
+    settings = get_settings()
+    report = db.get(CsvReport, report_id)
+    if not report or not report.csv_relative_path:
+        raise HTTPException(status_code=404, detail="CSV Report not found or not finished")
+        
+    csv_path = settings.storage_root / report.csv_relative_path
+    if not csv_path.exists():
+        raise HTTPException(status_code=404, detail="CSV file missing on disk")
+        
+    return FileResponse(
+        path=csv_path,
+        media_type="text/csv",
+        filename=csv_path.name
+    )

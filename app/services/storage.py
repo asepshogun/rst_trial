@@ -37,6 +37,7 @@ def ensure_storage_layout() -> None:
         settings.annotated_dir,
         settings.reports_dir,
         settings.preview_dir,
+        settings.csv_dir,
     ):
         path.mkdir(parents=True, exist_ok=True)
 

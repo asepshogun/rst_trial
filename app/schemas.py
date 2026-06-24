@@ -192,6 +192,19 @@ class AnalysisJobRead(ORMModel):
     updated_at: datetime
 
 
+class AnalysisStartRequest(BaseModel):
+    inference_device: Optional[str] = Field(
+        default=None,
+        max_length=20,
+        description="Optional inference device override: 'auto', 'cuda', 'cpu', or 'mps'.",
+    )
+
+
+class SiteReadBasic(ORMModel):
+    id: UUID
+    name: str
+
+
 class VideoUploadRead(ORMModel):
     id: UUID
     original_filename: str
@@ -212,6 +225,7 @@ class VideoUploadRead(ORMModel):
     created_at: datetime
     updated_at: datetime
     analysis_job: Optional[AnalysisJobRead] = None
+    site: Optional[SiteReadBasic] = None
 
 
 class VideoCountLineRead(ORMModel):
@@ -318,3 +332,5 @@ class VideoAnalysisRead(BaseModel):
     totals: list[GolonganTotalRead] = Field(default_factory=list)
     recent_events: list[VideoEventRead] = Field(default_factory=list)
     progress_percent: float = 0.0
+    csv_status: str = "pending"
+    csv_progress: float = 0.0

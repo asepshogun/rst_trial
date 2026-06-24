@@ -47,6 +47,9 @@ class Settings:
     annotated_dir: Path
     reports_dir: Path
     preview_dir: Path
+    csv_dir: Path
+    csv_segment_duration_seconds: int
+    analysis_segment_duration_seconds: int
     default_model_path: str
     default_tracker_config: str
     default_confidence: float
@@ -97,6 +100,9 @@ def get_settings() -> Settings:
         annotated_dir=(storage_root / "annotated"),
         reports_dir=(storage_root / "reports"),
         preview_dir=(storage_root / "previews"),
+        csv_dir=(storage_root / "csv"),
+        csv_segment_duration_seconds=max(_as_int(os.getenv("CSV_SEGMENT_DURATION_SECONDS"), 60), 10),
+        analysis_segment_duration_seconds=max(_as_int(os.getenv("ANALYSIS_SEGMENT_DURATION_SECONDS"), 900), 60),
         default_model_path=os.getenv("DEFAULT_MODEL_PATH", "yolov8s.pt"),
         default_tracker_config=os.getenv("DEFAULT_TRACKER_CONFIG", "bytetrack.yaml"),
         default_confidence=_as_float(os.getenv("DEFAULT_CONFIDENCE"), 0.12),

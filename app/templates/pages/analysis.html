@@ -54,6 +54,15 @@
             <span id="analysisProcessingTimeText" class="an-status-value">00:00:00</span>
           </div>
         </div>
+        <div id="analysisDeviceSelectorWrap" class="an-device-selector-wrap hidden">
+          <label class="an-device-label" for="analysisDeviceSelect">
+            <i class="ti ti-cpu me-1" aria-hidden="true"></i> Inference Device
+          </label>
+          <select id="analysisDeviceSelect" class="form-select form-select-sm an-device-select">
+            <option value="auto">Auto (recommended)</option>
+          </select>
+          <div id="analysisDeviceHint" class="an-device-hint"></div>
+        </div>
         <div class="an-action-group">
           <button id="startAnalysisButton" class="btn btn-primary btn-sm w-100" type="button">
             <span class="app-inline-icon me-1" data-button-icon aria-hidden="true">
@@ -232,6 +241,9 @@
       Detected Vehicles
     </div>
     <div class="d-flex flex-wrap gap-2">
+      <button id="exportAnalysisCsvButton" class="btn btn-light-primary btn-sm" type="button">
+        <i class="ti ti-file-type-csv me-1" aria-hidden="true"></i> Export CSV
+      </button>
       <button id="exportAnalysisExcelButton" class="btn btn-light-success btn-sm" type="button">
         <i class="ti ti-download me-1" aria-hidden="true"></i> Export Excel
       </button>

@@ -16,6 +16,11 @@ JOB_STATUS_COMPLETED = "completed"
 JOB_STATUS_STOPPED = "stopped"
 JOB_STATUS_FAILED = "failed"
 
+CSV_STATUS_PENDING = "pending"
+CSV_STATUS_PROCESSING = "processing"
+CSV_STATUS_COMPLETED = "completed"
+CSV_STATUS_FAILED = "failed"
+
 DIRECTION_NORMAL = "normal"
 DIRECTION_OPPOSITE = "opposite"
 

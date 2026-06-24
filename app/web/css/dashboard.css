@@ -1023,3 +1023,60 @@ span.label i.ti,
 }
 .dash-dropdown-item:hover { background: var(--nc-surface-2); color: var(--nc-ink); }
 .dash-dropdown-item.active { background: rgba(59,130,246,0.09); color: var(--nc-accent); font-weight: 600; }
+
+/* ── Partial Data Banner ─────────────────────────────────────── */
+.dash-partial-banner {
+  background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(217,119,6,0.05) 100%);
+  border: 1px solid rgba(245,158,11,0.25);
+  border-radius: var(--nc-r-card);
+  margin-bottom: 1.5rem;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(245,158,11,0.05);
+}
+
+.dash-partial-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dash-partial-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #f59e0b;
+  box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+  animation: pulse-amber 1.5s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-amber {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+.dash-partial-icon {
+  color: #d97706;
+  font-size: 1.25rem;
+  animation: spinIcon 2s linear infinite;
+}
+
+.dash-partial-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.dash-partial-text strong {
+  color: #92400e;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.dash-partial-text span {
+  color: #b45309;
+  font-size: 0.825rem;
+}

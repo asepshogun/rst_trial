@@ -27,10 +27,7 @@ _ACTIVE_CONVERSIONS_LOCK = threading.Lock()
 
 def requires_video_conversion(stored_filename: str, mime_type: Optional[str] = None) -> bool:
     suffix = Path(stored_filename or "").suffix.lower()
-    normalized_mime = (mime_type or "").split(";", 1)[0].strip().lower()
-    if suffix != ".mp4":
-        return True
-    return bool(normalized_mime) and normalized_mime not in {"video/mp4", "application/mp4"}
+    return suffix != ".mp4"
 
 
 def playback_absolute_path_for(video: VideoUpload) -> Path:

@@ -14,6 +14,9 @@ from sqlalchemy.orm import joinedload
 
 from app.config import get_settings
 from app.constants import (
+    CSV_STATUS_COMPLETED,
+    CSV_STATUS_FAILED,
+    CSV_STATUS_PROCESSING,
     DEFAULT_BUS_MIN_CONFIDENCE,
     DEFAULT_CAR_MIN_CONFIDENCE,
     DEFAULT_MOTORCYCLE_MIN_CONFIDENCE,
@@ -37,7 +40,8 @@ from app.constants import (
     VIDEO_STATUS_UPLOADED,
 )
 from app.database import SessionLocal
-from app.models import AnalysisGolonganTotal, AnalysisJob, CountLine, Site, VehicleEvent, VideoCountAggregate, VideoCountLine, VideoUpload
+from app.models import AnalysisGolonganTotal, AnalysisJob, CountLine, CsvReport, Site, VehicleEvent, VideoCountAggregate, VideoCountLine, VideoUpload
+from app.services.csv_pipeline import cleanup_inline_segment_files, merge_inline_segments, write_inline_segment_csv
 from app.services.live_preview import clear_preview, delete_preview_artifacts, finish_preview, publish_preview_frame, start_preview
 from app.services.master_classes import build_master_class_lookup, get_or_create_master_classes
 from app.services.model_adapter import detect_model_type, get_motorcycle_class_id, get_trackable_class_ids, map_class_to_vehicle
@@ -648,6 +652,45 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
         overlay_frames: list[dict] = []
         started_monotonic = time.perf_counter()
 
+        # --- Inline CSV segment tracking ---
+        _segment_duration = float(settings.analysis_segment_duration_seconds)
+        _video_duration = float(video.duration_seconds or 0.0)
+        _expected_segments = max(int(math.ceil(_video_duration / _segment_duration)), 1) if _video_duration > 0 else 0
+        _next_segment_boundary = _segment_duration
+        _flushed_segment_count = 0
+        _segment_total_rows = 0
+        _site_name = site.name if site else "Unknown"
+        _site_id_str = str(site.id) if site else ""
+        _video_filename = video.original_filename or video.stored_filename
+        _recorded_at_str = video.recorded_at.isoformat() if video.recorded_at else ""
+
+        # Create CsvReport early so dashboard can track progress
+        _csv_report = db.scalar(
+            select(CsvReport).where(CsvReport.analysis_job_id == job.id)
+        )
+        if _csv_report:
+            _csv_report.status = CSV_STATUS_PROCESSING
+            _csv_report.error_message = None
+            _csv_report.segments_completed = 0
+            _csv_report.segment_count = _expected_segments
+            _csv_report.segment_duration_seconds = settings.analysis_segment_duration_seconds
+            _csv_report.total_rows = 0
+            _csv_report.csv_relative_path = None
+            _csv_report.started_at = _utc_now()
+            _csv_report.finished_at = None
+        else:
+            _csv_report = CsvReport(
+                video_upload_id=video.id,
+                analysis_job_id=job.id,
+                site_id=site.id,
+                status=CSV_STATUS_PROCESSING,
+                segment_duration_seconds=settings.analysis_segment_duration_seconds,
+                segment_count=_expected_segments,
+                started_at=_utc_now(),
+            )
+            db.add(_csv_report)
+        db.commit()
+
         while True:
             _raise_if_stop_requested(job_id)
             opened, frame = capture.read()
@@ -1016,6 +1059,40 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 )
                 db.commit()
 
+            # --- Inline CSV segment flush at time boundary ---
+            _current_video_seconds = float(frame_number / fps)
+            if _current_video_seconds >= _next_segment_boundary:
+                db.commit()  # ensure all pending events are persisted
+                try:
+                    _seg_time_start = _next_segment_boundary - _segment_duration
+                    _seg_path, _seg_rows = write_inline_segment_csv(
+                        db,
+                        job_id=job.id,
+                        video_id=video.id,
+                        site_name=_site_name,
+                        site_id_str=_site_id_str,
+                        video_filename=_video_filename,
+                        recorded_at_str=_recorded_at_str,
+                        segment_index=_flushed_segment_count,
+                        time_start=_seg_time_start,
+                        time_end=_next_segment_boundary,
+                    )
+                    _flushed_segment_count += 1
+                    _segment_total_rows += _seg_rows
+
+                    _merged_path = merge_inline_segments(job.id, _flushed_segment_count)
+
+                    _csv_report.segments_completed = _flushed_segment_count
+                    _csv_report.total_rows = _segment_total_rows
+                    _csv_report.csv_relative_path = _merged_path.relative_to(
+                        settings.storage_root
+                    ).as_posix()
+                    db.commit()
+                except Exception:
+                    pass  # non-critical — analysis should continue even if CSV flush fails
+
+                _next_segment_boundary += _segment_duration
+
         report_events = _build_report_events_from_overlay_frames(
             overlay_frames,
             lines=lines,
@@ -1138,6 +1215,39 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
         try:
             finish_preview(job_id)
         except OSError:
+            pass
+        # --- Final CSV segment flush + merge after reconciliation ---
+        try:
+            _seg_time_start = _flushed_segment_count * _segment_duration
+            _seg_path, _seg_rows = write_inline_segment_csv(
+                db,
+                job_id=job.id,
+                video_id=video.id,
+                site_name=_site_name,
+                site_id_str=_site_id_str,
+                video_filename=_video_filename,
+                recorded_at_str=_recorded_at_str,
+                segment_index=_flushed_segment_count,
+                time_start=_seg_time_start,
+                time_end=None,
+            )
+            _flushed_segment_count += 1
+            _segment_total_rows += _seg_rows
+
+            _merged_path = merge_inline_segments(job.id, _flushed_segment_count)
+
+            _csv_report.segments_completed = _flushed_segment_count
+            _csv_report.segment_count = _flushed_segment_count
+            _csv_report.total_rows = _segment_total_rows
+            _csv_report.csv_relative_path = _merged_path.relative_to(
+                settings.storage_root
+            ).as_posix()
+            _csv_report.status = CSV_STATUS_COMPLETED
+            _csv_report.finished_at = _utc_now()
+            db.commit()
+
+            cleanup_inline_segment_files(job.id, _flushed_segment_count)
+        except Exception:
             pass
     except AnalysisStopRequested:
         db.rollback()

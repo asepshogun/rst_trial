@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const analysisInsightsList = document.getElementById("analysisInsightsList");
   const eventsBody = document.getElementById("analysisEventsBody");
   const alertBox = document.getElementById("analysisAlert");
+  const exportAnalysisCsvButton = document.getElementById("exportAnalysisCsvButton");
   const exportAnalysisExcelButton = document.getElementById("exportAnalysisExcelButton");
   const clearAnalysisLogsButton = document.getElementById("clearAnalysisLogsButton");
   const analysisLineTabsShell = document.getElementById("analysisLineTabsShell");
@@ -51,6 +52,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const analysisVideoStatusFilter = document.getElementById("analysisVideoStatusFilter");
   const analysisVideoPickerBody = document.getElementById("analysisVideoPickerBody");
   const analysisEventsPagination = document.getElementById("analysisEventsPagination");
+  const deviceSelectorWrap = document.getElementById("analysisDeviceSelectorWrap");
+  const deviceSelect = document.getElementById("analysisDeviceSelect");
+  const deviceHint = document.getElementById("analysisDeviceHint");
   const videoPickerModal = window.bootstrap ? window.bootstrap.Modal.getOrCreateInstance(videoPickerModalElement) : null;
 
   const METRIC_CARD_THEMES = [
@@ -1718,6 +1722,66 @@ document.addEventListener("DOMContentLoaded", async () => {
     app.setAlert(alertBox, "success", "Detected vehicle data exported to Excel");
   }
 
+  function buildCsvContent(events) {
+    const headers = ["No", "Time", "ID", "Detected Type", "Class Code", "Class Label", "Direction", "Confidence"];
+    const escapeCsv = (val) => {
+      const str = String(val ?? "");
+      if (str.includes('"') || str.includes(',') || str.includes('\n')) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    };
+    const rows = events.map((event, index) => [
+      index + 1,
+      formatCrossedTimeDisplay(event.crossed_at_seconds),
+      event.track_id ?? "-",
+      formatDetectedType(event),
+      String(event.golongan_code || "-"),
+      event.golongan_label || "-",
+      event.direction || "-",
+      event.confidence ? `${(Number(event.confidence) * 100).toFixed(1)}%` : "-",
+    ].map(escapeCsv).join(","));
+    return [headers.join(","), ...rows].join("\n");
+  }
+
+  function exportVisibleEventsToCsv() {
+    const events = getCurrentVisibleEvents();
+    if (!state.selectedVideoId) {
+      app.setAlert(alertBox, "danger", "Select a video first");
+      return;
+    }
+    if (!events.length) {
+      app.setAlert(alertBox, "danger", "There is no detected vehicle data to export");
+      return;
+    }
+
+    const csvContent = buildCsvContent(events);
+    const blob = new Blob(["\ufeff", csvContent], {
+      type: "text/csv;charset=utf-8",
+    });
+    const downloadUrl = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    const video = getSelectedVideo();
+    const baseName = String(
+      (video && (displayPlaybackFilename(video) || video.original_filename)) || "detected_vehicles"
+    )
+      .replace(/\.[^.]+$/, "")
+      .replace(/[^A-Za-z0-9_-]+/g, "_")
+      .replace(/^_+|_+$/g, "")
+      .slice(0, 80) || "detected_vehicles";
+    const lineSuffix = state.availableLines.length > 1 && state.selectedLineOrder
+      ? `_line_${state.selectedLineOrder}`
+      : "";
+    const timestamp = new Date().toISOString().replace(/[:T]/g, "-").slice(0, 19);
+    link.download = `${baseName}_detected_vehicles${lineSuffix}_${timestamp}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+    app.setAlert(alertBox, "success", "Detected vehicle data exported to CSV");
+  }
+
   function applyPendingSeek() {
     if (state.pendingSeekSeconds === null || Number.isNaN(Number(state.pendingSeekSeconds))) {
       return;
@@ -1803,9 +1867,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     const jobStatus = job ? job.status : "pending";
     const isStaleRunning = isStaleRunningJob(job);
     const displayJobStatus = isStaleRunning ? "stale" : jobStatus;
+    
+    let csvHtml = "";
+    if (jobStatus === "completed" || jobStatus === "processed") {
+      const csvStatus = payload.csv_status || "pending";
+      if (csvStatus === "processing") {
+        csvHtml = `<span class="badge badge-light-warning status-pill ms-2"><i class="ti ti-loader-2 ti-spin me-1" aria-hidden="true"></i>CSV: ${payload.csv_progress || 0}%</span>`;
+      } else if (csvStatus === "completed") {
+        csvHtml = `<span class="badge badge-light-success status-pill ms-2"><i class="ti ti-check me-1" aria-hidden="true"></i>CSV Ready</span>`;
+      } else if (csvStatus === "failed") {
+        csvHtml = `<span class="badge badge-light-danger status-pill ms-2"><i class="ti ti-alert-triangle me-1" aria-hidden="true"></i>CSV Failed</span>`;
+      } else {
+        csvHtml = `<span class="badge badge-light-secondary status-pill ms-2"><i class="ti ti-clock me-1" aria-hidden="true"></i>CSV Pending</span>`;
+      }
+    }
+
     statusText.innerHTML = `
       <span class="badge ${app.statusBadge(displayJobStatus)} status-pill me-2">${app.escapeHtml(displayJobStatus)}</span>
       <span class="soft-note">Video status: ${app.escapeHtml(video.status)}</span>
+      ${csvHtml}
     `;
     setProgress(payload.progress_percent || 0);
     renderProcessingMeta();
@@ -1873,14 +1953,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else if (isRunning && !isStaleRunning) {
       setAnalysisActionButton({ mode: "stop", disabled: false });
     } else {
-      setAnalysisActionButton({ mode: "start", disabled: !state.selectedVideoId });
+      const hasLines = state.availableLines && state.availableLines.length > 0;
+      setAnalysisActionButton({ mode: "start", disabled: !state.selectedVideoId || !hasLines });
     }
+    setButtonDisabled(exportAnalysisCsvButton, !state.selectedVideoId || !visibleEvents.length);
     setButtonDisabled(exportAnalysisExcelButton, !state.selectedVideoId || !visibleEvents.length);
     setButtonDisabled(clearAnalysisLogsButton, !state.selectedVideoId || isConverting || (isRunning && !isStaleRunning));
     setRefreshButtonLoading(false);
 
     stopPolling();
-    if (isRunning || isConverting) {
+    const isCsvProcessing = jobStatus === "completed" && payload.csv_status === "processing";
+    if (isRunning || isConverting || isCsvProcessing) {
       state.pollHandle = window.setInterval(loadAnalysis, 1200);
     }
   }
@@ -1921,6 +2004,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       analysisProcessingTimeText.textContent = "00:00:00";
       setCountLinesButton.href = "/count-lines";
       setButtonDisabled(clearAnalysisLogsButton, true);
+      setButtonDisabled(exportAnalysisCsvButton, true);
       setButtonDisabled(exportAnalysisExcelButton, true);
       stopStatusClock();
       stopLivePreview();
@@ -1984,9 +2068,39 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   window.addEventListener("resize", drawCurrentOverlayFrame);
 
+  async function loadGpuStatus() {
+    try {
+      const gpuStatus = await app.apiFetch("/api/settings/gpu-status");
+      if (gpuStatus && gpuStatus.gpu_available && deviceSelectorWrap && deviceSelect) {
+        const gpuType = gpuStatus.gpu_type || "gpu";
+        const gpuLabel = gpuType === "cuda"
+          ? "GPU (CUDA)"
+          : gpuType === "mps"
+            ? "GPU (Apple MPS)"
+            : "GPU";
+        const deviceNames = (gpuStatus.gpu_devices || []).join(", ");
+
+        deviceSelect.innerHTML = [
+          '<option value="auto">Auto (recommended)</option>',
+          `<option value="${gpuType}">${app.escapeHtml(gpuLabel)}</option>`,
+          '<option value="cpu">CPU only</option>',
+        ].join("");
+
+        if (deviceHint) {
+          deviceHint.textContent = deviceNames
+            ? `Detected: ${deviceNames}`
+            : "";
+        }
+
+        deviceSelectorWrap.classList.remove("hidden");
+      }
+    } catch (_ignored) {
+    }
+  }
+
   try {
     await app.requireSession();
-    await loadVideos();
+    await Promise.all([loadVideos(), loadGpuStatus()]);
     await loadAnalysis();
   } catch (error) {
     app.setAlert(alertBox, "danger", error.message);
@@ -2088,6 +2202,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  exportAnalysisCsvButton.addEventListener("click", () => {
+    exportVisibleEventsToCsv();
+  });
+
   exportAnalysisExcelButton.addEventListener("click", () => {
     exportVisibleEventsToExcel();
   });
@@ -2115,9 +2233,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         app.setAlert(alertBox, "success", "Stop request sent. Waiting for the worker to halt.");
       } else {
         setAnalysisActionButton({ mode: "start", disabled: true });
+        const startBody = {};
+        if (deviceSelect && deviceSelect.value && deviceSelect.value !== "auto") {
+          startBody.inference_device = deviceSelect.value;
+        }
         await app.apiFetch(`/api/videos/${state.selectedVideoId}/analysis/start`, {
           method: "POST",
-          body: JSON.stringify({}),
+          body: JSON.stringify(startBody),
         });
         state.hasLiveFrame = false;
         resetOverlayState();

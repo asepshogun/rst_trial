@@ -857,6 +857,12 @@
       /* header */
       DashSite._currentSite = site;
 
+      var partialBanner = document.getElementById("dashPartialBanner");
+      if (partialBanner) {
+        if (data.is_partial) partialBanner.classList.remove("d-none");
+        else partialBanner.classList.add("d-none");
+      }
+
       setText("siteName", site.name);
       setText("siteDesc", site.location_description || site.code);
       
@@ -1506,207 +1512,27 @@
     });
   }
 
-  /* ═══════════════════════════════════════════════════════════
-     DUMMY DATA — dipakai jika data real kosong/null
-     Sections marked [DEMO] below are static.
-  ═══════════════════════════════════════════════════════════ */
-  var DUMMY_SITES = [
-    /* [DEMO] coordinates, names, and directions below are static */
-    {
-      site_id: "demo-site-1",
-      name: "Jl. Soekarno-Hatta (Timur)",
-      code: "SHT-01",
-      location_description: "Depan Ruko Setrasari, arah ke Cileunyi",
-      latitude: -6.9396,
-      longitude: 107.6300,
-      total_vehicles: 4820,
-      video_count: 12,
-      direction_normal_label: "Arah Timur / Cileunyi",
-      direction_opposite_label: "Arah Barat / Cimahi",
-    },
-    {
-      site_id: "demo-site-2",
-      name: "Jl. Sudirman (Selatan)",
-      code: "SDM-02",
-      location_description: "Simpang Dago, menuju Soreang",
-      latitude: -6.9040,
-      longitude: 107.6138,
-      total_vehicles: 3210,
-      video_count: 8,
-      direction_normal_label: "Arah Selatan / Soreang",
-      direction_opposite_label: "Arah Utara / Lembang",
-    },
-    {
-      site_id: "demo-site-3",
-      name: "Jl. Asia Afrika (Barat)",
-      code: "AAF-03",
-      location_description: "Alun-alun Bandung, menuju Cimahi",
-      latitude: -6.9211,
-      longitude: 107.6063,
-      total_vehicles: 1950,
-      video_count: 5,
-      direction_normal_label: "Arah Barat / Cimahi",
-      direction_opposite_label: "Arah Timur / Kota",
-    },
-  ];
-
-  var DUMMY_GOLONGAN = [
-    /* [DEMO] static vehicle class distribution */
-    { golongan_code: "1",  golongan_label: "Motorcycle",    total: 5840 },
-    { golongan_code: "2",  golongan_label: "Sedan",         total: 2310 },
-    { golongan_code: "3",  golongan_label: "SUV / MPV",     total: 1540 },
-    { golongan_code: "4",  golongan_label: "Minibus",       total:  820 },
-    { golongan_code: "5a", golongan_label: "Small Bus",     total:  460 },
-    { golongan_code: "6a", golongan_label: "2-Axle Truck",  total:  210 },
-  ];
-
-  var DUMMY_STATUS = [
-    /* [DEMO] */
-    { status: "processed", count: 18 },
-    { status: "uploaded",  count: 4 },
-    { status: "failed",    count: 2 },
-  ];
-
-  var DUMMY_TOP_VIDEOS = [
-    /* [DEMO] */
-    { video_id: "v1", filename: "SHT_20240512_pagi.mp4",  status: "processed", total_vehicles: 1240 },
-    { video_id: "v2", filename: "SHT_20240512_siang.mp4", status: "processed", total_vehicles: 1080 },
-    { video_id: "v3", filename: "SDM_20240513_pagi.mp4",  status: "processed", total_vehicles:  970 },
-    { video_id: "v4", filename: "AAF_20240514_sore.mp4",  status: "processed", total_vehicles:  850 },
-    { video_id: "v5", filename: "SHT_20240515_sore.mp4",  status: "processed", total_vehicles:  680 },
-  ];
-
-  /* Dummy site-detail per site_id — [DEMO] all values below are static */
-  var DUMMY_SITE_DETAIL = {
-    "demo-site-1": {
-      site: DUMMY_SITES[0],
-      summary: { video_count: 12, processed_count: 10, total_vehicles: 4820, avg_vehicles_per_video: 482 },
-      golongan_totals: [
-        { golongan_code: "1",  golongan_label: "Motorcycle",  total: 2410 },
-        { golongan_code: "2",  golongan_label: "Sedan",   total:  960 },
-        { golongan_code: "3",  golongan_label: "SUV / MPV", total:  640 },
-        { golongan_code: "4",  golongan_label: "Minibus",       total:  410 },
-        { golongan_code: "5a", golongan_label: "Small Bus",     total:  230 },
-        { golongan_code: "6a", golongan_label: "2-Axle Truck",  total:  170 },
-      ],
-      top_videos: [
-        { video_id: "v1", filename: "SHT_pagi.mp4",  status: "processed", total_vehicles: 1240 },
-        { video_id: "v2", filename: "SHT_siang.mp4", status: "processed", total_vehicles: 1080 },
-        { video_id: "v3", filename: "SHT_sore.mp4",  status: "processed", total_vehicles:  960 },
-        { video_id: "v4", filename: "SHT_malam.mp4", status: "processed", total_vehicles:  540 },
-      ],
-      recent_analyses: [
-        { job_id: "j1", video_id: "v1", filename: "SHT_pagi.mp4",  status: "completed", started_at: "2024-05-12T06:00:00", finished_at: "2024-05-12T06:12:00", total_vehicles: 1240 },
-        { job_id: "j2", video_id: "v2", filename: "SHT_siang.mp4", status: "completed", started_at: "2024-05-12T11:00:00", finished_at: "2024-05-12T11:09:00", total_vehicles: 1080 },
-        { job_id: "j3", video_id: "v3", filename: "SHT_sore.mp4",  status: "completed", started_at: "2024-05-12T15:00:00", finished_at: "2024-05-12T15:14:00", total_vehicles:  960 },
-      ],
-      fd_result: {
-        /* [DEMO] static Greenshields parameters */
-        id: "fd-demo-1", video_id: "v1", filename: "SHT_pagi.mp4",
-        line_spacing_m: 5, direction: "normal", interval_s: 60,
-        greenshields_vf: 62.4, greenshields_kj: 148.0, greenshields_q_cap: 2306,
-        matched_pairs_count: 84,
-        intervals_json: (function () {
-          var arr = [];
-          for (var k = 5; k <= 130; k += 5) {
-            var v = Math.max(0, 62.4 - (62.4 / 148.0) * k) + (Math.random() - 0.5) * 6;
-            var q = Math.max(0, 62.4 * k - (62.4 / 148.0) * k * k) + (Math.random() - 0.5) * 80;
-            arr.push({ density_k: +k.toFixed(1), speed_v: +Math.max(0, v).toFixed(1), flow_q: +Math.max(0, q).toFixed(0) });
-          }
-          return arr;
-        })(),
-        created_at: "2024-05-12T06:12:00",
-      },
-    },
-    "demo-site-2": {
-      site: DUMMY_SITES[1],
-      summary: { video_count: 8, processed_count: 7, total_vehicles: 3210, avg_vehicles_per_video: 458.6 },
-      golongan_totals: [
-        { golongan_code: "1",  golongan_label: "Motorcycle",  total: 1680 },
-        { golongan_code: "2",  golongan_label: "Sedan",   total:  720 },
-        { golongan_code: "3",  golongan_label: "SUV / MPV", total:  480 },
-        { golongan_code: "5a", golongan_label: "Small Bus",     total:  200 },
-        { golongan_code: "6a", golongan_label: "2-Axle Truck",  total:  130 },
-      ],
-      top_videos: [
-        { video_id: "v5", filename: "SDM_pagi.mp4",  status: "processed", total_vehicles: 970 },
-        { video_id: "v6", filename: "SDM_siang.mp4", status: "processed", total_vehicles: 810 },
-        { video_id: "v7", filename: "SDM_sore.mp4",  status: "processed", total_vehicles: 720 },
-      ],
-      recent_analyses: [
-        { job_id: "j4", video_id: "v5", filename: "SDM_pagi.mp4",  status: "completed", started_at: "2024-05-13T07:00:00", finished_at: "2024-05-13T07:08:00", total_vehicles: 970 },
-        { job_id: "j5", video_id: "v6", filename: "SDM_siang.mp4", status: "completed", started_at: "2024-05-13T12:00:00", finished_at: "2024-05-13T12:11:00", total_vehicles: 810 },
-      ],
-      fd_result: {
-        id: "fd-demo-2", video_id: "v5", filename: "SDM_pagi.mp4",
-        line_spacing_m: 5, direction: "normal", interval_s: 60,
-        greenshields_vf: 55.8, greenshields_kj: 132.0, greenshields_q_cap: 1841,
-        matched_pairs_count: 61,
-        intervals_json: (function () {
-          var arr = [];
-          for (var k = 5; k <= 115; k += 5) {
-            var v = Math.max(0, 55.8 - (55.8 / 132.0) * k) + (Math.random() - 0.5) * 5;
-            var q = Math.max(0, 55.8 * k - (55.8 / 132.0) * k * k) + (Math.random() - 0.5) * 70;
-            arr.push({ density_k: +k.toFixed(1), speed_v: +Math.max(0, v).toFixed(1), flow_q: +Math.max(0, q).toFixed(0) });
-          }
-          return arr;
-        })(),
-        created_at: "2024-05-13T07:08:00",
-      },
-    },
-    "demo-site-3": {
-      site: DUMMY_SITES[2],
-      summary: { video_count: 5, processed_count: 4, total_vehicles: 1950, avg_vehicles_per_video: 487.5 },
-      golongan_totals: [
-        { golongan_code: "1",  golongan_label: "Motorcycle",  total: 1050 },
-        { golongan_code: "2",  golongan_label: "Sedan",   total:  420 },
-        { golongan_code: "3",  golongan_label: "SUV / MPV", total:  280 },
-        { golongan_code: "4",  golongan_label: "Minibus",       total:  200 },
-      ],
-      top_videos: [
-        { video_id: "v8", filename: "AAF_pagi.mp4", status: "processed", total_vehicles: 850 },
-        { video_id: "v9", filename: "AAF_sore.mp4", status: "processed", total_vehicles: 680 },
-      ],
-      recent_analyses: [
-        { job_id: "j6", video_id: "v8", filename: "AAF_pagi.mp4", status: "completed", started_at: "2024-05-14T08:00:00", finished_at: "2024-05-14T08:06:00", total_vehicles: 850 },
-      ],
-      fd_result: null,
-    },
-  };
-
-  /* ── helper: merge real data with dummy fallback ────────────── */
   function mergeWithDummy(data) {
-    /* sites: pakai real jika ada koordinat, fallback ke dummy */
-    var realHasCoords = (data.sites || []).some(function (s) { return s.latitude != null; });
-    var sites = realHasCoords ? data.sites : DUMMY_SITES;
-
-    /* stats: pakai real, tapi topup jika 0 */
     var summary = data.summary || {};
-    var totalVideos    = summary.total_videos          || DUMMY_STATUS.reduce(function (a, s) { return a + s.count; }, 0);
-    var totalVehicles  = summary.total_vehicle_events  || DUMMY_GOLONGAN.reduce(function (a, g) { return a + g.total; }, 0);
-    var totalUsers     = summary.total_users           || 3;
-    var totalSites     = summary.total_sites           || DUMMY_SITES.length;
-    var statusData     = (data.videos_by_status && data.videos_by_status.length) ? data.videos_by_status : DUMMY_STATUS;
-    var golonganData   = (data.golongan_totals  && data.golongan_totals.length)  ? data.golongan_totals  : DUMMY_GOLONGAN;
-    var topVideosData  = (data.top_videos       && data.top_videos.length)       ? data.top_videos       : DUMMY_TOP_VIDEOS;
-
     return {
-      summary: { total_videos: totalVideos, total_vehicle_events: totalVehicles, total_users: totalUsers, total_sites: totalSites },
-      videos_by_status: statusData,
-      golongan_totals:  golonganData,
-      top_videos:       topVideosData,
+      summary: { 
+        total_videos: summary.total_videos || 0, 
+        total_vehicle_events: summary.total_vehicle_events || 0, 
+        total_users: summary.total_users || 0, 
+        total_sites: summary.total_sites || 0 
+      },
+      videos_by_status: data.videos_by_status || [],
+      golongan_totals:  data.golongan_totals || [],
+      top_videos:       data.top_videos || [],
       recent_analyses:  data.recent_analyses || [],
-      sites:            sites,
-      _usedDummySites:  !realHasCoords,
+      sites:            data.sites || [],
+      _usedDummySites:  false,
     };
   }
 
   /* ─────────────────────────────────────────────────────────── */
-  /* helper: get site detail — real API first, dummy fallback   */
+  /* helper: get site detail — real API */
   async function fetchSiteDetail(siteId) {
-    /* if it's a demo site id, return dummy directly */
-    if (DUMMY_SITE_DETAIL[siteId]) return DUMMY_SITE_DETAIL[siteId];
-    /* try real API */
     return app.apiFetch("/api/dashboard/site/" + siteId);
   }
 
@@ -1748,6 +1574,12 @@
     /* rebuild global charts */
     DashVolLokasi.init(data.sites);
     fetchAndRenderHeatmap();
+
+    var partialBanner = document.getElementById("dashPartialBanner");
+    if (partialBanner) {
+      if (data.is_partial) partialBanner.classList.remove("d-none");
+      else partialBanner.classList.add("d-none");
+    }
   }
 
   /* ═══════════════════════════════════════════════════════════
@@ -1793,6 +1625,12 @@
 
       var tEl = document.getElementById("statAnalysesTrend");
       if (tEl && analysisCount > 0) tEl.innerHTML = '<i class="ti ti-trending-up"></i>' + analysisCount + " total";
+
+      var partialBanner = document.getElementById("dashPartialBanner");
+      if (partialBanner) {
+        if (data.is_partial) partialBanner.classList.remove("d-none");
+        else partialBanner.classList.add("d-none");
+      }
 
       /* global charts */
       DashVolLokasi.init(data.sites);

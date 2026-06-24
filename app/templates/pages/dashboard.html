@@ -45,6 +45,18 @@
     </div>
   </div>
 
+  <!-- ── Partial data indicator ───────────────────────────────── -->
+  <div id="dashPartialBanner" class="dash-partial-banner d-none">
+    <div class="dash-partial-inner">
+      <div class="dash-partial-pulse"></div>
+      <i class="ti ti-loader-2 dash-partial-icon"></i>
+      <div class="dash-partial-text">
+        <strong>Analisis sedang berjalan</strong>
+        <span>Data di bawah bersifat parsial dan akan terus bertambah seiring analisis.</span>
+      </div>
+    </div>
+  </div>
+
   <!-- ── ROW 1 · Stat cards ─────────────────────────────────────── -->
   <div class="row g-3 mb-4">
     <!-- Converting Videos -->
@@ -328,8 +340,11 @@
                 <i class="ti ti-wave-square"></i>
                 <p>No Fundamental Diagram for this site yet</p>
                 <p style="font-size: 0.8rem; max-width: 400px; text-align: center; color: var(--nc-ink-3); margin-top: -0.25rem">
-                  Compute one from the <a href="/analysis" style="color: var(--nc-accent)">Analysis</a> page on a video with two count lines.
+                  Compute one from the <a href="/videos" style="color: var(--nc-accent)">Analysis</a> page on a video with two count lines, or click below.
                 </p>
+                <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#fdComputeModal" style="border-radius: 100px;">
+                  <i class="ti ti-calculator me-1"></i> Compute Fundamental Diagram
+                </button>
               </div>
             </div>
 
@@ -339,6 +354,9 @@
                   <div class="fd-title">Greenshields Model</div>
                   <div class="fd-subtitle" id="siteFdSubtitle">—</div>
                 </div>
+                <button type="button" class="btn btn-sm btn-light-primary" data-bs-toggle="modal" data-bs-target="#fdComputeModal" style="border-radius: 100px;">
+                  <i class="ti ti-calculator me-1"></i> Recompute
+                </button>
               </div>
 
               <div class="fd-metrics">

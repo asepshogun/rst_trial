@@ -203,6 +203,11 @@ class VideoUpload(TimestampMixin, Base):
         cascade="all, delete-orphan",
         order_by="AnalysisGolonganTotal.golongan_code",
     )
+    csv_report: Mapped[Optional["CsvReport"]] = relationship(
+        back_populates="video_upload",
+        cascade="all, delete-orphan",
+        uselist=False,
+    )
 
 
 class FdResult(Base):
@@ -407,3 +412,36 @@ class VideoCountAggregate(Base):
 
     video_upload: Mapped["VideoUpload"] = relationship(back_populates="count_aggregates")
     analysis_job: Mapped["AnalysisJob"] = relationship(back_populates="count_aggregates")
+
+
+class CsvReport(TimestampMixin, Base):
+    __tablename__ = "csv_reports"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    video_upload_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("video_uploads.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    analysis_job_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("analysis_jobs.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    site_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("sites.id", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    csv_relative_path: Mapped[Optional[str]] = mapped_column(Text)
+    segment_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    segments_completed: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    segment_duration_seconds: Mapped[int] = mapped_column(Integer, nullable=False, default=60)
+    total_rows: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    status: Mapped[str] = mapped_column(String(50), nullable=False, default="pending")
+    error_message: Mapped[Optional[str]] = mapped_column(Text)
+    started_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    finished_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+
+    video_upload: Mapped["VideoUpload"] = relationship(back_populates="csv_report")
+

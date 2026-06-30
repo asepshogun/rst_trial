@@ -373,8 +373,12 @@ def _build_analysis_response(video: VideoUpload, db: Session) -> VideoAnalysisRe
 
     csv_status = "pending"
     csv_progress = 0.0
+    csv_segments_completed = 0
+    csv_segment_count = 0
     if video.csv_report:
         csv_status = video.csv_report.status
+        csv_segments_completed = video.csv_report.segments_completed
+        csv_segment_count = video.csv_report.segment_count
         if video.csv_report.segment_count > 0:
             csv_progress = min(100.0, (video.csv_report.segments_completed / video.csv_report.segment_count) * 100.0)
         elif csv_status == "completed":
@@ -403,6 +407,8 @@ def _build_analysis_response(video: VideoUpload, db: Session) -> VideoAnalysisRe
         progress_percent=_build_progress_percent(video.analysis_job),
         csv_status=csv_status,
         csv_progress=round(csv_progress, 1),
+        csv_segments_completed=csv_segments_completed,
+        csv_segment_count=csv_segment_count,
     )
 
 

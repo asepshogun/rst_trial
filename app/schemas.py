@@ -284,6 +284,7 @@ class VideoEventRead(ORMModel):
     crossed_at_seconds: float
     crossed_at_frame: int
     confidence: Optional[float]
+    speed_kph: Optional[float] = None
     created_at: datetime
 
 
@@ -334,3 +335,5 @@ class VideoAnalysisRead(BaseModel):
     progress_percent: float = 0.0
     csv_status: str = "pending"
     csv_progress: float = 0.0
+    csv_segments_completed: int = 0
+    csv_segment_count: int = 0

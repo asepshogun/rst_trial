@@ -127,6 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     classChart: null,
     allEvents: [],
     eventsPage: 1,
+    wasProcessingCsv: false,
   };
 
   const EVENTS_PAGE_SIZE = 50;
@@ -1648,6 +1649,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td>${safeExcelCell(event.golongan_label || "-")}</td>
         <td>${safeExcelCell(event.direction || "-")}</td>
         <td>${safeExcelCell(event.confidence ? `${(Number(event.confidence) * 100).toFixed(1)}%` : "-")}</td>
+        <td>${safeExcelCell(event.speed_kph != null ? `${Number(event.speed_kph).toFixed(1)}` : "-")}</td>
       </tr>
     `).join("");
 
@@ -1686,6 +1688,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <th>Class Label</th>
         <th>Direction</th>
         <th>Confidence</th>
+        <th>Speed (km/h)</th>
       </tr>
     </thead>
     <tbody>
@@ -1723,7 +1726,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function buildCsvContent(events) {
-    const headers = ["No", "Time", "ID", "Detected Type", "Class Code", "Class Label", "Direction", "Confidence"];
+    const headers = ["No", "Time", "ID", "Detected Type", "Class Code", "Class Label", "Direction", "Confidence", "Speed (km/h)"];
     const escapeCsv = (val) => {
       const str = String(val ?? "");
       if (str.includes('"') || str.includes(',') || str.includes('\n')) {
@@ -1740,6 +1743,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       event.golongan_label || "-",
       event.direction || "-",
       event.confidence ? `${(Number(event.confidence) * 100).toFixed(1)}%` : "-",
+      event.speed_kph != null ? `${Number(event.speed_kph).toFixed(1)}` : "-",
     ].map(escapeCsv).join(","));
     return [headers.join(","), ...rows].join("\n");
   }
@@ -1871,10 +1875,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     let csvHtml = "";
     if (jobStatus === "completed" || jobStatus === "processed") {
       const csvStatus = payload.csv_status || "pending";
+      const completedSegments = payload.csv_segments_completed || 0;
+      const totalSegments = payload.csv_segment_count || 0;
+
       if (csvStatus === "processing") {
-        csvHtml = `<span class="badge badge-light-warning status-pill ms-2"><i class="ti ti-loader-2 ti-spin me-1" aria-hidden="true"></i>CSV: ${payload.csv_progress || 0}%</span>`;
+        const wizardText = totalSegments > 0 
+          ? `CSV Segment ${completedSegments + 1} of ${totalSegments}`
+          : `CSV Processing: ${payload.csv_progress || 0}%`;
+        csvHtml = `<span class="badge badge-light-warning status-pill ms-2"><i class="ti ti-loader-2 ti-spin me-1" aria-hidden="true"></i>${app.escapeHtml(wizardText)}</span>`;
       } else if (csvStatus === "completed") {
-        csvHtml = `<span class="badge badge-light-success status-pill ms-2"><i class="ti ti-check me-1" aria-hidden="true"></i>CSV Ready</span>`;
+        csvHtml = `<span class="badge badge-light-success status-pill ms-2"><i class="ti ti-check me-1" aria-hidden="true"></i>CSV Merged & Ready</span>`;
       } else if (csvStatus === "failed") {
         csvHtml = `<span class="badge badge-light-danger status-pill ms-2"><i class="ti ti-alert-triangle me-1" aria-hidden="true"></i>CSV Failed</span>`;
       } else {
@@ -1965,7 +1975,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const isCsvProcessing = jobStatus === "completed" && payload.csv_status === "processing";
     if (isRunning || isConverting || isCsvProcessing) {
       state.pollHandle = window.setInterval(loadAnalysis, 1200);
+    } else if (jobStatus === "completed" && payload.csv_status === "completed" && state.wasProcessingCsv) {
+      window.setTimeout(() => {
+        exportVisibleEventsToExcel();
+      }, 500);
     }
+    state.wasProcessingCsv = isCsvProcessing;
   }
 
   async function loadVideos() {

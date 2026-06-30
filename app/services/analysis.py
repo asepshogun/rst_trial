@@ -183,6 +183,7 @@ class ProcessConfig:
     truck_min_confidence: float
     iou_threshold: float
     save_annotated_video: bool
+    line_pair_distance_m: float
 
 
 def _get_stop_event(job_id: UUID, create: bool = False) -> Optional[threading.Event]:
@@ -421,6 +422,11 @@ def build_process_config(overrides: Optional[dict] = None) -> ProcessConfig:
             if overrides.get("save_annotated_video") is not None
             else settings.save_annotated_video
         ),
+        line_pair_distance_m=float(
+            overrides.get("line_pair_distance_m")
+            if overrides.get("line_pair_distance_m") is not None
+            else 5.0
+        ),
     )
 
 
@@ -504,6 +510,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             "truck_min_confidence": config.truck_min_confidence,
             "iou_threshold": config.iou_threshold,
             "save_annotated_video": config.save_annotated_video,
+            "line_pair_distance_m": config.line_pair_distance_m,
         }
         job.summary_json = _build_summary({}, 0, 0, 0, master_class_lookup=master_class_lookup)
         video.status = VIDEO_STATUS_PROCESSING
@@ -1107,6 +1114,10 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             frame_height=max(source_height, 1),
             fps=fps,
         )
+        report_events = _compute_vehicle_speeds(
+            report_events,
+            line_pair_distance_m=config.line_pair_distance_m,
+        )
         report_events, counts_by_golongan = _persist_vehicle_events(
             db,
             video=video,
@@ -1248,6 +1259,22 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
 
             cleanup_inline_segment_files(job.id, _flushed_segment_count)
         except Exception:
+            pass
+
+        try:
+            speed_csv_path = _export_speed_csv(
+                report_events,
+                video=video,
+                line_pair_distance_m=config.line_pair_distance_m,
+                out_dir=settings.storage_root / "speed_csv",
+            )
+            if speed_csv_path:
+                print(f"[analysis] wrote speed CSV: {speed_csv_path}")
+        except Exception:
+            pass
+        try:
+            finish_preview(job_id)
+        except OSError:
             pass
     except AnalysisStopRequested:
         db.rollback()
@@ -2646,3 +2673,100 @@ def _resolve_source_label(names, class_id: int) -> str:
     if isinstance(names, list) and 0 <= class_id < len(names):
         return str(names[class_id])
     return str(class_id)
+
+
+def _compute_vehicle_speeds(
+    events: list[dict],
+    *,
+    line_pair_distance_m: float,
+    min_speed_kph: float = 1.0,
+    max_speed_kph: float = 200.0,
+) -> list[dict]:
+    """Estimate per-vehicle speed from the time gap between its two line crossings."""
+    if line_pair_distance_m <= 0:
+        return events
+
+    crossings_by_track: dict[int, list[dict]] = {}
+    for event in events:
+        track_id = event.get("track_id")
+        if track_id is None or event.get("synthesized"):
+            continue
+        crossings_by_track.setdefault(int(track_id), []).append(event)
+
+    for track_events in crossings_by_track.values():
+        earliest_per_line: dict[int, dict] = {}
+        for event in track_events:
+            order = event.get("count_line_order")
+            if order is None:
+                continue
+            order = int(order)
+            current = earliest_per_line.get(order)
+            if current is None or float(event.get("crossed_at_seconds") or 0.0) < float(
+                current.get("crossed_at_seconds") or 0.0
+            ):
+                earliest_per_line[order] = event
+        if len(earliest_per_line) < 2:
+            continue
+
+        ordered = sorted(
+            earliest_per_line.values(),
+            key=lambda event: float(event.get("crossed_at_seconds") or 0.0),
+        )
+        first_event, last_event = ordered[0], ordered[-1]
+        delta_seconds = float(last_event.get("crossed_at_seconds") or 0.0) - float(
+            first_event.get("crossed_at_seconds") or 0.0
+        )
+        if delta_seconds <= 0:
+            continue
+
+        speed_kph = (line_pair_distance_m / delta_seconds) * 3.6
+        if speed_kph < min_speed_kph or speed_kph > max_speed_kph:
+            continue
+        speed_kph = round(speed_kph, 1)
+        first_event["speed_kph"] = speed_kph
+        last_event["speed_kph"] = speed_kph
+
+    return events
+
+
+def _export_speed_csv(events: list[dict], *, video, line_pair_distance_m: float, out_dir) -> Optional[str]:
+    """Write one per-vehicle speed CSV for a finished job. Returns the path, or None."""
+    if line_pair_distance_m <= 0:
+        return None
+
+    import csv as _csv
+    from pathlib import Path as _Path
+
+    rows_by_track: dict[int, dict] = {}
+    for event in events:
+        if event.get("speed_kph") is None or event.get("track_id") is None:
+            continue
+        track_id = int(event["track_id"])
+        existing = rows_by_track.get(track_id)
+        if existing is None or float(event.get("crossed_at_seconds") or 0.0) < float(
+            existing.get("crossed_at_seconds") or 0.0
+        ):
+            rows_by_track[track_id] = event
+    if not rows_by_track:
+        return None
+
+    out_path = _Path(out_dir)
+    out_path.mkdir(parents=True, exist_ok=True)
+    original_name = getattr(video, "original_filename", None) or str(video.id)
+    stem = _Path(original_name).stem
+    safe_stem = "".join(c if (c.isalnum() or c in "-_") else "_" for c in stem)[:60]
+    csv_path = out_path / f"{safe_stem}__{str(video.id)[:8]}_speeds.csv"
+
+    with open(csv_path, "w", newline="", encoding="utf-8") as handle:
+        writer = _csv.writer(handle)
+        writer.writerow(["video_file", "track_id", "vehicle_class", "golongan_code", "crossed_at_seconds", "speed_kph"])
+        for track_id, event in sorted(rows_by_track.items(), key=lambda kv: float(kv[1].get("crossed_at_seconds") or 0.0)):
+            writer.writerow([
+                original_name,
+                track_id,
+                event.get("vehicle_class"),
+                event.get("golongan_code"),
+                round(float(event.get("crossed_at_seconds") or 0.0), 3),
+                event.get("speed_kph"),
+            ])
+    return str(csv_path)

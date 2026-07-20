@@ -66,6 +66,7 @@ class DetectionSettingsRead(ORMModel):
     preview_max_width: int = Field(ge=0, le=3840)
     preview_jpeg_quality: int = Field(ge=30, le=95)
     model_path: Optional[str] = None
+    csv_flush_mode: str = "concurrent"
     created_at: datetime
     updated_at: datetime
 
@@ -84,6 +85,7 @@ class DetectionSettingsUpdate(BaseModel):
     preview_max_width: int = Field(ge=0, le=3840)
     preview_jpeg_quality: int = Field(ge=30, le=95)
     model_path: Optional[str] = None
+    csv_flush_mode: Optional[str] = Field(default=None, pattern="^(concurrent|linear)$")
 
 
 class GpuAuditRuntimeRead(BaseModel):

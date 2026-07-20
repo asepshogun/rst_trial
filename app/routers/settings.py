@@ -337,6 +337,8 @@ def update_detection_settings(
     settings_row.preview_jpeg_quality = payload.preview_jpeg_quality
     if payload.model_path is not None:
         settings_row.model_path = payload.model_path.strip() or "yolov8s.pt"
+    if payload.csv_flush_mode is not None:
+        settings_row.csv_flush_mode = payload.csv_flush_mode
     db.commit()
     db.refresh(settings_row)
     return DetectionSettingsRead.model_validate(settings_row)

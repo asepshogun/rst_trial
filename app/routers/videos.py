@@ -221,6 +221,7 @@ def _serialize_vehicle_event(row: VehicleEvent, master_class_map: dict[str, str]
         "crossed_at_seconds": row.crossed_at_seconds,
         "crossed_at_frame": row.crossed_at_frame,
         "confidence": row.confidence,
+        "speed_kph": row.speed_kph,
         "created_at": row.created_at,
     }
     return VideoEventRead.model_validate(payload)

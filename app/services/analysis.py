@@ -184,6 +184,7 @@ class ProcessConfig:
     iou_threshold: float
     save_annotated_video: bool
     line_pair_distance_m: float
+    csv_flush_mode: str
 
 
 def _get_stop_event(job_id: UUID, create: bool = False) -> Optional[threading.Event]:
@@ -427,6 +428,11 @@ def build_process_config(overrides: Optional[dict] = None) -> ProcessConfig:
             if overrides.get("line_pair_distance_m") is not None
             else 5.0
         ),
+        csv_flush_mode=str(
+            overrides.get("csv_flush_mode")
+            if overrides.get("csv_flush_mode") is not None
+            else settings.csv_flush_mode
+        ),
     )
 
 
@@ -511,6 +517,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             "iou_threshold": config.iou_threshold,
             "save_annotated_video": config.save_annotated_video,
             "line_pair_distance_m": config.line_pair_distance_m,
+            "csv_flush_mode": config.csv_flush_mode,
         }
         job.summary_json = _build_summary({}, 0, 0, 0, master_class_lookup=master_class_lookup)
         video.status = VIDEO_STATUS_PROCESSING
@@ -1066,38 +1073,83 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 )
                 db.commit()
 
-            # --- Inline CSV segment flush at time boundary ---
             _current_video_seconds = float(frame_number / fps)
             if _current_video_seconds >= _next_segment_boundary:
                 db.commit()  # ensure all pending events are persisted
-                try:
-                    _seg_time_start = _next_segment_boundary - _segment_duration
-                    _seg_path, _seg_rows = write_inline_segment_csv(
-                        db,
-                        job_id=job.id,
-                        video_id=video.id,
-                        site_name=_site_name,
-                        site_id_str=_site_id_str,
-                        video_filename=_video_filename,
-                        recorded_at_str=_recorded_at_str,
-                        segment_index=_flushed_segment_count,
-                        time_start=_seg_time_start,
-                        time_end=_next_segment_boundary,
-                    )
-                    _flushed_segment_count += 1
-                    _segment_total_rows += _seg_rows
+                _seg_time_start = _next_segment_boundary - _segment_duration
+                _flush_args = (
+                    job.id, video.id, _site_name, _site_id_str, _video_filename, _recorded_at_str,
+                    _flushed_segment_count, _seg_time_start, _next_segment_boundary,
+                    _flushed_segment_count + 1
+                )
 
-                    _merged_path = merge_inline_segments(job.id, _flushed_segment_count)
+                if config.csv_flush_mode == "linear":
+                    try:
+                        _seg_path, _seg_rows = write_inline_segment_csv(
+                            db,
+                            job_id=job.id,
+                            video_id=video.id,
+                            site_name=_site_name,
+                            site_id_str=_site_id_str,
+                            video_filename=_video_filename,
+                            recorded_at_str=_recorded_at_str,
+                            segment_index=_flushed_segment_count,
+                            time_start=_seg_time_start,
+                            time_end=_next_segment_boundary,
+                        )
+                        _merged_path = merge_inline_segments(job.id, _flushed_segment_count + 1)
+                        _csv_report.segments_completed = _flushed_segment_count + 1
+                        _csv_report.total_rows = (_csv_report.total_rows or 0) + _seg_rows
+                        _csv_report.csv_relative_path = _merged_path.relative_to(settings.storage_root).as_posix()
+                        db.commit()
+                    except Exception as e:
+                        import logging as _log
+                        _log.getLogger(__name__).error("Linear CSV flush failed: %s", e)
+                else:
+                    def _async_inline_flush(
+                        j_id, v_id, s_name, s_id_str, v_filename, rec_at_str,
+                        seg_idx, t_start, t_end, segs_completed
+                    ):
+                        from app.database import SessionLocal
+                        from app.services.csv_pipeline import write_inline_segment_csv, merge_inline_segments
+                        from app.models import CsvReport
+                        from sqlalchemy import select
+                        from app.config import get_settings
+                        _settings = get_settings()
+                        local_db = SessionLocal()
+                        try:
+                            _seg_path, _seg_rows = write_inline_segment_csv(
+                                local_db,
+                                job_id=j_id,
+                                video_id=v_id,
+                                site_name=s_name,
+                                site_id_str=s_id_str,
+                                video_filename=v_filename,
+                                recorded_at_str=rec_at_str,
+                                segment_index=seg_idx,
+                                time_start=t_start,
+                                time_end=t_end,
+                            )
+                            _merged_path = merge_inline_segments(j_id, segs_completed)
+                            _report = local_db.scalar(select(CsvReport).where(CsvReport.analysis_job_id == j_id))
+                            if _report:
+                                _report.segments_completed = segs_completed
+                                _report.total_rows = (_report.total_rows or 0) + _seg_rows
+                                _report.csv_relative_path = _merged_path.relative_to(_settings.storage_root).as_posix()
+                                local_db.commit()
+                        except Exception as e:
+                            import logging
+                            logging.getLogger(__name__).error("Async CSV flush failed: %s", e)
+                        finally:
+                            local_db.close()
 
-                    _csv_report.segments_completed = _flushed_segment_count
-                    _csv_report.total_rows = _segment_total_rows
-                    _csv_report.csv_relative_path = _merged_path.relative_to(
-                        settings.storage_root
-                    ).as_posix()
-                    db.commit()
-                except Exception:
-                    pass  # non-critical — analysis should continue even if CSV flush fails
+                    threading.Thread(
+                        target=_async_inline_flush,
+                        args=_flush_args,
+                        daemon=True,
+                    ).start()
 
+                _flushed_segment_count += 1
                 _next_segment_boundary += _segment_duration
 
         report_events = _build_report_events_from_overlay_frames(
@@ -1260,6 +1312,39 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             cleanup_inline_segment_files(job.id, _flushed_segment_count)
         except Exception:
             pass
+
+        import subprocess
+        import pandas as pd
+        from sqlalchemy.orm.attributes import flag_modified
+        try:
+            script_path = settings.storage_root.parent / "scripts" / "analyze_speeds.py"
+            speeds_csv_path = settings.storage_root.parent / "exports" / f"{job.id}_speeds.csv"
+            speeds_csv_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            summary = job.summary_json or {}
+            
+            if script_path.exists():
+                subprocess.run([
+                    "python", str(script_path), str(report_absolute_path),
+                    "--distance", str(config.line_pair_distance_m),
+                    "--csv", str(speeds_csv_path)
+                ], check=False)
+                summary["speed_script_status"] = "Success"
+            else:
+                summary["speed_script_status"] = "Script not found"
+
+            excel_path = settings.storage_root.parent / "exports" / f"{job.id}_analysis.xlsx"
+            if report_events:
+                df = pd.DataFrame(report_events)
+                df.to_excel(excel_path, index=False)
+                summary["auto_excel_export"] = str(excel_path)
+            
+            job.summary_json = summary
+            flag_modified(job, "summary_json")
+            db.commit()
+            print(f"[analysis] Auto-saved Excel to {excel_path} and ran speed script.")
+        except Exception as e:
+            print(f"[analysis] Failed to auto-save Excel or run script: {e}")
 
         try:
             speed_csv_path = _export_speed_csv(

@@ -105,6 +105,11 @@ class DetectionSettings(TimestampMixin, Base):
         nullable=True,
         default="yolov8s.pt",
     )
+    csv_flush_mode: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        default="concurrent",
+    )
 
 
 class MasterClass(TimestampMixin, Base):

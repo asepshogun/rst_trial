@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const workingMaxWidthInput = document.getElementById("workingMaxWidthInput");
   const previewMaxWidthInput = document.getElementById("previewMaxWidthInput");
   const previewJpegQualityInput = document.getElementById("previewJpegQualityInput");
+  const csvFlushModeSelect = document.getElementById("csvFlushModeSelect");
 
   let availableModels = [];
 
@@ -90,6 +91,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     workingMaxWidthInput.value = String(Number(payload.working_max_width || 0));
     previewMaxWidthInput.value = String(Number(payload.preview_max_width || 0));
     previewJpegQualityInput.value = String(Number(payload.preview_jpeg_quality || 70));
+    if (csvFlushModeSelect && payload.csv_flush_mode) {
+      csvFlushModeSelect.value = payload.csv_flush_mode;
+    }
   }
 
   function validateRange(label, value, min, max) {
@@ -152,6 +156,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       working_max_width: Number(workingMaxWidthInput.value || 0),
       preview_max_width: Number(previewMaxWidthInput.value || 0),
       preview_jpeg_quality: Number(previewJpegQualityInput.value || 0),
+      csv_flush_mode: csvFlushModeSelect ? csvFlushModeSelect.value : undefined,
     };
 
     const validationError = [

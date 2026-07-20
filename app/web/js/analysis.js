@@ -1891,11 +1891,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         csvHtml = `<span class="badge badge-light-secondary status-pill ms-2"><i class="ti ti-clock me-1" aria-hidden="true"></i>CSV Pending</span>`;
       }
     }
+    let speedHtml = "";
+    let excelHtml = "";
+    if (job && job.summary_json) {
+      if (job.summary_json.speed_script_status === "Success") {
+        speedHtml = `<span class="badge badge-light-info status-pill ms-2"><i class="ti ti-dashboard me-1" aria-hidden="true"></i>Speed Calc Done</span>`;
+      }
+      if (job.summary_json.auto_excel_export) {
+        excelHtml = `<span class="badge badge-light-success status-pill ms-2"><i class="ti ti-file-spreadsheet me-1" aria-hidden="true"></i>Excel Saved to Exports</span>`;
+      }
+    }
 
     statusText.innerHTML = `
       <span class="badge ${app.statusBadge(displayJobStatus)} status-pill me-2">${app.escapeHtml(displayJobStatus)}</span>
       <span class="soft-note">Video status: ${app.escapeHtml(video.status)}</span>
       ${csvHtml}
+      ${speedHtml}
+      ${excelHtml}
     `;
     setProgress(payload.progress_percent || 0);
     renderProcessingMeta();

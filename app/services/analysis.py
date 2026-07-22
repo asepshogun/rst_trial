@@ -14,6 +14,7 @@ from sqlalchemy.orm import joinedload
 
 from app.config import get_settings
 from app.constants import (
+    COCO_CLASS_TO_VEHICLE_CLASS,
     CSV_STATUS_COMPLETED,
     CSV_STATUS_FAILED,
     CSV_STATUS_PROCESSING,
@@ -29,11 +30,14 @@ from app.constants import (
     JOB_STATUS_PENDING,
     JOB_STATUS_PROCESSING,
     RAW_DETECTION_LABELS,
-    VEHICLE_CLASS_BICYCLE,
+    TRACKABLE_CLASS_IDS,
+    VEHICLE_CLASS_ANGKOT,
     VEHICLE_CLASS_BUS,
-    VEHICLE_CLASS_CAR,
-    VEHICLE_CLASS_MOTORCYCLE,
-    VEHICLE_CLASS_TRUCK,
+    VEHICLE_CLASS_MOBIL,
+    VEHICLE_CLASS_MOTOR,
+    VEHICLE_CLASS_PICKUP,
+    VEHICLE_CLASS_TR_2S,
+    VEHICLE_CLASS_TR_3S,
     VIDEO_STATUS_FAILED,
     VIDEO_STATUS_PROCESSING,
     VIDEO_STATUS_PROCESSED,
@@ -44,23 +48,28 @@ from app.models import AnalysisGolonganTotal, AnalysisJob, CountLine, CsvReport,
 from app.services.csv_pipeline import cleanup_inline_segment_files, merge_inline_segments, write_inline_segment_csv
 from app.services.live_preview import clear_preview, delete_preview_artifacts, finish_preview, publish_preview_frame, start_preview
 from app.services.master_classes import build_master_class_lookup, get_or_create_master_classes
-from app.services.model_adapter import detect_model_type, get_motorcycle_class_id, get_trackable_class_ids, map_class_to_vehicle
+
 from app.services.storage import delete_relative_file, ensure_storage_layout
 from app.services.vehicle_classification import classify_vehicle
 from app.services.video_conversion import resolve_analysis_video_path
 
 CLASS_MIN_AREA_RATIO = {
-    VEHICLE_CLASS_BICYCLE: 0.000008,
-    VEHICLE_CLASS_MOTORCYCLE: 0.000008,
-    VEHICLE_CLASS_CAR: 0.00018,
+    VEHICLE_CLASS_MOTOR: 0.000008,
+    VEHICLE_CLASS_MOBIL: 0.00018,
+    VEHICLE_CLASS_ANGKOT: 0.00018,
+    VEHICLE_CLASS_PICKUP: 0.00018,
     VEHICLE_CLASS_BUS: 0.00018,
-    VEHICLE_CLASS_TRUCK: 0.00035,
+    VEHICLE_CLASS_TR_2S: 0.00035,
+    VEHICLE_CLASS_TR_3S: 0.00035,
 }
 
 LARGE_VEHICLE_MIN_LONG_SIDE_RATIO = {
     VEHICLE_CLASS_BUS: 0.032,
-    VEHICLE_CLASS_TRUCK: 0.030,
+    VEHICLE_CLASS_TR_2S: 0.030,
+    VEHICLE_CLASS_TR_3S: 0.030,
 }
+
+MOTORCYCLE_SOURCE_CLASS_ID = 0
 
 ROAD_ROI_DEFAULT_TOP_RATIO = 0.06
 ROAD_ROI_CONTEXT_ABOVE_LINE_RATIO = 0.40
@@ -581,9 +590,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             )
 
         model = YOLO(config.model_path)
-        model_type = detect_model_type(model)
-        trackable_ids = get_trackable_class_ids(model_type)
-        motorcycle_class_id = get_motorcycle_class_id(model_type)
+        trackable_ids = list(TRACKABLE_CLASS_IDS)
         supplemental_motorcycle_model = YOLO(config.model_path) if motorcycle_focus_rois else None
         inference_device = _resolve_inference_device(config.inference_device)
         try:
@@ -609,7 +616,6 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             "working_resolution": {"width": working_width, "height": working_height},
             "analysis_roi": analysis_roi.to_summary(),
             "small_object_strategy": "road_roi_plus_motorcycle_focus_tiles",
-            "model_type": model_type.value,
             "motorcycle_focus_rois": [roi.to_summary() for roi in motorcycle_focus_rois],
             "inference_imgsz": config.inference_imgsz,
             "inference_device": inference_device,
@@ -622,19 +628,23 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             },
             "raw_detection_total": 0,
             "raw_detection_by_class": {
-                VEHICLE_CLASS_MOTORCYCLE: 0,
-                VEHICLE_CLASS_CAR: 0,
+                VEHICLE_CLASS_MOTOR: 0,
+                VEHICLE_CLASS_MOBIL: 0,
+                VEHICLE_CLASS_ANGKOT: 0,
+                VEHICLE_CLASS_PICKUP: 0,
                 VEHICLE_CLASS_BUS: 0,
-                VEHICLE_CLASS_TRUCK: 0,
-                VEHICLE_CLASS_BICYCLE: 0,
+                VEHICLE_CLASS_TR_2S: 0,
+                VEHICLE_CLASS_TR_3S: 0,
             },
             "accepted_detection_total": 0,
             "accepted_detection_by_class": {
-                VEHICLE_CLASS_MOTORCYCLE: 0,
-                VEHICLE_CLASS_CAR: 0,
+                VEHICLE_CLASS_MOTOR: 0,
+                VEHICLE_CLASS_MOBIL: 0,
+                VEHICLE_CLASS_ANGKOT: 0,
+                VEHICLE_CLASS_PICKUP: 0,
                 VEHICLE_CLASS_BUS: 0,
-                VEHICLE_CLASS_TRUCK: 0,
-                VEHICLE_CLASS_BICYCLE: 0,
+                VEHICLE_CLASS_TR_2S: 0,
+                VEHICLE_CLASS_TR_3S: 0,
             },
             "rejected_detection_total": 0,
             "rejected_detection_by_reason": {},
@@ -753,7 +763,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 performance_meta["raw_detection_total"] += len(track_ids)
 
                 for track_id, class_id, confidence, xyxy in zip(track_ids, class_ids, confidences, box_values):
-                    vehicle_class = map_class_to_vehicle(model_type, class_id)
+                    vehicle_class = COCO_CLASS_TO_VEHICLE_CLASS.get(class_id)
                     if not vehicle_class:
                         continue
                     performance_meta["raw_detection_by_class"][vehicle_class] = (
@@ -802,7 +812,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 focus_rois=motorcycle_focus_rois,
                 config=config,
                 inference_device=inference_device,
-                motorcycle_class_id=motorcycle_class_id,
+                motorcycle_class_id=MOTORCYCLE_SOURCE_CLASS_ID,
             )
             _prune_supplemental_motorcycle_tracks(supplemental_motorcycle_tracks, frame_number)
             performance_meta["supplemental_motorcycle_raw_total"] += len(supplemental_motorcycle_detections)
@@ -813,7 +823,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                     continue
 
                 rejection_reason = _detection_candidate_rejection_reason(
-                    vehicle_class=VEHICLE_CLASS_MOTORCYCLE,
+                    vehicle_class=VEHICLE_CLASS_MOTOR,
                     confidence=float(supplemental_detection["confidence"]),
                     bbox=raw_bbox,
                     frame_width=max(working_width, 1),
@@ -842,15 +852,15 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                     performance_meta["supplemental_motorcycle_track_matched_total"] += 1
 
                 performance_meta["accepted_detection_total"] += 1
-                performance_meta["accepted_detection_by_class"][VEHICLE_CLASS_MOTORCYCLE] = (
-                    int(performance_meta["accepted_detection_by_class"].get(VEHICLE_CLASS_MOTORCYCLE, 0)) + 1
+                performance_meta["accepted_detection_by_class"][VEHICLE_CLASS_MOTOR] = (
+                    int(performance_meta["accepted_detection_by_class"].get(VEHICLE_CLASS_MOTOR, 0)) + 1
                 )
                 performance_meta["supplemental_motorcycle_accepted_total"] += 1
                 raw_frame_detections.append(
                     {
                         "track_id": int(track_id),
-                        "vehicle_class": VEHICLE_CLASS_MOTORCYCLE,
-                        "source_label": VEHICLE_CLASS_MOTORCYCLE,
+                        "vehicle_class": VEHICLE_CLASS_MOTOR,
+                        "source_label": VEHICLE_CLASS_MOTOR,
                         "confidence": float(supplemental_detection["confidence"]),
                         "bbox": raw_bbox,
                         "source": "motorcycle_focus_tile",
@@ -863,7 +873,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 len(supplemental_motorcycle_tracks),
             )
 
-            if any(detection["vehicle_class"] == VEHICLE_CLASS_MOTORCYCLE for detection in raw_frame_detections):
+            if any(detection["vehicle_class"] == VEHICLE_CLASS_MOTOR for detection in raw_frame_detections):
                 performance_meta["frames_with_motorcycle_detection"] += 1
 
             for raw_detection in raw_frame_detections:
@@ -1555,8 +1565,8 @@ def _collect_supplemental_motorcycle_detections(
             bbox = _translate_bbox_from_roi(tuple(float(value) for value in xyxy), focus_roi)
             detections.append(
                 {
-                    "vehicle_class": VEHICLE_CLASS_MOTORCYCLE,
-                    "source_label": VEHICLE_CLASS_MOTORCYCLE,
+                    "vehicle_class": VEHICLE_CLASS_MOTOR,
+                    "source_label": VEHICLE_CLASS_MOTOR,
                     "confidence": float(confidence),
                     "bbox": bbox,
                     "source": "motorcycle_focus_tile",
@@ -1662,9 +1672,9 @@ def _is_duplicate_supplemental_motorcycle_detection(
         iou = _bbox_iou(bbox, accepted_bbox)
         if iou >= 0.38:
             return True
-        if accepted_vehicle_class == VEHICLE_CLASS_MOTORCYCLE and _bbox_contains_point(accepted_bbox, center):
+        if accepted_vehicle_class == VEHICLE_CLASS_MOTOR and _bbox_contains_point(accepted_bbox, center):
             return True
-        if accepted_vehicle_class != VEHICLE_CLASS_MOTORCYCLE:
+        if accepted_vehicle_class != VEHICLE_CLASS_MOTOR:
             accepted_area = max(_bbox_area(accepted_bbox), 1.0)
             if iou >= 0.22 and supplemental_area >= accepted_area * 0.55:
                 return True
@@ -1756,13 +1766,13 @@ def _resolve_detection_label(vehicle_type_code: str, vehicle_type_label: str, ve
 
 
 def _resolve_class_min_confidence(vehicle_class: str, config: ProcessConfig) -> float:
-    if vehicle_class in {VEHICLE_CLASS_BICYCLE, VEHICLE_CLASS_MOTORCYCLE}:
+    if vehicle_class == VEHICLE_CLASS_MOTOR:
         return max(config.confidence_threshold, config.motorcycle_min_confidence)
-    if vehicle_class == VEHICLE_CLASS_CAR:
+    if vehicle_class in {VEHICLE_CLASS_MOBIL, VEHICLE_CLASS_ANGKOT, VEHICLE_CLASS_PICKUP}:
         return max(config.confidence_threshold, config.car_min_confidence)
     if vehicle_class == VEHICLE_CLASS_BUS:
         return max(config.confidence_threshold, config.bus_min_confidence)
-    if vehicle_class == VEHICLE_CLASS_TRUCK:
+    if vehicle_class in {VEHICLE_CLASS_TR_2S, VEHICLE_CLASS_TR_3S}:
         return max(config.confidence_threshold, config.truck_min_confidence)
     return config.confidence_threshold
 
@@ -1794,11 +1804,13 @@ def _detection_evidence_score(
     area_term = 0.78 + min(math.sqrt(normalized_area / 0.01), 1.0) * 0.28
     confidence_term = 0.45 + (max(float(confidence), 0.01) * 0.95)
     class_bias = {
-        VEHICLE_CLASS_MOTORCYCLE: 1.22,
-        VEHICLE_CLASS_BICYCLE: 1.06,
-        VEHICLE_CLASS_CAR: 1.0,
+        VEHICLE_CLASS_MOTOR: 1.22,
+        VEHICLE_CLASS_MOBIL: 1.0,
+        VEHICLE_CLASS_ANGKOT: 1.0,
+        VEHICLE_CLASS_PICKUP: 1.0,
         VEHICLE_CLASS_BUS: 1.0,
-        VEHICLE_CLASS_TRUCK: 1.0,
+        VEHICLE_CLASS_TR_2S: 1.0,
+        VEHICLE_CLASS_TR_3S: 1.0,
     }.get(vehicle_class, 1.0)
     continuity_term = 1.0
     if previous_bbox is not None:
@@ -1865,11 +1877,13 @@ def _draw_detection_boxes(
     import cv2
 
     class_colors = {
-        VEHICLE_CLASS_MOTORCYCLE: (0, 221, 109),
-        VEHICLE_CLASS_CAR: (82, 184, 255),
+        VEHICLE_CLASS_MOTOR: (0, 221, 109),
+        VEHICLE_CLASS_MOBIL: (82, 184, 255),
+        VEHICLE_CLASS_ANGKOT: (255, 165, 0),
+        VEHICLE_CLASS_PICKUP: (186, 107, 255),
         VEHICLE_CLASS_BUS: (87, 88, 255),
-        VEHICLE_CLASS_TRUCK: (0, 192, 255),
-        VEHICLE_CLASS_BICYCLE: (186, 107, 255),
+        VEHICLE_CLASS_TR_2S: (0, 192, 255),
+        VEHICLE_CLASS_TR_3S: (255, 77, 77),
     }
 
     for detection in detections:
@@ -1877,7 +1891,7 @@ def _draw_detection_boxes(
         y1 = int(round(float(detection["y1"]) * max(frame_height, 1)))
         x2 = int(round(float(detection["x2"]) * max(frame_width, 1)))
         y2 = int(round(float(detection["y2"]) * max(frame_height, 1)))
-        vehicle_class = str(detection.get("vehicle_class") or "").strip().lower()
+        vehicle_class = str(detection.get("vehicle_class") or "").strip()
         color = class_colors.get(vehicle_class, (82, 184, 255))
         cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
 
@@ -1949,8 +1963,8 @@ def _combined_track_class_score(
 
 
 def _track_class_switch_margin(current_class: str, candidate_class: str) -> float:
-    large_classes = {VEHICLE_CLASS_BUS, VEHICLE_CLASS_TRUCK}
-    small_vehicle_classes = {VEHICLE_CLASS_MOTORCYCLE, VEHICLE_CLASS_BICYCLE}
+    large_classes = {VEHICLE_CLASS_BUS, VEHICLE_CLASS_TR_2S, VEHICLE_CLASS_TR_3S}
+    small_vehicle_classes = {VEHICLE_CLASS_MOTOR}
     if current_class in large_classes and candidate_class in small_vehicle_classes:
         return TRACK_LARGE_TO_MOTORCYCLE_SWITCH_MARGIN
     if current_class in small_vehicle_classes and candidate_class in large_classes:
@@ -2296,7 +2310,7 @@ def _build_track_profiles_from_overlay_frames(
             if track_id <= 0:
                 continue
 
-            vehicle_class = str(detection.get("vehicle_class") or "").strip().lower()
+            vehicle_class = str(detection.get("vehicle_class") or "").strip()
             if not vehicle_class:
                 continue
 
@@ -2332,7 +2346,7 @@ def _build_track_profiles_from_overlay_frames(
         dominant_vehicle_class = _pick_dominant_track_class(
             state.class_scores,
             state.class_reference_scores,
-            state.reference_vehicle_class or VEHICLE_CLASS_CAR,
+            state.reference_vehicle_class or VEHICLE_CLASS_MOBIL,
         )
         dominant_bbox = state.class_reference_boxes.get(dominant_vehicle_class)
         if dominant_bbox is None:

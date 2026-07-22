@@ -105,7 +105,7 @@ def get_settings() -> Settings:
         csv_segment_duration_seconds=max(_as_int(os.getenv("CSV_SEGMENT_DURATION_SECONDS"), 60), 10),
         analysis_segment_duration_seconds=max(_as_int(os.getenv("ANALYSIS_SEGMENT_DURATION_SECONDS"), 900), 60),
         csv_flush_mode=(os.getenv("CSV_FLUSH_MODE", "concurrent").strip().lower() if os.getenv("CSV_FLUSH_MODE", "concurrent").strip().lower() in ("concurrent", "linear") else "concurrent"),
-        default_model_path=os.getenv("DEFAULT_MODEL_PATH", "yolov8s.pt"),
+        default_model_path=os.getenv("DEFAULT_MODEL_PATH", "v7.pt"),
         default_tracker_config=os.getenv("DEFAULT_TRACKER_CONFIG", "bytetrack.yaml"),
         default_confidence=_as_float(os.getenv("DEFAULT_CONFIDENCE"), 0.12),
         default_iou=_as_float(os.getenv("DEFAULT_IOU"), 0.45),

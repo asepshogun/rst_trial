@@ -9,18 +9,13 @@ CREATE TABLE IF NOT EXISTS master_classes (
 
 INSERT INTO master_classes (code, label, description, sort_order)
 VALUES
-    ('1', 'Motorcycle / 3-wheel vehicle', 'Motorcycles and 3-wheel motor vehicles.', 1),
-    ('2', 'Sedan / jeep / station wagon', 'Sedans, jeeps, and station wagons.', 2),
-    ('3', 'Medium passenger vehicle', 'Medium passenger transport vehicles.', 3),
-    ('4', 'Pickup / micro truck / delivery', 'Pickups, micro trucks, and delivery vehicles.', 4),
-    ('5a', 'Small bus', 'Small buses.', 5),
-    ('5b', 'Large bus', 'Large buses.', 6),
-    ('6a', 'Light 2-axle truck', 'Light 2-axle trucks.', 7),
-    ('6b', 'Medium 2-axle truck', 'Medium 2-axle trucks.', 8),
-    ('7a', '3-axle truck', '3-axle trucks.', 9),
-    ('7b', 'Articulated truck', 'Articulated trucks.', 10),
-    ('7c', 'Semi-trailer truck', 'Semi-trailer trucks.', 11),
-    ('8', 'Non-motorized vehicle', 'Non-motorized vehicles.', 12)
+    ('1', 'Motorcycle', 'Motorcycles and two-wheeled vehicles.', 1),
+    ('2', 'Car / Sedan / SUV', 'Private cars, sedans, jeeps, and station wagons.', 2),
+    ('3', 'Angkutan Umum', 'Public transport passenger vehicles (Angkot).', 3),
+    ('4', 'Pickup / Micro Truck', 'Pickups and micro delivery trucks.', 4),
+    ('5', 'Bus', 'Buses and medium-to-large passenger buses.', 5),
+    ('6', '2-Axle Truck', 'Medium 2-axle cargo trucks.', 6),
+    ('7', '3-Axle Truck', 'Heavy 3-axle and large jumbo trucks.', 7)
 ON CONFLICT (code) DO UPDATE
 SET
     label = EXCLUDED.label,

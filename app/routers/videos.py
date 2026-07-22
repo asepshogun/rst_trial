@@ -269,7 +269,8 @@ def _ensure_video_thumbnail(video: VideoUpload) -> None:
 
 
 def _ensure_video_conversion_state(video: VideoUpload, *, auto_process: bool = False, force: bool = False) -> bool:
-    if not requires_video_conversion(video.stored_filename, video.mime_type):
+    absolute_path = get_settings().storage_root / video.relative_path
+    if not requires_video_conversion(video.stored_filename, video.mime_type, absolute_path):
         return False
 
     if is_video_conversion_ready(video):
@@ -447,7 +448,7 @@ def upload_video(
     saved_file = save_upload_file(file)
     generate_video_thumbnail(saved_file.absolute_path, saved_file.stored_filename)
     metadata = probe_video(saved_file.absolute_path)
-    requires_conversion = requires_video_conversion(saved_file.stored_filename, saved_file.mime_type)
+    requires_conversion = requires_video_conversion(saved_file.stored_filename, saved_file.mime_type, saved_file.absolute_path)
 
     video = VideoUpload(
         site_id=site.id,
@@ -541,7 +542,8 @@ def get_video_playback(
     if has_updates:
         db.commit()
         db.refresh(video)
-    if requires_video_conversion(video.stored_filename, video.mime_type) and not is_video_conversion_ready(video):
+    source_absolute_path = get_settings().storage_root / video.relative_path
+    if requires_video_conversion(video.stored_filename, video.mime_type, source_absolute_path) and not is_video_conversion_ready(video):
         raise HTTPException(status_code=409, detail="Video conversion is still running. Please wait until the MP4 playback file is ready.")
     absolute_path, media_type = _resolve_playback_file(video)
     return FileResponse(absolute_path, media_type=media_type)
@@ -677,7 +679,8 @@ def start_analysis(
         db.commit()
         db.refresh(video)
 
-    if requires_video_conversion(video.stored_filename, video.mime_type) and not is_video_conversion_ready(video):
+    source_absolute_path = get_settings().storage_root / video.relative_path
+    if requires_video_conversion(video.stored_filename, video.mime_type, source_absolute_path) and not is_video_conversion_ready(video):
         raise HTTPException(
             status_code=409,
             detail="Video conversion is still running. Please wait until the MP4 playback file is ready before starting analysis.",

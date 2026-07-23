@@ -254,6 +254,26 @@ def _cleanup_stopped_analysis(db, video_id: UUID, job_id: UUID) -> None:
     db.commit()
 
 
+def _to_standard_vehicle_class(raw_class: str) -> str:
+    raw_class = str(raw_class).strip()
+    if raw_class == VEHICLE_CLASS_MOTOR:
+        return "motorcycle"
+    if raw_class == VEHICLE_CLASS_BUS:
+        return "bus"
+    if raw_class in (VEHICLE_CLASS_TR_2S, VEHICLE_CLASS_TR_3S, VEHICLE_CLASS_PICKUP):
+        return "truck"
+    if raw_class in (VEHICLE_CLASS_MOBIL, VEHICLE_CLASS_ANGKOT):
+        return "car"
+    
+    lower = raw_class.lower()
+    if "motor" in lower: return "motorcycle"
+    if "bus" in lower: return "bus"
+    if "truck" in lower or "tr_" in lower or "pickup" in lower: return "truck"
+    if "sepeda" in lower or "bicycle" in lower: return "bicycle"
+    return "car"
+
+
+
 def _persist_vehicle_events(
     db,
     *,
@@ -964,7 +984,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                                     site_id=site.id,
                                     sequence_no=sequence_no,
                                     track_id=int(track_id),
-                                    vehicle_class=reference_vehicle_class,
+                                    vehicle_class=_to_standard_vehicle_class(reference_vehicle_class),
                                     detected_label=classification_result.raw_detected_label,
                                     vehicle_type_code=classification_result.vehicle_type_code,
                                     vehicle_type_label=classification_result.vehicle_type_label,
@@ -991,7 +1011,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                                 {
                                     "sequence_no": sequence_no,
                                     "track_id": int(track_id),
-                                    "vehicle_class": reference_vehicle_class,
+                                    "vehicle_class": _to_standard_vehicle_class(reference_vehicle_class),
                                     "detected_label": classification_result.raw_detected_label,
                                     "vehicle_type_code": classification_result.vehicle_type_code,
                                     "vehicle_type_label": classification_result.vehicle_type_label,
@@ -2474,7 +2494,7 @@ def _build_report_events_from_overlay_frames(
                     report_events.append(
                         {
                             "track_id": track_id,
-                            "vehicle_class": final_vehicle_class,
+                            "vehicle_class": _to_standard_vehicle_class(final_vehicle_class),
                             "detected_label": final_detected_label,
                             "vehicle_type_code": final_vehicle_type_code,
                             "vehicle_type_label": final_vehicle_type_label,

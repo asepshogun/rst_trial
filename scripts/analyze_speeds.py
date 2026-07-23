@@ -37,6 +37,9 @@ def pct(sorted_vals, p):
 
 
 def main() -> int:
+    print("123123132123132131231321312312")
+    print("123123132123132131231321312312")
+    print("123123132123132131231321312312")
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("report", help="path to an analysis report JSON")
     ap.add_argument("--distance", type=float, required=True, help="distance between the two lines, in meters")
@@ -104,6 +107,7 @@ def main() -> int:
             dropped += 1
             continue
         rows.append((tid, e1.get("vehicle_class"), e1.get("golongan_code"), round(t1, 3), round(t2, 3), round(dt, 3), round(speed, 1)))
+        print((tid, e1.get("vehicle_class"), e1.get("golongan_code"), round(t1, 3), round(t2, 3), round(dt, 3), round(speed, 1))) ## t1-t2-dt-speed
 
     if not rows:
         print("No vehicles crossed both lines with a valid time gap. Check that this report has two lines.")

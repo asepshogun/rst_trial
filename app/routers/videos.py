@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 from datetime import datetime, timezone
 from typing import Optional
 from uuid import UUID
@@ -878,4 +879,56 @@ def get_analysis_preview_frame(
             "X-Frame-Sequence": str(frame_sequence),
             "X-Preview-Finished": "1" if is_finished else "0",
         },
+    )
+
+
+@router.get("/{video_id}/analysis/excel-export")
+def download_analysis_excel(
+    video_id: UUID,
+    _: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    video = db.scalar(_video_query().where(VideoUpload.id == video_id))
+    if not video:
+        raise HTTPException(status_code=404, detail="Video not found")
+    if not video.analysis_job:
+        raise HTTPException(status_code=404, detail="Analysis job is not available yet")
+    
+    job = video.analysis_job
+    settings = get_settings()
+    report_path = settings.reports_dir / f"{job.id}.json"
+    if not report_path.exists():
+        raise HTTPException(status_code=404, detail="Analysis report not found. Has the analysis finished successfully?")
+        
+    script_path = settings.storage_root.parent / "scripts" / "analyze_speeds.py"
+    if not script_path.exists():
+        raise HTTPException(status_code=500, detail="Speed analysis script not found")
+        
+    distance = 5.0
+    if job.config_json and "line_pair_distance_m" in job.config_json:
+        distance = job.config_json["line_pair_distance_m"]
+        
+    out_excel_path = settings.storage_root.parent / "exports" / f"{job.id}_manual_export.xls"
+    out_excel_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    video_name = video.original_filename or str(video.id)
+    
+    try:
+        subprocess.run([
+            "python", str(script_path), str(report_path),
+            "--distance", str(distance),
+            "--excel", str(out_excel_path),
+            "--video-name", video_name,
+            "--manual-export"
+        ], check=True)
+    except subprocess.CalledProcessError:
+        raise HTTPException(status_code=500, detail="Failed to generate Excel. Check server logs.")
+        
+    if not out_excel_path.exists():
+        raise HTTPException(status_code=500, detail="Failed to generate Excel. File was not created.")
+        
+    return FileResponse(
+        path=out_excel_path,
+        media_type="application/vnd.ms-excel",
+        filename=f"detected_vehicles_{video_name}.xls"
     )

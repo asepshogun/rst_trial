@@ -1321,16 +1321,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         typeof overlayMath.mapNormalizedPointToDisplay === "function"
           ? overlayMath.mapNormalizedPointToDisplay({ x: line.start_x, y: line.start_y }, contentBox)
           : {
-              x: contentBox.left + Number(line.start_x || 0) * contentBox.width,
-              y: contentBox.top + Number(line.start_y || 0) * contentBox.height,
-            };
+            x: contentBox.left + Number(line.start_x || 0) * contentBox.width,
+            y: contentBox.top + Number(line.start_y || 0) * contentBox.height,
+          };
       const endPoint =
         typeof overlayMath.mapNormalizedPointToDisplay === "function"
           ? overlayMath.mapNormalizedPointToDisplay({ x: line.end_x, y: line.end_y }, contentBox)
           : {
-              x: contentBox.left + Number(line.end_x || 0) * contentBox.width,
-              y: contentBox.top + Number(line.end_y || 0) * contentBox.height,
-            };
+            x: contentBox.left + Number(line.end_x || 0) * contentBox.width,
+            y: contentBox.top + Number(line.end_y || 0) * contentBox.height,
+          };
       overlayContext.save();
       overlayContext.strokeStyle = colors[index % colors.length];
       overlayContext.lineWidth = 3;
@@ -1352,16 +1352,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         typeof overlayMath.mapNormalizedPointToDisplay === "function"
           ? overlayMath.mapNormalizedPointToDisplay({ x: line.start_x, y: line.start_y }, contentBox)
           : {
-              x: contentBox.left + Number(line.start_x || 0) * contentBox.width,
-              y: contentBox.top + Number(line.start_y || 0) * contentBox.height,
-            };
+            x: contentBox.left + Number(line.start_x || 0) * contentBox.width,
+            y: contentBox.top + Number(line.start_y || 0) * contentBox.height,
+          };
       const endPoint =
         typeof overlayMath.mapNormalizedPointToDisplay === "function"
           ? overlayMath.mapNormalizedPointToDisplay({ x: line.end_x, y: line.end_y }, contentBox)
           : {
-              x: contentBox.left + Number(line.end_x || 0) * contentBox.width,
-              y: contentBox.top + Number(line.end_y || 0) * contentBox.height,
-            };
+            x: contentBox.left + Number(line.end_x || 0) * contentBox.width,
+            y: contentBox.top + Number(line.end_y || 0) * contentBox.height,
+          };
       overlayContext.save();
       overlayContext.strokeStyle = colors[index % colors.length];
       overlayContext.lineWidth = 3;
@@ -1381,22 +1381,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       const box =
         typeof overlayMath.mapNormalizedRectToDisplay === "function"
           ? overlayMath.mapNormalizedRectToDisplay(
-              {
-                x1: detection.x1,
-                y1: detection.y1,
-                x2: detection.x2,
-                y2: detection.y2,
-              },
-              contentBox,
-            )
+            {
+              x1: detection.x1,
+              y1: detection.y1,
+              x2: detection.x2,
+              y2: detection.y2,
+            },
+            contentBox,
+          )
           : {
-              x1: contentBox.left + Number(detection.x1 || 0) * contentBox.width,
-              y1: contentBox.top + Number(detection.y1 || 0) * contentBox.height,
-              x2: contentBox.left + Number(detection.x2 || 0) * contentBox.width,
-              y2: contentBox.top + Number(detection.y2 || 0) * contentBox.height,
-              width: Math.max((Number(detection.x2 || 0) - Number(detection.x1 || 0)) * contentBox.width, 1),
-              height: Math.max((Number(detection.y2 || 0) - Number(detection.y1 || 0)) * contentBox.height, 1),
-            };
+            x1: contentBox.left + Number(detection.x1 || 0) * contentBox.width,
+            y1: contentBox.top + Number(detection.y1 || 0) * contentBox.height,
+            x2: contentBox.left + Number(detection.x2 || 0) * contentBox.width,
+            y2: contentBox.top + Number(detection.y2 || 0) * contentBox.height,
+            width: Math.max((Number(detection.x2 || 0) - Number(detection.x1 || 0)) * contentBox.width, 1),
+            height: Math.max((Number(detection.y2 || 0) - Number(detection.y1 || 0)) * contentBox.height, 1),
+          };
       const x1 = box.x1;
       const y1 = box.y1;
       const width = box.width;
@@ -1696,7 +1696,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 </head>
 <body>
   <table class="meta">
-    <tr><td class="title" colspan="2">Detected Vehicles Export</td></tr>
+    <tr><td class="title" colspan="2">Detected Vehicles Speed Export</td></tr>
     <tr><td><strong>Video</strong></td><td>${safeExcelCell((video && (displayPlaybackFilename(video) || video.original_filename)) || "-")}</td></tr>
     <tr><td><strong>Description</strong></td><td>${safeExcelCell((video && video.description) || "-")}</td></tr>
     <tr><td><strong>Line</strong></td><td>${safeExcelCell(lineLabel)}</td></tr>
@@ -1739,19 +1739,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const html = buildExcelHtml(events);
-    const blob = new Blob(["\ufeff", html], {
-      type: "application/vnd.ms-excel;charset=utf-8",
-    });
-    const downloadUrl = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = downloadUrl;
-    link.download = buildExportFileName();
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
-    app.setAlert(alertBox, "success", "Detected vehicle data exported to Excel");
+    window.location.href = `/api/videos/${state.selectedVideoId}/analysis/excel-export`;
+    app.setAlert(alertBox, "success", "Starting Excel download...");
   }
 
   function buildCsvContent(events) {
@@ -2171,7 +2160,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         deviceSelectorWrap.classList.remove("hidden");
       }
-    } catch (_ignored) {}
+    } catch (_ignored) { }
   }
 
   try {

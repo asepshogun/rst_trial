@@ -27,8 +27,9 @@ Notes
   time is estimated, not measured.
 """
 from __future__ import annotations
-import argparse, json, statistics, csv, sys
+import argparse, json, statistics, csv, sys, html
 from collections import defaultdict
+from datetime import datetime
 
 
 def pct(sorted_vals, p):
@@ -49,6 +50,9 @@ def main() -> int:
     ap.add_argument("--fps", type=float, default=None, help="source fps, for the uncertainty note (auto-read if omitted)")
     ap.add_argument("--csv", default=None, help="optional output CSV of per-vehicle speeds")
     ap.add_argument("--excel", default=None, help="optional output Excel of per-vehicle speeds")
+    ap.add_argument("--video-name", default=None, help="video filename for the Excel meta header")
+    ap.add_argument("--manual-export", action="store_true", default=False,
+                     help="if set, 'Exported At' shows the current timestamp; otherwise it is left blank (auto-generated)")
     args = ap.parse_args()
 
     if args.distance <= 0:
@@ -96,107 +100,177 @@ def main() -> int:
             t = float(e.get("crossed_at_seconds") or 0.0)
             if o not in earliest_per_line or t < earliest_per_line[o][0]:
                 earliest_per_line[o] = (t, e)
-        if len(earliest_per_line) < 2:
+                
+        if not earliest_per_line:
             continue
-        ordered = sorted(earliest_per_line.values(), key=lambda x: x[0])
-        t1, e1 = ordered[0]
-        t2, e2 = ordered[-1]
-        dt = t2 - t1
-        if dt <= 0:
-            continue
-        speed = args.distance / dt * 3.6
-        if speed < args.min_kph or speed > args.max_kph:
-            dropped += 1
-            continue
-        detected_type = e1.get("vehicle_type_label") or e1.get("detected_label") or e1.get("source_label") or e1.get("vehicle_class") or "-"
-        class_code = str(e1.get("golongan_code") or "-")
-        class_label = e1.get("golongan_label") or "-"
-        direction = e1.get("direction") or "-"
+            
+        t1_val = earliest_per_line.get(1, (None, None))[0]
+        t2_val = earliest_per_line.get(2, (None, None))[0]
         
-        conf = e1.get("confidence")
+        ordered = sorted(earliest_per_line.values(), key=lambda x: x[0])
+        _, e_main = ordered[0]
+        
+        dt = None
+        speed = None
+        
+        first_t, _ = ordered[0]
+        last_t, _ = ordered[-1]
+        dt_calc = last_t - first_t
+        if dt_calc > 0:
+            speed_calc = args.distance / dt_calc * 3.6
+            if args.min_kph <= speed_calc <= args.max_kph:
+                dt = dt_calc
+                speed = speed_calc
+            else:
+                dropped += 1
+                
+        detected_type = e_main.get("vehicle_type_label") or e_main.get("detected_label") or e_main.get("source_label") or e_main.get("vehicle_class") or "-"
+        class_code = str(e_main.get("golongan_code") or "-")
+        class_label = e_main.get("golongan_label") or "-"
+        direction = e_main.get("direction") or "-"
+        
+        conf = e_main.get("confidence")
         confidence_str = f"{float(conf)*100:.1f}%" if conf is not None else "-"
         
         rows.append((
             tid, detected_type, class_code, class_label, direction, confidence_str,
-            round(t1, 3), round(t2, 3), round(dt, 3), round(speed, 1)
+            round(t1_val, 3) if t1_val is not None else None, 
+            round(t2_val, 3) if t2_val is not None else None, 
+            round(dt, 3) if dt is not None else None, 
+            round(speed, 1) if speed is not None else None
         ))
-        # Uncomment below if you want console spam:
-        # print((tid, detected_type, class_code, class_label, direction, confidence_str, round(t1, 3), round(t2, 3), round(dt, 3), round(speed, 1)))
 
     if not rows:
-        print("No vehicles crossed both lines with a valid time gap. Check that this report has two lines.")
+        print("No vehicles crossed any lines. Check the report data.")
         return 1
 
-    speeds = sorted(r[9] for r in rows)
-    dts = sorted(r[8] for r in rows)
-    median_dt = statistics.median(dts)
-    frame_dt = 1.0 / max(fps, 1.0)
-    uncertainty_pct = 100.0 * frame_dt / max(median_dt, 1e-6)
+    speeds = sorted(r[9] for r in rows if r[9] is not None)
+    dts = sorted(r[8] for r in rows if r[8] is not None)
+    
+    if speeds and dts:
+        median_dt = statistics.median(dts)
+        frame_dt = 1.0 / max(fps, 1.0)
+        uncertainty_pct = 100.0 * frame_dt / max(median_dt, 1e-6)
+    
+        print("=" * 60)
+        print(f"SPEED SUMMARY  (distance between lines = {args.distance} m, fps = {fps:.2f})")
+        print("=" * 60)
+        print(f"total vehicles            : {len(rows)}")
+        print(f"vehicles with a speed     : {len(speeds)}")
+        print(f"dropped as implausible    : {dropped}  (outside {args.min_kph}-{args.max_kph} km/h)")
+        print(f"\nspeed km/h: median={statistics.median(speeds):.1f}  mean={statistics.mean(speeds):.1f}")
+        print(f"           p10={pct(speeds,10):.0f}  p25={pct(speeds,25):.0f}  p75={pct(speeds,75):.0f}  p90={pct(speeds,90):.0f}")
+        print(f"           min={speeds[0]:.0f}  max={speeds[-1]:.0f}")
+        print(f"\ntime gap Δt between lines : median={median_dt:.2f}s  (1 frame = {frame_dt*1000:.0f} ms)")
+        print(f"per-vehicle uncertainty   : ~+/-{uncertainty_pct:.0f}% from frame timing at the median gap")
+        if uncertainty_pct > 12:
+            print("   ^ lines are close: single-vehicle speeds are noisy. Aggregate (median) is more reliable.")
+            print("     For tighter speeds, space the lines further apart and/or convert video to CFR.")
+    
+        print("\nby vehicle class (median km/h):")
+        by_class = defaultdict(list)
+        for r in rows:
+            if r[9] is not None:
+                by_class[r[1] or "?"].append(r[9])
+        for cls, sp in sorted(by_class.items(), key=lambda kv: -len(kv[1])):
+            s = sorted(sp)
+            if s:
+                print(f"   {str(cls):12s} n={len(sp):5d}  median={statistics.median(s):5.1f}  p10={pct(s,10):3.0f}  p90={pct(s,90):3.0f}")
+    
+        print("\nhistogram (km/h):")
+        buckets = list(range(0, int(max(speeds)) + 10, 10))
+        counts = [0] * len(buckets)
+        for s in speeds:
+            counts[min(len(buckets) - 1, int(s // 10))] += 1
+        peak = max(counts) or 1
+        for b, c in zip(buckets, counts):
+            if c:
+                print(f"   {b:3d}-{b+9:3d} | {'#' * max(1, int(40*c/peak))} {c}")
+    else:
+        print("No vehicles crossed both lines to compute speeds, but exporting available events.")
 
-    print("=" * 60)
-    print(f"SPEED SUMMARY  (distance between lines = {args.distance} m, fps = {fps:.2f})")
-    print("=" * 60)
-    print(f"vehicles with a speed     : {len(rows)}")
-    print(f"dropped as implausible    : {dropped}  (outside {args.min_kph}-{args.max_kph} km/h)")
-    print(f"\nspeed km/h: median={statistics.median(speeds):.1f}  mean={statistics.mean(speeds):.1f}")
-    print(f"           p10={pct(speeds,10):.0f}  p25={pct(speeds,25):.0f}  p75={pct(speeds,75):.0f}  p90={pct(speeds,90):.0f}")
-    print(f"           min={speeds[0]:.0f}  max={speeds[-1]:.0f}")
-    print(f"\ntime gap Δt between lines : median={median_dt:.2f}s  (1 frame = {frame_dt*1000:.0f} ms)")
-    print(f"per-vehicle uncertainty   : ~+/-{uncertainty_pct:.0f}% from frame timing at the median gap")
-    if uncertainty_pct > 12:
-        print("   ^ lines are close: single-vehicle speeds are noisy. Aggregate (median) is more reliable.")
-        print("     For tighter speeds, space the lines further apart and/or convert video to CFR.")
-
-    # per-class breakdown
-    print("\nby vehicle class (median km/h):")
-    by_class = defaultdict(list)
-    for r in rows:
-        by_class[r[1] or "?"].append(r[9])
-    for cls, sp in sorted(by_class.items(), key=lambda kv: -len(kv[1])):
-        s = sorted(sp)
-        print(f"   {str(cls):12s} n={len(sp):5d}  median={statistics.median(s):5.1f}  p10={pct(s,10):3.0f}  p90={pct(s,90):3.0f}")
-
-    # simple text histogram
-    print("\nhistogram (km/h):")
-    buckets = list(range(0, int(max(speeds)) + 10, 10))
-    counts = [0] * len(buckets)
-    for s in speeds:
-        counts[min(len(buckets) - 1, int(s // 10))] += 1
-    peak = max(counts) or 1
-    for b, c in zip(buckets, counts):
-        if c:
-            print(f"   {b:3d}-{b+9:3d} | {'#' * max(1, int(40*c/peak))} {c}")
+    def sort_key(r):
+        times = [t for t in (r[6], r[7]) if t is not None]
+        return min(times) if times else 0
 
     if args.csv:
         with open(args.csv, "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f)
             w.writerow(["track_id", "Detected Type", "Class Code", "Class Label", "Direction", "Confidence", "line1_time_s", "line2_time_s", "dt_s", "speed_kph"])
-            w.writerows(sorted(rows, key=lambda r: r[6]))
+            w.writerows(sorted(rows, key=sort_key))
         print(f"\nwrote {len(rows)} rows to {args.csv}")
 
     if args.excel:
-        try:
-            import pandas as pd
-            df = pd.DataFrame(
-                sorted(rows, key=lambda r: r[6]),
-                columns=["track_id", "Detected Type", "Class Code", "Class Label", "Direction", "Confidence", "line1_time_s", "line2_time_s", "dt_s", "speed_kph"]
+        def safe_cell(value):
+            """Escape HTML special chars, matching safeExcelCell in the frontend."""
+            text = str(value) if value is not None else ""
+            return html.escape(text).replace("\n", "<br/>")
+
+        video_name = safe_cell(args.video_name or "-")
+        exported_at = ""
+        if args.manual_export:
+            exported_at = safe_cell(datetime.now().strftime("%d/%m/%Y, %H:%M:%S"))
+        total_rows = len(rows)
+
+        sorted_rows = sorted(rows, key=sort_key)
+        data_rows = []
+        for idx, r in enumerate(sorted_rows, 1):
+            cells = "".join(
+                f"        <td>{safe_cell(val)}</td>\n"
+                for val in (idx, *r)
             )
-            df.to_excel(args.excel, index=False)
-            print(f"\nwrote {len(rows)} rows to {args.excel}")
-        except ImportError:
-            # Fallback to HTML-based Excel (same format as frontend)
-            with open(args.excel, "w", encoding="utf-8") as f:
-                f.write('<!DOCTYPE html>\n<html>\n<head>\n  <meta charset="utf-8" />\n  <style>\n    table { border-collapse: collapse; }\n    th, td { border: 1px solid #d1d5db; padding: 8px 10px; }\n    th { background: #eef6ff; font-weight: 700; text-align: left; }\n  </style>\n</head>\n<body>\n  <table>\n    <thead>\n      <tr>\n')
-                for col in ["track_id", "Detected Type", "Class Code", "Class Label", "Direction", "Confidence", "line1_time_s", "line2_time_s", "dt_s", "speed_kph"]:
-                    f.write(f"        <th>{col}</th>\n")
-                f.write("      </tr>\n    </thead>\n    <tbody>\n")
-                for r in sorted(rows, key=lambda r: r[6]):
-                    f.write("      <tr>\n")
-                    for val in r:
-                        f.write(f"        <td>{val if val is not None else '-'}</td>\n")
-                    f.write("      </tr>\n")
-                f.write("    </tbody>\n  </table>\n</body>\n</html>")
-            print(f"\nwrote {len(rows)} rows to {args.excel} (HTML format)")
+            data_rows.append(f"      <tr>\n{cells}      </tr>")
+        data_rows_html = "\n".join(data_rows)
+
+        excel_html = f"""<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    body {{ font-family: Arial, sans-serif; font-size: 12px; color: #1f2937; }}
+    table {{ border-collapse: collapse; width: 100%; }}
+    th, td {{ border: 1px solid #d1d5db; padding: 8px 10px; vertical-align: top; }}
+    th {{ background: #eef6ff; font-weight: 700; text-align: left; }}
+    .meta {{ margin-bottom: 16px; }}
+    .meta td {{ border: none; padding: 4px 0; }}
+    .title {{ font-size: 18px; font-weight: 700; padding-bottom: 8px; }}
+  </style>
+</head>
+<body>
+  <table class="meta">
+    <tr><td class="title" colspan="2">Detected Vehicles Speed Export</td></tr>
+    <tr><td><strong>Video</strong></td><td>{video_name}</td></tr>
+    <tr><td><strong>Exported At</strong></td><td>{exported_at}</td></tr>
+    <tr><td><strong>Total Rows</strong></td><td>{total_rows}</td></tr>
+  </table>
+
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>ID</th>
+        <th>Detected Type</th>
+        <th>Class Code</th>
+        <th>Class Label</th>
+        <th>Direction</th>
+        <th>Confidence</th>
+        <th>line1_time_s</th>
+        <th>line2_time_s</th>
+        <th>dt_s</th>
+        <th>Speed (km/h)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {data_rows_html}
+    </tbody>
+  </table>
+</body>
+</html>"""
+
+        with open(args.excel, "w", encoding="utf-8") as f:
+            f.write("\ufeff")
+            f.write(excel_html)
+        print(f"\nwrote {len(rows)} rows to {args.excel}")
 
     return 0
 

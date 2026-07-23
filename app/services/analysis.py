@@ -1344,12 +1344,13 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             pass
 
         import subprocess
-        import pandas as pd
         from sqlalchemy.orm.attributes import flag_modified
         try:
             script_path = settings.storage_root.parent / "scripts" / "analyze_speeds.py"
             speeds_csv_path = settings.storage_root.parent / "exports" / f"{job.id}_speeds.csv"
             speeds_csv_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            excel_path = settings.storage_root.parent / "exports" / f"{job.id}_analysis.xls"
             
             summary = job.summary_json or {}
             
@@ -1357,18 +1358,14 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 subprocess.run([
                     "python", str(script_path), str(report_absolute_path),
                     "--distance", str(config.line_pair_distance_m),
-                    "--csv", str(speeds_csv_path)
+                    "--csv", str(speeds_csv_path),
+                    "--excel", str(excel_path)
                 ], check=False)
                 summary["speed_script_status"] = "Success"
+                summary["auto_excel_export"] = str(excel_path)
             else:
                 summary["speed_script_status"] = "Script not found"
 
-            excel_path = settings.storage_root.parent / "exports" / f"{job.id}_analysis.xlsx"
-            if report_events:
-                df = pd.DataFrame(report_events)
-                df.to_excel(excel_path, index=False)
-                summary["auto_excel_export"] = str(excel_path)
-            
             job.summary_json = summary
             flag_modified(job, "summary_json")
             db.commit()

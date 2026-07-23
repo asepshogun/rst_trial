@@ -1629,7 +1629,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const timestamp = new Date().toISOString().replace(/[:T]/g, "-").slice(0, 19);
     return `${baseName}_detected_vehicles${lineSuffix}_${timestamp}.xls`;
   }
-
+  //digunakn untuk cetak file excel cuztomz
   function buildExcelHtml(events) {
     const video = getSelectedVideo();
     const lineLabel = state.availableLines.length > 1 && state.selectedLineOrder ? formatLineDisplayName(state.selectedLineOrder) : "All Lines";
@@ -1642,12 +1642,32 @@ document.addEventListener("DOMContentLoaded", async () => {
       second: "2-digit",
       hour12: false,
     });
-    const rows = events
+    const groupedEvents = {};
+    const processedEvents = [];
+    events.forEach(e => {
+      if (e.track_id) {
+        if (!groupedEvents[e.track_id]) {
+          groupedEvents[e.track_id] = { ...e, t1: "-", t2: "-" };
+          processedEvents.push(groupedEvents[e.track_id]);
+        }
+        if (e.count_line_order === 1) {
+          groupedEvents[e.track_id].t1 = formatCrossedTimeDisplay(e.crossed_at_seconds);
+        } else if (e.count_line_order === 2) {
+          groupedEvents[e.track_id].t2 = formatCrossedTimeDisplay(e.crossed_at_seconds);
+        }
+      } else {
+        processedEvents.push({ ...e, t1: "-", t2: "-" });
+      }
+    });
+
+    const rows = processedEvents
       .map(
         (event, index) => `
       <tr>
-        <td>${index + 1}</td>
+        <td>${index + 1}</td> 
         <td>${safeExcelCell(formatCrossedTimeDisplay(event.crossed_at_seconds))}</td>
+        <td>${safeExcelCell(event.t1)}</td>
+        <td>${safeExcelCell(event.t2)}</td>
         <td>${safeExcelCell(event.track_id ?? "-")}</td>
         <td>${safeExcelCell(formatDetectedType(event))}</td>
         <td>${safeExcelCell(String(event.golongan_code || "-"))}</td>
@@ -1689,6 +1709,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       <tr>
         <th>No</th>
         <th>Time</th>
+        <th>T1</th>
+        <th>T2</th>
         <th>ID</th>
         <th>Detected Type</th>
         <th>Class Code</th>
@@ -1733,7 +1755,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function buildCsvContent(events) {
-    const headers = ["No", "Time", "ID", "Detected Type", "Class Code", "Class Label", "Direction", "Confidence", "Speed (km/h)"];
+    const headers = ["No", "Time", "T1", "T2", "ID", "Detected Type", "Class Code", "Class Label", "Direction", "Confidence", "Speed (km/h)"];
     const escapeCsv = (val) => {
       const str = String(val ?? "");
       if (str.includes('"') || str.includes(",") || str.includes("\n")) {
@@ -1741,10 +1763,31 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       return str;
     };
-    const rows = events.map((event, index) =>
+
+    const groupedEvents = {};
+    const processedEvents = [];
+    events.forEach(e => {
+      if (e.track_id) {
+        if (!groupedEvents[e.track_id]) {
+          groupedEvents[e.track_id] = { ...e, t1: "-", t2: "-" };
+          processedEvents.push(groupedEvents[e.track_id]);
+        }
+        if (e.count_line_order === 1) {
+          groupedEvents[e.track_id].t1 = formatCrossedTimeDisplay(e.crossed_at_seconds);
+        } else if (e.count_line_order === 2) {
+          groupedEvents[e.track_id].t2 = formatCrossedTimeDisplay(e.crossed_at_seconds);
+        }
+      } else {
+        processedEvents.push({ ...e, t1: "-", t2: "-" });
+      }
+    });
+
+    const rows = processedEvents.map((event, index) =>
       [
         index + 1,
         formatCrossedTimeDisplay(event.crossed_at_seconds),
+        event.t1,
+        event.t2,
         event.track_id ?? "-",
         formatDetectedType(event),
         String(event.golongan_code || "-"),

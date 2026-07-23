@@ -15,7 +15,8 @@ Usage
 
 --distance  : real-world distance between the two count lines, in METERS (required).
 --min-kph / --max-kph : plausibility filter; speeds outside are dropped as artifacts.
---csv       : optional path to write per-vehicle rows for your own analysis.
+--csv       : optional path to write per-vehicle rows to CSV for your own analysis.
+--excel     : optional path to write per-vehicle rows to Excel for your own analysis.
 
 Notes
 -----
@@ -47,6 +48,7 @@ def main() -> int:
     ap.add_argument("--max-kph", type=float, default=200.0)
     ap.add_argument("--fps", type=float, default=None, help="source fps, for the uncertainty note (auto-read if omitted)")
     ap.add_argument("--csv", default=None, help="optional output CSV of per-vehicle speeds")
+    ap.add_argument("--excel", default=None, help="optional output Excel of per-vehicle speeds")
     args = ap.parse_args()
 
     if args.distance <= 0:
@@ -106,15 +108,27 @@ def main() -> int:
         if speed < args.min_kph or speed > args.max_kph:
             dropped += 1
             continue
-        rows.append((tid, e1.get("vehicle_class"), e1.get("golongan_code"), round(t1, 3), round(t2, 3), round(dt, 3), round(speed, 1)))
-        print((tid, e1.get("vehicle_class"), e1.get("golongan_code"), round(t1, 3), round(t2, 3), round(dt, 3), round(speed, 1))) ## t1-t2-dt-speed
+        detected_type = e1.get("vehicle_type_label") or e1.get("detected_label") or e1.get("source_label") or e1.get("vehicle_class") or "-"
+        class_code = str(e1.get("golongan_code") or "-")
+        class_label = e1.get("golongan_label") or "-"
+        direction = e1.get("direction") or "-"
+        
+        conf = e1.get("confidence")
+        confidence_str = f"{float(conf)*100:.1f}%" if conf is not None else "-"
+        
+        rows.append((
+            tid, detected_type, class_code, class_label, direction, confidence_str,
+            round(t1, 3), round(t2, 3), round(dt, 3), round(speed, 1)
+        ))
+        # Uncomment below if you want console spam:
+        # print((tid, detected_type, class_code, class_label, direction, confidence_str, round(t1, 3), round(t2, 3), round(dt, 3), round(speed, 1)))
 
     if not rows:
         print("No vehicles crossed both lines with a valid time gap. Check that this report has two lines.")
         return 1
 
-    speeds = sorted(r[6] for r in rows)
-    dts = sorted(r[5] for r in rows)
+    speeds = sorted(r[9] for r in rows)
+    dts = sorted(r[8] for r in rows)
     median_dt = statistics.median(dts)
     frame_dt = 1.0 / max(fps, 1.0)
     uncertainty_pct = 100.0 * frame_dt / max(median_dt, 1e-6)
@@ -137,7 +151,7 @@ def main() -> int:
     print("\nby vehicle class (median km/h):")
     by_class = defaultdict(list)
     for r in rows:
-        by_class[r[1] or "?"].append(r[6])
+        by_class[r[1] or "?"].append(r[9])
     for cls, sp in sorted(by_class.items(), key=lambda kv: -len(kv[1])):
         s = sorted(sp)
         print(f"   {str(cls):12s} n={len(sp):5d}  median={statistics.median(s):5.1f}  p10={pct(s,10):3.0f}  p90={pct(s,90):3.0f}")
@@ -156,9 +170,33 @@ def main() -> int:
     if args.csv:
         with open(args.csv, "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f)
-            w.writerow(["track_id", "vehicle_class", "golongan_code", "line1_time_s", "line2_time_s", "dt_s", "speed_kph"])
-            w.writerows(sorted(rows, key=lambda r: r[3]))
+            w.writerow(["track_id", "Detected Type", "Class Code", "Class Label", "Direction", "Confidence", "line1_time_s", "line2_time_s", "dt_s", "speed_kph"])
+            w.writerows(sorted(rows, key=lambda r: r[6]))
         print(f"\nwrote {len(rows)} rows to {args.csv}")
+
+    if args.excel:
+        try:
+            import pandas as pd
+            df = pd.DataFrame(
+                sorted(rows, key=lambda r: r[6]),
+                columns=["track_id", "Detected Type", "Class Code", "Class Label", "Direction", "Confidence", "line1_time_s", "line2_time_s", "dt_s", "speed_kph"]
+            )
+            df.to_excel(args.excel, index=False)
+            print(f"\nwrote {len(rows)} rows to {args.excel}")
+        except ImportError:
+            # Fallback to HTML-based Excel (same format as frontend)
+            with open(args.excel, "w", encoding="utf-8") as f:
+                f.write('<!DOCTYPE html>\n<html>\n<head>\n  <meta charset="utf-8" />\n  <style>\n    table { border-collapse: collapse; }\n    th, td { border: 1px solid #d1d5db; padding: 8px 10px; }\n    th { background: #eef6ff; font-weight: 700; text-align: left; }\n  </style>\n</head>\n<body>\n  <table>\n    <thead>\n      <tr>\n')
+                for col in ["track_id", "Detected Type", "Class Code", "Class Label", "Direction", "Confidence", "line1_time_s", "line2_time_s", "dt_s", "speed_kph"]:
+                    f.write(f"        <th>{col}</th>\n")
+                f.write("      </tr>\n    </thead>\n    <tbody>\n")
+                for r in sorted(rows, key=lambda r: r[6]):
+                    f.write("      <tr>\n")
+                    for val in r:
+                        f.write(f"        <td>{val if val is not None else '-'}</td>\n")
+                    f.write("      </tr>\n")
+                f.write("    </tbody>\n  </table>\n</body>\n</html>")
+            print(f"\nwrote {len(rows)} rows to {args.excel} (HTML format)")
 
     return 0
 

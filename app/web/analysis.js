@@ -1372,14 +1372,32 @@ document.addEventListener("DOMContentLoaded", async () => {
       second: "2-digit",
       hour12: false,
     });
-    const rows = events
+    const groupedEvents = {};
+    const processedEvents = [];
+    events.forEach(e => {
+      if (e.track_id) {
+        if (!groupedEvents[e.track_id]) {
+          groupedEvents[e.track_id] = { ...e, t1: "-", t2: "-" };
+          processedEvents.push(groupedEvents[e.track_id]);
+        }
+        if (e.count_line_order === 1) {
+          groupedEvents[e.track_id].t1 = formatCrossedTimeDisplay(e.crossed_at_seconds);
+        } else if (e.count_line_order === 2) {
+          groupedEvents[e.track_id].t2 = formatCrossedTimeDisplay(e.crossed_at_seconds);
+        }
+      } else {
+        processedEvents.push({ ...e, t1: "-", t2: "-" });
+      }
+    });
+
+    const rows = processedEvents
       .map(
         (event, index) => `
       <tr>
         <td>${index + 1}</td>
         <td>${safeExcelCell(formatCrossedTimeDisplay(event.crossed_at_seconds))}</td>
-        <td>${safeExcelCell(formatCrossedTimeDisplay(event.t1))}</td>
-        <td>${safeExcelCell(formatCrossedTimeDisplay(event.t2))}</td>
+        <td>${safeExcelCell(event.t1)}</td>
+        <td>${safeExcelCell(event.t2)}</td>
         <td>${safeExcelCell(event.track_id ?? "-")}</td>
         <td>${safeExcelCell(formatDetectedType(event))}</td>
         <td>${safeExcelCell(String(event.golongan_code || "-"))}</td>
@@ -1389,7 +1407,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       </tr>
     `,
       )
-      .join(""); //tambah table header untuk t1 dan t2
+      .join("");
 
     return `<!DOCTYPE html>
 <html>

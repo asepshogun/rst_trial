@@ -30,7 +30,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const analysisChartSummary = document.getElementById("analysisChartSummary");
   const eventsBody = document.getElementById("analysisEventsBody");
   const alertBox = document.getElementById("analysisAlert");
-  const exportAnalysisExcelButton = document.getElementById("exportAnalysisExcelButton");
+  const exportAnalysisDetectedExcelButton = document.getElementById("exportAnalysisDetectedExcelButton");
+  const exportAnalysisSpeedExcelButton = document.getElementById("exportAnalysisSpeedExcelButton");
   const clearAnalysisLogsButton = document.getElementById("clearAnalysisLogsButton");
   const analysisLineTabsShell = document.getElementById("analysisLineTabsShell");
   const analysisLineTabs = document.getElementById("analysisLineTabs");
@@ -1456,6 +1457,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 </html>`;
   }
 
+  function exportSpeedExcel() {
+    if (!state.selectedVideoId) {
+      app.setAlert(alertBox, "danger", "Select a video first");
+      return;
+    }
+
+    window.location.href = `/api/videos/${state.selectedVideoId}/analysis/excel-export`;
+    app.setAlert(alertBox, "success", "Starting Speed Excel download...");
+  }
+
   function exportVisibleEventsToExcel() {
     const events = getCurrentVisibleEvents();
     if (!state.selectedVideoId) {
@@ -1467,8 +1478,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    window.location.href = `/api/videos/${state.selectedVideoId}/analysis/excel-export`;
-    app.setAlert(alertBox, "success", "Starting Excel download...");
+    const excelHtml = buildExcelHtml(events);
+    const blob = new Blob(["\ufeff", excelHtml], {
+      type: "application/vnd.ms-excel;charset=utf-8",
+    });
+    const downloadUrl = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = buildExportFileName();
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    app.setAlert(alertBox, "success", "Detected vehicle data exported to Excel");
   }
 
   function applyPendingSeek() {
@@ -1630,7 +1651,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       setAnalysisActionButton({ mode: "start", disabled: !state.selectedVideoId });
     }
-    setButtonDisabled(exportAnalysisExcelButton, !state.selectedVideoId || !visibleEvents.length);
+    setButtonDisabled(exportAnalysisDetectedExcelButton, !state.selectedVideoId || !visibleEvents.length);
+    setButtonDisabled(exportAnalysisSpeedExcelButton, !state.selectedVideoId || !visibleEvents.length);
     setButtonDisabled(clearAnalysisLogsButton, !state.selectedVideoId || isConverting || (isRunning && !isStaleRunning));
     setRefreshButtonLoading(false);
 
@@ -1675,7 +1697,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       analysisProcessingTimeText.textContent = "00:00:00";
       setCountLinesButton.href = "/count-lines";
       setButtonDisabled(clearAnalysisLogsButton, true);
-      setButtonDisabled(exportAnalysisExcelButton, true);
+      setButtonDisabled(exportAnalysisDetectedExcelButton, true);
+      setButtonDisabled(exportAnalysisSpeedExcelButton, true);
       stopStatusClock();
       stopLivePreview();
       resetOverlayState();
@@ -1833,8 +1856,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  exportAnalysisExcelButton.addEventListener("click", () => {
+  exportAnalysisDetectedExcelButton.addEventListener("click", () => {
     exportVisibleEventsToExcel();
+  });
+  exportAnalysisSpeedExcelButton.addEventListener("click", () => {
+    exportSpeedExcel();
   });
 
   startAnalysisButton.addEventListener("click", async () => {

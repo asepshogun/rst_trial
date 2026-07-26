@@ -908,14 +908,15 @@ def download_analysis_excel(
     if job.config_json and "line_pair_distance_m" in job.config_json:
         distance = job.config_json["line_pair_distance_m"]
         
-    out_excel_path = settings.storage_root.parent / "exports" / f"{job.id}_manual_export.xls"
+    out_excel_path = settings.storage_root.parent / "exports" / f"{job.id}_manual_export.xlsx"
     out_excel_path.parent.mkdir(parents=True, exist_ok=True)
     
     video_name = video.original_filename or str(video.id)
     
+    import sys
     try:
         subprocess.run([
-            "python", str(script_path), str(report_path),
+            sys.executable, str(script_path), str(report_path),
             "--distance", str(distance),
             "--excel", str(out_excel_path),
             "--video-name", video_name,
@@ -929,6 +930,6 @@ def download_analysis_excel(
         
     return FileResponse(
         path=out_excel_path,
-        media_type="application/vnd.ms-excel",
-        filename=f"detected_vehicles_{video_name}.xls"
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        filename=f"detected_vehicles_{video_name}.xlsx"
     )

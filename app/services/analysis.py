@@ -1350,13 +1350,14 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             speeds_csv_path = settings.storage_root.parent / "exports" / f"{job.id}_speeds.csv"
             speeds_csv_path.parent.mkdir(parents=True, exist_ok=True)
             
-            excel_path = settings.storage_root.parent / "exports" / f"{job.id}_analysis.xls"
+            excel_path = settings.storage_root.parent / "exports" / f"{job.id}_analysis.xlsx"
             
             summary = job.summary_json or {}
             
+            import sys
             if script_path.exists():
                 subprocess.run([
-                    "python", str(script_path), str(report_absolute_path),
+                    sys.executable, str(script_path), str(report_absolute_path),
                     "--distance", str(config.line_pair_distance_m),
                     "--csv", str(speeds_csv_path),
                     "--excel", str(excel_path)

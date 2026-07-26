@@ -161,7 +161,7 @@ def main() -> int:
         print(f"\nspeed km/h: median={statistics.median(speeds):.1f}  mean={statistics.mean(speeds):.1f}")
         print(f"           p10={pct(speeds,10):.0f}  p25={pct(speeds,25):.0f}  p75={pct(speeds,75):.0f}  p90={pct(speeds,90):.0f}")
         print(f"           min={speeds[0]:.0f}  max={speeds[-1]:.0f}")
-        print(f"\ntime gap Δt between lines : median={median_dt:.2f}s  (1 frame = {frame_dt*1000:.0f} ms)")
+        print(f"\ntime gap dt between lines : median={median_dt:.2f}s  (1 frame = {frame_dt*1000:.0f} ms)")
         print(f"per-vehicle uncertainty   : ~+/-{uncertainty_pct:.0f}% from frame timing at the median gap")
         if uncertainty_pct > 12:
             print("   ^ lines are close: single-vehicle speeds are noisy. Aggregate (median) is more reliable.")
@@ -201,10 +201,11 @@ def main() -> int:
         print(f"\nwrote {len(rows)} rows to {args.csv}")
 
     if args.excel:
+        import openpyxl
+        from openpyxl.styles import Font
+
         def safe_cell(value):
-            """Escape HTML special chars, matching safeExcelCell in the frontend."""
-            text = str(value) if value is not None else ""
-            return html.escape(text).replace("\n", "<br/>")
+            return str(value) if value is not None else ""
 
         video_name = safe_cell(args.video_name or "-")
         exported_at = ""
@@ -213,63 +214,36 @@ def main() -> int:
         total_rows = len(rows)
 
         sorted_rows = sorted(rows, key=sort_key)
-        data_rows = []
+        
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Speed Export"
+
+        # Meta table
+        ws.append(["Detected Vehicles Speed Export"])
+        ws["A1"].font = Font(bold=True, size=14)
+        ws.append(["Video", video_name])
+        ws.append(["Exported At", exported_at])
+        ws.append(["Total Rows", total_rows])
+        ws.append([])
+
+        # Table Headers
+        headers = [
+            "No", "ID", "Detected Type", "Class Code", "Class Label", "Direction", 
+            "Confidence", "line1_time_s", "line2_time_s", "dt_s", "Speed (km/h)"
+        ]
+        ws.append(headers)
+        
+        # Style headers
+        header_row = 6
+        for cell in ws[header_row]:
+            cell.font = Font(bold=True)
+
+        # Data rows
         for idx, r in enumerate(sorted_rows, 1):
-            cells = "".join(
-                f"        <td>{safe_cell(val)}</td>\n"
-                for val in (idx, *r)
-            )
-            data_rows.append(f"      <tr>\n{cells}      </tr>")
-        data_rows_html = "\n".join(data_rows)
+            ws.append([idx, *r])
 
-        excel_html = f"""<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <style>
-    body {{ font-family: Arial, sans-serif; font-size: 12px; color: #1f2937; }}
-    table {{ border-collapse: collapse; width: 100%; }}
-    th, td {{ border: 1px solid #d1d5db; padding: 8px 10px; vertical-align: top; }}
-    th {{ background: #eef6ff; font-weight: 700; text-align: left; }}
-    .meta {{ margin-bottom: 16px; }}
-    .meta td {{ border: none; padding: 4px 0; }}
-    .title {{ font-size: 18px; font-weight: 700; padding-bottom: 8px; }}
-  </style>
-</head>
-<body>
-  <table class="meta">
-    <tr><td class="title" colspan="2">Detected Vehicles Speed Export</td></tr>
-    <tr><td><strong>Video</strong></td><td>{video_name}</td></tr>
-    <tr><td><strong>Exported At</strong></td><td>{exported_at}</td></tr>
-    <tr><td><strong>Total Rows</strong></td><td>{total_rows}</td></tr>
-  </table>
-
-  <table>
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>ID</th>
-        <th>Detected Type</th>
-        <th>Class Code</th>
-        <th>Class Label</th>
-        <th>Direction</th>
-        <th>Confidence</th>
-        <th>line1_time_s</th>
-        <th>line2_time_s</th>
-        <th>dt_s</th>
-        <th>Speed (km/h)</th>
-      </tr>
-    </thead>
-    <tbody>
-      {data_rows_html}
-    </tbody>
-  </table>
-</body>
-</html>"""
-
-        with open(args.excel, "w", encoding="utf-8") as f:
-            f.write("\ufeff")
-            f.write(excel_html)
+        wb.save(args.excel)
         print(f"\nwrote {len(rows)} rows to {args.excel}")
 
     return 0

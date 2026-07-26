@@ -401,6 +401,15 @@ textarea.form-control {
   color: var(--nc-ink);
 }
 
+.user-table {
+  background-color: #FDFDFE;
+}
+
+.user-table th,
+.user-table td {
+  background-color: #FDFDFE;
+}
+
 .table thead tr th {
   font-size: 0.72rem;
   font-weight: 700;

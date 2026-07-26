@@ -32,7 +32,7 @@ from app.config import get_settings
 
 
 
-STANDARDIZED_UPLOAD_FILENAME_RE = re.compile(r"^\d{12}_[0-9a-f]{4}\.[a-z0-9]+$")
+STANDARDIZED_UPLOAD_FILENAME_RE = re.compile(r"^(\d{12}_[0-9a-f]{4}|[a-zA-Z0-9_\-]+_\d{8}_\d{6}(?:_\d+)?)\.[a-z0-9]+$")
 
 
 
@@ -104,7 +104,11 @@ def is_standardized_upload_filename(filename: str) -> bool:
 
 
 
-def _build_standardized_filename(filename: str, reference_time: Optional[datetime] = None) -> str:
+def _build_standardized_filename(filename: str, reference_time: Optional[datetime] = None, custom_prefix: Optional[str] = None, attempt: int = 0) -> str:
+
+    if custom_prefix:
+        suffix = f"_{attempt}" if attempt > 0 else ""
+        return f"{custom_prefix}{suffix}{_safe_suffix(filename)}"
 
     timestamp_source = reference_time or datetime.now()
 
@@ -118,13 +122,13 @@ def _build_standardized_filename(filename: str, reference_time: Optional[datetim
 
 
 
-def build_unique_upload_filename(filename: str, reference_time: Optional[datetime] = None) -> str:
+def build_unique_upload_filename(filename: str, reference_time: Optional[datetime] = None, custom_prefix: Optional[str] = None) -> str:
 
     settings = get_settings()
 
-    for _ in range(10):
+    for attempt in range(10):
 
-        stored_filename = _build_standardized_filename(filename, reference_time=reference_time)
+        stored_filename = _build_standardized_filename(filename, reference_time=reference_time, custom_prefix=custom_prefix, attempt=attempt)
 
         if not (settings.upload_dir / stored_filename).exists():
 
@@ -156,7 +160,7 @@ def playback_relative_path_for(stored_filename: str) -> str:
 
 
 
-def save_upload_file(file: UploadFile) -> SavedFile:
+def save_upload_file(file: UploadFile, custom_prefix: Optional[str] = None) -> SavedFile:
 
     settings = get_settings()
 
@@ -166,7 +170,7 @@ def save_upload_file(file: UploadFile) -> SavedFile:
 
     source_filename = file.filename or "upload.bin"
 
-    stored_filename = build_unique_upload_filename(source_filename)
+    stored_filename = build_unique_upload_filename(source_filename, custom_prefix=custom_prefix)
 
     absolute_path = settings.upload_dir / stored_filename
 

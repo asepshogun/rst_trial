@@ -12,6 +12,7 @@ from app.routers.auth import router as auth_router
 from app.routers.dashboard import router as dashboard_router
 from app.routers.fundamental_diagram import router as fd_router
 from app.routers.settings import router as settings_router
+from app.routers.sites import router as sites_router
 from app.routers.ui import router as ui_router
 from app.routers.users import router as users_router
 from app.routers.videos import router as videos_router
@@ -55,6 +56,7 @@ app.include_router(auth_router)
 app.include_router(dashboard_router)
 app.include_router(fd_router)
 app.include_router(settings_router)
+app.include_router(sites_router)
 app.include_router(users_router)
 app.include_router(videos_router)
 

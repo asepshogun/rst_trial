@@ -312,6 +312,13 @@ class VehicleEvent(Base):
         nullable=False,
     )
     site_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("sites.id", ondelete="RESTRICT"))
+    site_code: Mapped[Optional[str]] = mapped_column(String(50))
+    site_name: Mapped[Optional[str]] = mapped_column(String(255))
+    location_description: Mapped[Optional[str]] = mapped_column(Text)
+    latitude: Mapped[Optional[float]] = mapped_column(Float)
+    longitude: Mapped[Optional[float]] = mapped_column(Float)
+    recorded_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    video_filename: Mapped[Optional[str]] = mapped_column(Text)
     sequence_no: Mapped[int] = mapped_column(Integer, nullable=False)
     track_id: Mapped[Optional[int]] = mapped_column(BigInteger)
     vehicle_class: Mapped[str] = mapped_column(String(50), nullable=False)

@@ -1,6 +1,7 @@
 /* ================================================================
    NiceCount – Settings Page Styles
-   Scope: pages/settings.html, pages/gpu_audit.html, pages/master_classes.html
+   Scope: pages/settings.html, pages/gpu_audit.html,
+          pages/master_classes.html, pages/master_sites.html
    ================================================================ */
 
 .app-gpu-audit-grid {
@@ -8,6 +9,7 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.25rem;
 }
+
 .app-gpu-audit-item {
   padding: 1.25rem;
   border: 1px solid var(--nc-hairline-soft);
@@ -15,7 +17,13 @@
   background: var(--nc-canvas);
   min-height: 170px;
 }
-.app-gpu-command { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.app-gpu-command {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .app-gpu-command-box {
   margin: 0;
   padding: 1rem;

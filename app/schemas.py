@@ -207,6 +207,38 @@ class SiteReadBasic(ORMModel):
     name: str
 
 
+class SiteRead(ORMModel):
+    id: UUID
+    code: str
+    name: str
+    location_description: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    direction_normal_label: str
+    direction_opposite_label: str
+    created_at: datetime
+    updated_at: datetime
+
+
+class SiteCreate(BaseModel):
+    code: str = Field(min_length=1, max_length=50)
+    name: str = Field(min_length=1, max_length=255)
+    location_description: Optional[str] = Field(default=None, max_length=1000)
+    latitude: Optional[float] = Field(default=None, ge=-90.0, le=90.0)
+    longitude: Optional[float] = Field(default=None, ge=-180.0, le=180.0)
+    direction_normal_label: str = Field(default="Normal", min_length=1, max_length=255)
+    direction_opposite_label: str = Field(default="Opposite", min_length=1, max_length=255)
+
+
+class SiteUpdate(BaseModel):
+    name: str = Field(min_length=1, max_length=255)
+    location_description: Optional[str] = Field(default=None, max_length=1000)
+    latitude: Optional[float] = Field(default=None, ge=-90.0, le=90.0)
+    longitude: Optional[float] = Field(default=None, ge=-180.0, le=180.0)
+    direction_normal_label: str = Field(default="Normal", min_length=1, max_length=255)
+    direction_opposite_label: str = Field(default="Opposite", min_length=1, max_length=255)
+
+
 class VideoUploadRead(ORMModel):
     id: UUID
     original_filename: str

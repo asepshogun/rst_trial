@@ -3,7 +3,8 @@
   <div class="container-xxl app-topbar">
 
     <!-- Brand -->
-    <a class="app-topbar-brand-group" href="{% if current_user and current_user.is_admin %}/dashboard{% else %}/videos{% endif %}">
+    <a class="app-topbar-brand-group"
+      href="{% if current_user and current_user.is_admin %}/dashboard{% else %}/videos{% endif %}">
       <div class="app-topbar-badge" aria-hidden="true">NC</div>
       <div>
         <div class="app-topbar-brand">NiceCount</div>
@@ -14,7 +15,8 @@
     <!-- Nav -->
     <nav class="app-topbar-nav">
       {% if current_user and current_user.is_admin %}
-      <a class="app-topbar-link{% if active_nav == 'dashboard' %} active{% endif %}" data-app-admin-only href="/dashboard">
+      <a class="app-topbar-link{% if active_nav == 'dashboard' %} active{% endif %}" data-app-admin-only
+        href="/dashboard">
         <i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard
       </a>
       {% endif %}
@@ -33,29 +35,34 @@
         <i class="ti ti-users" aria-hidden="true"></i> Users
       </a>
       <div class="dropdown app-topbar-dropdown" data-app-admin-only>
-        <button
-          class="app-topbar-link app-topbar-link-toggle{% if settings_active %} active{% endif %}"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
+        <button class="app-topbar-link app-topbar-link-toggle{% if settings_active %} active{% endif %}" type="button"
+          data-bs-toggle="dropdown" aria-expanded="false">
           <i class="ti ti-settings" aria-hidden="true"></i>
           <span>Settings</span>
           <i class="ti ti-chevron-down" style="font-size:0.75rem" aria-hidden="true"></i>
         </button>
         <ul class="dropdown-menu app-topbar-dropdown-menu">
           <li>
-            <a class="dropdown-item app-topbar-dropdown-item{% if active_nav == 'settings-detection' %} active{% endif %}" href="/settings/detection">
+            <a class="dropdown-item app-topbar-dropdown-item{% if active_nav == 'settings-detection' %} active{% endif %}"
+              href="/settings/detection">
               <i class="ti ti-adjustments-horizontal me-2" aria-hidden="true"></i>Detection Thresholds
             </a>
           </li>
           <li>
-            <a class="dropdown-item app-topbar-dropdown-item{% if active_nav == 'settings-master-classes' %} active{% endif %}" href="/settings/master-classes">
+            <a class="dropdown-item app-topbar-dropdown-item{% if active_nav == 'settings-master-classes' %} active{% endif %}"
+              href="/settings/master-classes">
               <i class="ti ti-list-details me-2" aria-hidden="true"></i>Master Vehicle Classes
             </a>
           </li>
           <li>
-            <a class="dropdown-item app-topbar-dropdown-item{% if active_nav == 'settings-gpu-audit' %} active{% endif %}" href="/settings/gpu-audit">
+            <a class="dropdown-item app-topbar-dropdown-item{% if active_nav == 'settings-sites' %} active{% endif %}"
+              href="/settings/sites">
+              <i class="ti ti-map-pin me-2" aria-hidden="true"></i>Master Titik Lokasi
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item app-topbar-dropdown-item{% if active_nav == 'settings-gpu-audit' %} active{% endif %}"
+              href="/settings/gpu-audit">
               <i class="ti ti-cpu me-2" aria-hidden="true"></i>GPU Audit
             </a>
           </li>
@@ -67,22 +74,24 @@
     <!-- User actions -->
     <div class="app-topbar-actions">
       <div class="dropdown">
-        <button
-          class="app-topbar-profile-btn dropdown-toggle"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
+        <button class="app-topbar-profile-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
           <div class="app-topbar-user-meta">
-            <div class="app-topbar-user-name" data-app-user-name>{{ current_user.full_name if current_user else "-" }}</div>
-            <div class="app-topbar-user-username" data-app-username>{{ current_user.username if current_user else "-" }}</div>
+            <div class="app-topbar-user-name" data-app-user-name>{{ current_user.full_name if current_user else "-" }}
+            </div>
+            <div class="app-topbar-user-username" data-app-username>{{ current_user.username if current_user else "-" }}
+            </div>
           </div>
           <div class="app-topbar-avatar" data-app-user-initial>{{ current_user_initials or "NC" }}</div>
         </button>
         <ul class="dropdown-menu app-topbar-profile-menu">
           <li><span class="dropdown-header">Signed in as</span></li>
-          <li><span class="dropdown-item-text fw-semibold" style="font-size:0.82rem;padding:2px 10px 8px;color:var(--nc-ink);" data-app-user-name>{{ current_user.full_name if current_user else "-" }}</span></li>
-          <li><hr class="dropdown-divider app-topbar-profile-divider"></li>
+          <li><span class="dropdown-item-text fw-semibold"
+              style="font-size:0.82rem;padding:2px 10px 8px;color:var(--nc-ink);" data-app-user-name>{{
+              current_user.full_name if current_user else "-" }}</span></li>
+          <li>
+            <hr class="dropdown-divider app-topbar-profile-divider">
+          </li>
           <li>
             <button class="app-topbar-logout-item" data-app-logout>
               <i class="ti ti-logout" aria-hidden="true"></i>

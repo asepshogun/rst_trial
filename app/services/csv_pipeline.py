@@ -41,7 +41,11 @@ CSV_COLUMNS = [
     "confidence",
     "video_id",
     "site_id",
+    "site_code",
     "site_name",
+    "location_description",
+    "latitude",
+    "longitude",
     "analysis_job_id",
     "video_filename",
     "recorded_at",
@@ -179,10 +183,14 @@ def run_csv_pipeline(video_id: UUID, job_id: UUID) -> None:
                 "confidence": round(ev.confidence, 4) if ev.confidence is not None else "",
                 "video_id": str(video_id),
                 "site_id": site_id_str,
-                "site_name": site_name,
+                "site_code": ev.site_code or "",
+                "site_name": ev.site_name or site_name,
+                "location_description": ev.location_description or "",
+                "latitude": ev.latitude if ev.latitude is not None else "",
+                "longitude": ev.longitude if ev.longitude is not None else "",
                 "analysis_job_id": str(job_id),
-                "video_filename": video_filename,
-                "recorded_at": recorded_at_str,
+                "video_filename": ev.video_filename or video_filename,
+                "recorded_at": ev.recorded_at.isoformat() if ev.recorded_at else recorded_at_str,
             })
 
         segment_paths: list[Path] = []
@@ -355,10 +363,14 @@ def write_inline_segment_csv(
             "confidence": round(ev.confidence, 4) if ev.confidence is not None else "",
             "video_id": str(video_id),
             "site_id": site_id_str,
-            "site_name": site_name,
+            "site_code": ev.site_code or "",
+            "site_name": ev.site_name or site_name,
+            "location_description": ev.location_description or "",
+            "latitude": ev.latitude if ev.latitude is not None else "",
+            "longitude": ev.longitude if ev.longitude is not None else "",
             "analysis_job_id": str(job_id),
-            "video_filename": video_filename,
-            "recorded_at": recorded_at_str,
+            "video_filename": ev.video_filename or video_filename,
+            "recorded_at": ev.recorded_at.isoformat() if ev.recorded_at else recorded_at_str,
         })
 
     seg_filename = f"{job_id}_seg_{segment_index}.csv"

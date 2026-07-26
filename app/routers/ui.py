@@ -163,6 +163,23 @@ def gpu_audit_page(request: Request, user: Optional[User] = Depends(get_current_
     )
 
 
+@router.get("/settings/sites")
+def master_sites_page(request: Request, user: Optional[User] = Depends(get_current_user_optional)):
+    redirect = _require_user(user)
+    if redirect:
+        return redirect
+    if not user.is_admin:
+        return RedirectResponse(url="/videos", status_code=302)
+    return _render_page(
+        request,
+        "pages/master_sites.html",
+        user,
+        page_title="Master Titik Lokasi",
+        page_subtitle="Kelola data master titik lokasi (sites) yang digunakan dalam analisis lalu lintas.",
+        active_nav="settings-sites",
+    )
+
+
 @router.get("/videos")
 def videos_page(request: Request, user: Optional[User] = Depends(get_current_user_optional)):
     redirect = _require_user(user)

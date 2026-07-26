@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import subprocess
 from datetime import datetime, timezone
 from typing import Optional
@@ -446,7 +447,13 @@ def upload_video(
     else:
         site = _get_default_site(db)
         
-    saved_file = save_upload_file(file)
+    dt = recorded_at or datetime.now()
+    if dt.tzinfo is not None:
+        dt = dt.astimezone()
+    safe_site_name = re.sub(r'[^a-zA-Z0-9_\-]', '_', site.name)
+    custom_prefix = f"{safe_site_name}_{dt.strftime('%Y%m%d_%H%M%S')}"
+        
+    saved_file = save_upload_file(file, custom_prefix=custom_prefix)
     generate_video_thumbnail(saved_file.absolute_path, saved_file.stored_filename)
     metadata = probe_video(saved_file.absolute_path)
     requires_conversion = requires_video_conversion(saved_file.stored_filename, saved_file.mime_type, saved_file.absolute_path)

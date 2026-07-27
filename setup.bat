@@ -23,7 +23,7 @@ if not exist "%~dp0.env" (
         echo DATABASE_URL=postgresql+psycopg://postgres:%PG_PASSWORD%@localhost:5432/vehicle_count
         echo AUTO_CREATE_TABLES=false
         echo STORAGE_ROOT=storage
-        echo DEFAULT_MODEL_PATH=yolov8s.pt
+        echo DEFAULT_MODEL_PATH=v7.pt
         echo DEFAULT_TRACKER_CONFIG=bytetrack.yaml
         echo DEFAULT_CONFIDENCE=0.12
         echo DEFAULT_IOU=0.45

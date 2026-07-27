@@ -24,18 +24,15 @@
   ];
 
   var SITE_CATEGORY_GROUPS = [
-    { key: "cars",        label: "Cars & light",  codes: ["2", "3", "4"],                color: "#3B82F6" },
-    { key: "motorcycles", label: "Motorcycles",   codes: ["1"],                          color: "#22C55E" },
-    { key: "trucks",      label: "Trucks",        codes: ["6a", "6b", "7a", "7b", "7c"], color: "#EF4444" },
-    { key: "buses",       label: "Buses",         codes: ["5a", "5b"],                   color: "#F59E0B" },
-    { key: "nonmotor",    label: "Non-motorized", codes: ["8"],                          color: "#94A3B8" },
+    { key: "motorcycles", label: "Motorcycles",   codes: ["1"],               color: "#22C55E" },
+    { key: "cars",        label: "Cars & light",  codes: ["2", "3", "4"],     color: "#3B82F6" },
+    { key: "buses",       label: "Buses",         codes: ["5"],               color: "#F59E0B" },
+    { key: "trucks",      label: "Trucks",        codes: ["6", "7"],          color: "#EF4444" },
   ];
-  var SITE_HEAVY_CODES = ["5a", "5b", "6a", "6b", "7a", "7b", "7c"];
+  var SITE_HEAVY_CODES = ["5", "6", "7"];
   var SITE_VEHICLE_ICONS = {
     "1": "ti-motorbike", "2": "ti-car", "3": "ti-car", "4": "ti-truck",
-    "5a": "ti-bus", "5b": "ti-bus",
-    "6a": "ti-truck", "6b": "ti-truck", "7a": "ti-truck", "7b": "ti-truck", "7c": "ti-truck",
-    "8": "ti-bike",
+    "5": "ti-bus", "6": "ti-truck", "7": "ti-truck"
   };
   var _siteCategoryChart = null;
 
@@ -307,9 +304,10 @@
 
   /* ── Site Analysis Panel ─────────────────────────────────── */
   function renderSiteAnalysisPanel(golonganTotals) {
+    var validCodes = ["1", "2", "3", "4", "5", "6", "7"];
     /* Build totals map: { code → count } */
     var totalsMap = {};
-    (golonganTotals || []).forEach(function (d) {
+    (golonganTotals || []).filter(function (d) { return validCodes.includes(String(d.golongan_code)); }).forEach(function (d) {
       totalsMap[String(d.golongan_code)] = Number(d.total) || 0;
     });
 
@@ -349,7 +347,7 @@
     /* ── Distribution list (per golongan_code sorted by count) ── */
     var distBody = document.getElementById("siteDistributionBody");
     if (distBody) {
-      var sorted = (golonganTotals || []).slice().sort(function (a, b) {
+      var sorted = (golonganTotals || []).filter(function(d) { return validCodes.includes(String(d.golongan_code)); }).sort(function (a, b) {
         if (!a.total && b.total) return 1;
         if (a.total && !b.total) return -1;
         return (b.total || 0) - (a.total || 0);

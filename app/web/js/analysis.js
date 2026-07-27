@@ -71,25 +71,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     2: "ti-car",
     3: "ti-car",
     4: "ti-truck",
-    "5a": "ti-bus",
-    "5b": "ti-bus",
-    "6a": "ti-truck",
-    "6b": "ti-truck",
-    "7a": "ti-truck",
-    "7b": "ti-truck",
-    "7c": "ti-truck",
-    8: "ti-bike",
+    5: "ti-bus",
+    6: "ti-truck",
+    7: "ti-truck"
   };
   function getVehicleIcon(code) {
     return VEHICLE_CLASS_ICONS[String(code || "")] || "ti-car";
   }
   const CHART_BAR_COLORS = ["#50CD89", "#FFC700", "#009EF7", "#50CDFF", "#F1416C", "#3F4254"];
   const CATEGORY_GROUPS = [
-    { key: "cars", label: "Cars & light", codes: ["2", "3", "4"], color: "#3B82F6" },
     { key: "motorcycles", label: "Motorcycles", codes: ["1"], color: "#22C55E" },
-    { key: "trucks", label: "Trucks", codes: ["6a", "6b", "7a", "7b", "7c"], color: "#EF4444" },
-    { key: "buses", label: "Buses", codes: ["5a", "5b"], color: "#F59E0B" },
-    { key: "nonmotor", label: "Non-motorized", codes: ["8"], color: "#94A3B8" },
+    { key: "cars", label: "Cars & light", codes: ["2", "3", "4"], color: "#3B82F6" },
+    { key: "buses", label: "Buses", codes: ["5"], color: "#F59E0B" },
+    { key: "trucks", label: "Trucks", codes: ["6", "7"], color: "#EF4444" }
   ];
   function getCategoryForCode(code) {
     return CATEGORY_GROUPS.find((g) => g.codes.includes(String(code || ""))) || null;
@@ -312,8 +306,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderMasterClassCards(masterClasses) {
+    const validCodes = ["1", "2", "3", "4", "5", "6", "7"];
     state.masterClasses = Array.isArray(masterClasses)
-      ? masterClasses.slice().sort((left, right) => Number(left.sort_order || 0) - Number(right.sort_order || 0))
+      ? masterClasses
+          .filter(c => validCodes.includes(String(c.code)))
+          .sort((left, right) => Number(left.sort_order || 0) - Number(right.sort_order || 0))
       : [];
 
     if (!state.masterClasses.length) {
@@ -460,7 +457,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           : "—";
     }
 
-    const heavyCodes = ["5a", "5b", "6a", "6b", "7a", "7b", "7c"];
+    const heavyCodes = ["5", "6", "7"];
     const heavyCount = heavyCodes.reduce((sum, c) => sum + Number(totals[c] || 0), 0);
     const heavyPct = total > 0 ? Math.round((heavyCount / total) * 100) : 0;
     if (analysisHeavyVehiclesValue) {
@@ -592,7 +589,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
-    const heavyCodes = ["5a", "5b", "6a", "6b", "7a", "7b", "7c"];
+    const heavyCodes = ["5", "6", "7"];
     const heavyCount = heavyCodes.reduce((sum, c) => sum + Number(totals[c] || 0), 0);
     if (heavyCount > 0) {
       const pct = Math.round((heavyCount / total) * 100);

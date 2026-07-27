@@ -145,92 +145,85 @@
 
 </div><!-- /an-layout -->
 
-<!-- ── Class Dashboard — full width ──────────────────────────── -->
-<div class="an-section an-section--full mt-5">
-  <div class="an-db-body">
+<!-- ── Class Dashboard — Bento Grid ──────────────────────────── -->
+<div class="an-dashboard-bento mt-5">
 
-    <!-- LEFT: Overall Total dark card + Distribution list -->
-    <div class="an-db-left">
-
-      <!-- Overall Total dark card -->
-      <div id="analysisTotalSummary" class="an-overall-card">
-        <div class="an-overall-kicker">Overall Total</div>
-        <div class="an-overall-number-row">
-          <span id="metric_total" class="an-overall-number">0</span>
-          <span class="an-overall-label-suffix">vehicles detected</span>
-        </div>
-        <div class="an-overall-desc">Accumulated count across all classes from the selected analysis result.</div>
-        <div id="analysisOverallBar" class="an-overall-bar"></div>
-        <div id="analysisOverallLegend" class="an-overall-legend"></div>
-      </div>
-
-      <!-- Distribution list -->
-      <div class="an-db-dist-section">
-        <div class="an-db-dist-header">
-          <div>
-            <div class="an-db-kicker">Distribution</div>
-            <div class="an-db-title">Detections by class</div>
-          </div>
-          <div id="analysisDistributionLegend" class="an-db-legend"></div>
-        </div>
-        <div id="analysisDistributionBody" class="an-db-dist-list"></div>
-      </div>
-
+  <!-- Row 1: Overall (8 cols) + Minis (4 cols) -->
+  <div class="an-bento-card an-bento-overall" id="analysisTotalSummary">
+    <div class="an-overall-deco">
+      <i class="ti ti-car"></i>
+      <i class="ti ti-bus"></i>
+      <i class="ti ti-truck"></i>
     </div>
-
-    <!-- RIGHT: Mini stats + Composition + Insights -->
-    <div class="an-db-right">
-
-      <!-- Mini stat: Busiest Class -->
-      <div class="an-mini-stat">
-        <div class="an-mini-stat-icon-wrap"><i id="analysisBusiestClassIcon" class="ti ti-car" aria-hidden="true"></i></div>
-        <div class="an-mini-stat-content">
-          <div class="an-mini-stat-kicker">Busiest Class</div>
-          <div id="analysisBusiestClassLabel" class="an-mini-stat-value">—</div>
-          <div id="analysisBusiestClassSub" class="an-mini-stat-sub">—</div>
-        </div>
+    <div class="an-overall-content">
+      <div class="an-overall-kicker">Overall Total</div>
+      <div class="an-overall-number-row">
+        <span id="metric_total" class="an-overall-number">0</span>
+        <span class="an-overall-label-suffix">vehicles detected</span>
       </div>
-
-      <!-- Mini stat: Classes Detected -->
-      <div class="an-mini-stat">
-        <div class="an-mini-stat-icon-wrap"><i class="ti ti-chart-pie" aria-hidden="true"></i></div>
-        <div class="an-mini-stat-content">
-          <div class="an-mini-stat-kicker">Classes Detected</div>
-          <div id="analysisClassesDetectedValue" class="an-mini-stat-value">—</div>
-          <div id="analysisClassesDetectedSub" class="an-mini-stat-sub">—</div>
-        </div>
-      </div>
-
-      <!-- Mini stat: Heavy Vehicles -->
-      <div class="an-mini-stat">
-        <div class="an-mini-stat-icon-wrap"><i class="ti ti-truck" aria-hidden="true"></i></div>
-        <div class="an-mini-stat-content">
-          <div class="an-mini-stat-kicker">Heavy Vehicles</div>
-          <div id="analysisHeavyVehiclesValue" class="an-mini-stat-value">—</div>
-          <div id="analysisHeavyVehiclesSub" class="an-mini-stat-sub">—</div>
-        </div>
-      </div>
-
-      <!-- Composition donut -->
-      <div class="an-composition-card">
-        <div class="an-composition-header">
-          <div class="an-db-kicker">Composition</div>
-          <div class="an-db-title">By category</div>
-        </div>
-        <div id="analysisClassChart" class="an-donut-wrap"></div>
-        <div id="analysisCategoryLegend" class="an-category-legend"></div>
-      </div>
-
-      <!-- Insights -->
-      <div class="an-insights-card hidden" id="analysisInsightsCard">
-        <div class="an-insights-header">
-          <div class="an-db-kicker">Insights</div>
-        </div>
-        <div id="analysisInsightsList" class="an-insights-list"></div>
-      </div>
-
+      <div class="an-overall-desc">Accumulated count across all classes from the selected analysis result.</div>
+      <div id="analysisOverallBar" class="an-overall-bar"></div>
+      <div id="analysisOverallLegend" class="an-overall-legend"></div>
     </div>
   </div>
+
+  <div class="an-bento-mini-col">
+    <!-- Mini stat: Busiest Class -->
+    <div class="an-bento-mini">
+      <div class="an-mini-icon-wrap" style="background: linear-gradient(135deg, #3b82f6, #2563eb);"><i id="analysisBusiestClassIcon" class="ti ti-car" aria-hidden="true"></i></div>
+      <div class="an-mini-stat-content">
+        <div class="an-mini-stat-kicker">Busiest Class</div>
+        <div id="analysisBusiestClassLabel" class="an-mini-stat-value">—</div>
+        <div id="analysisBusiestClassSub" class="an-mini-stat-sub">—</div>
+      </div>
+    </div>
+
+    <!-- Mini stat: Classes Detected -->
+    <div class="an-bento-mini">
+      <div class="an-mini-icon-wrap" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"><i class="ti ti-chart-pie" aria-hidden="true"></i></div>
+      <div class="an-mini-stat-content">
+        <div class="an-mini-stat-kicker">Classes Detected</div>
+        <div id="analysisClassesDetectedValue" class="an-mini-stat-value">—</div>
+        <div id="analysisClassesDetectedSub" class="an-mini-stat-sub">—</div>
+      </div>
+    </div>
+
+    <!-- Mini stat: Heavy Vehicles -->
+    <div class="an-bento-mini">
+      <div class="an-mini-icon-wrap" style="background: linear-gradient(135deg, #ef4444, #dc2626);"><i class="ti ti-truck" aria-hidden="true"></i></div>
+      <div class="an-mini-stat-content">
+        <div class="an-mini-stat-kicker">Heavy Vehicles</div>
+        <div id="analysisHeavyVehiclesValue" class="an-mini-stat-value">—</div>
+        <div id="analysisHeavyVehiclesSub" class="an-mini-stat-sub">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: Distribution (7 cols) + Composition (5 cols) -->
+  <div class="an-bento-card an-bento-dist">
+    <div class="an-bento-header">
+      <div>
+        <div class="an-db-kicker">Distribution</div>
+        <div class="an-db-title">Detections by class</div>
+      </div>
+      <div id="analysisDistributionLegend" class="an-db-legend"></div>
+    </div>
+    <div id="analysisDistributionBody" class="an-db-dist-list"></div>
+  </div>
+
+  <div class="an-bento-card an-bento-composition">
+    <div class="an-bento-header">
+      <div>
+        <div class="an-db-kicker">Composition</div>
+        <div class="an-db-title">By category</div>
+      </div>
+    </div>
+    <div id="analysisClassChart" class="an-donut-wrap"></div>
+    <div id="analysisCategoryLegend" class="an-category-legend"></div>
+
+    <!-- Insights removed per request -->
+  </div>
+
 </div>
 
 <!-- ── Detected Vehicles — full width ────────────────────────── -->

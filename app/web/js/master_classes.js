@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderItems(items) {
-    currentItems = Array.isArray(items) ? items.slice() : [];
+    // Only display active classes (sort_order < 1000)
+    currentItems = Array.isArray(items) ? items.filter(item => (item.sort_order || 0) < 1000).slice() : [];
     grid.innerHTML = currentItems.map((item) => `
       <div class="col-xl-6">
         <div class="card border border-gray-200 h-100 shadow-sm">

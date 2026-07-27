@@ -30,7 +30,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const analysisChartSummary = document.getElementById("analysisChartSummary");
   const eventsBody = document.getElementById("analysisEventsBody");
   const alertBox = document.getElementById("analysisAlert");
-  const exportAnalysisExcelButton = document.getElementById("exportAnalysisExcelButton");
+  const exportAnalysisDetectedExcelButton = document.getElementById("exportAnalysisDetectedExcelButton");
+  const exportAnalysisSpeedExcelButton = document.getElementById("exportAnalysisSpeedExcelButton");
   const clearAnalysisLogsButton = document.getElementById("clearAnalysisLogsButton");
   const analysisLineTabsShell = document.getElementById("analysisLineTabsShell");
   const analysisLineTabs = document.getElementById("analysisLineTabs");
@@ -48,14 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     "metric-card-danger",
     "metric-card-dark",
   ];
-  const CHART_BAR_COLORS = [
-    "#50CD89",
-    "#FFC700",
-    "#009EF7",
-    "#50CDFF",
-    "#F1416C",
-    "#3F4254",
-  ];
+  const CHART_BAR_COLORS = ["#50CD89", "#FFC700", "#009EF7", "#50CDFF", "#F1416C", "#3F4254"];
   const state = {
     videos: [],
     selectedVideoId: null,
@@ -176,9 +170,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function getLineEventCount(lineOrder) {
-    const events = state.lastAnalysisPayload && Array.isArray(state.lastAnalysisPayload.recent_events)
-      ? state.lastAnalysisPayload.recent_events
-      : [];
+    const events = state.lastAnalysisPayload && Array.isArray(state.lastAnalysisPayload.recent_events) ? state.lastAnalysisPayload.recent_events : [];
     return events.filter((event) => Number(event.count_line_order || 0) === lineOrder).length;
   }
 
@@ -206,7 +198,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     analysisLineTabsShell.classList.remove("hidden");
-    analysisLineTabs.innerHTML = state.availableLines.map((line) => `
+    analysisLineTabs.innerHTML = state.availableLines
+      .map(
+        (line) => `
       <button
         class="analysis-line-tab${line.line_order === state.selectedLineOrder ? " active" : ""}"
         type="button"
@@ -216,7 +210,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         <span class="analysis-line-tab-label">${app.escapeHtml(line.name)}</span>
         <span class="analysis-line-tab-count">${getLineEventCount(line.line_order)}</span>
       </button>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 
   function getVisibleEvents(events) {
@@ -258,9 +254,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function renderMasterClassCards(masterClasses) {
     state.masterClasses = Array.isArray(masterClasses)
-      ? masterClasses
-        .slice()
-        .sort((left, right) => Number(left.sort_order || 0) - Number(right.sort_order || 0))
+      ? masterClasses.slice().sort((left, right) => Number(left.sort_order || 0) - Number(right.sort_order || 0))
       : [];
 
     if (!state.masterClasses.length) {
@@ -284,7 +278,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       </div>
     `;
 
-    analysisMetricsGrid.innerHTML = state.masterClasses.map((item, index) => `
+    analysisMetricsGrid.innerHTML = state.masterClasses
+      .map(
+        (item, index) => `
       <div class="col-xxl-2 col-xl-3 col-md-4 col-sm-6">
         <div class="card metric-card ${METRIC_CARD_THEMES[index % METRIC_CARD_THEMES.length]} h-100">
           <div class="card-body metric-card-body">
@@ -298,7 +294,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           </div>
         </div>
       </div>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 
   function updateMetricValues(totals, totalVehicleCount) {
@@ -348,9 +346,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const entries = aggregateChartTotals(totals);
-    const scopeLabel = state.availableLines.length > 1 && state.selectedLineOrder
-      ? formatLineDisplayName(state.selectedLineOrder)
-      : "All lines";
+    const scopeLabel = state.availableLines.length > 1 && state.selectedLineOrder ? formatLineDisplayName(state.selectedLineOrder) : "All lines";
     if (analysisChartSummary) {
       analysisChartSummary.textContent = `${scopeLabel} • Total ${totalVehicleCount || 0} vehicles`;
     }
@@ -485,7 +481,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (event && event.source_label) {
       return event.source_label;
     }
-    const normalizedVehicleClass = String(event && event.vehicle_class ? event.vehicle_class : "").trim().toLowerCase();
+    const normalizedVehicleClass = String(event && event.vehicle_class ? event.vehicle_class : "")
+      .trim()
+      .toLowerCase();
     return normalizedVehicleClass || "-";
   }
 
@@ -498,7 +496,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return `${value.toFixed(2)} s`;
     }
     let minutes = Math.floor(value / 60);
-    let remainingSeconds = Math.round((value - (minutes * 60)) * 100) / 100;
+    let remainingSeconds = Math.round((value - minutes * 60) * 100) / 100;
     if (remainingSeconds >= 60) {
       minutes += 1;
       remainingSeconds = 0;
@@ -528,8 +526,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function thumbnailUrl(video) {
-    const stem = String(video && video.stored_filename ? video.stored_filename : "")
-      .replace(/\.[^.]+$/, "");
+    const stem = String(video && video.stored_filename ? video.stored_filename : "").replace(/\.[^.]+$/, "");
     return stem ? `/storage/thumbnails/${encodeURIComponent(stem)}.jpg` : "";
   }
 
@@ -574,12 +571,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function bindThumbnailFallbacks(container) {
     container.querySelectorAll("img[data-thumb]").forEach((image) => {
-      image.addEventListener("error", () => {
-        const shell = image.closest("[data-thumb-shell]");
-        if (shell) {
-          shell.classList.add("is-fallback");
-        }
-      }, { once: true });
+      image.addEventListener(
+        "error",
+        () => {
+          const shell = image.closest("[data-thumb-shell]");
+          if (shell) {
+            shell.classList.add("is-fallback");
+          }
+        },
+        { once: true },
+      );
     });
   }
 
@@ -594,15 +595,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return true;
       }
 
-      const haystack = [
-        video.original_filename,
-        video.stored_filename,
-        video.description,
-        video.uploaded_by,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
+      const haystack = [video.original_filename, video.stored_filename, video.description, video.uploaded_by].filter(Boolean).join(" ").toLowerCase();
 
       return haystack.includes(searchQuery);
     });
@@ -619,10 +612,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    analysisVideoPickerBody.innerHTML = videos.map((video, index) => {
-      const analysisStatus = video.analysis_job ? video.analysis_job.status : "pending";
-      const isSelected = video.id === state.selectedVideoId;
-      return `
+    analysisVideoPickerBody.innerHTML = videos
+      .map((video, index) => {
+        const analysisStatus = video.analysis_job ? video.analysis_job.status : "pending";
+        const isSelected = video.id === state.selectedVideoId;
+        return `
         <tr>
           <td class="text-gray-700 fw-semibold">${index + 1}</td>
           <td>${renderPickerThumbnail(video)}</td>
@@ -649,7 +643,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           </td>
         </tr>
       `;
-    }).join("");
+      })
+      .join("");
 
     bindThumbnailFallbacks(analysisVideoPickerBody);
   }
@@ -795,9 +790,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const startedAtValue = job.started_at ? new Date(job.started_at).getTime() : null;
     const nowMs = Date.now();
-    const elapsedSeconds = startedAtValue && !Number.isNaN(startedAtValue)
-      ? Math.max(0, (nowMs - startedAtValue) / 1000)
-      : 0;
+    const elapsedSeconds = startedAtValue && !Number.isNaN(startedAtValue) ? Math.max(0, (nowMs - startedAtValue) / 1000) : 0;
 
     const performance = job.summary_json && job.summary_json.performance ? job.summary_json.performance : {};
     const processingFps = Number(performance.processing_fps || 0);
@@ -839,9 +832,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (job && job.started_at && job.finished_at) {
         const startedMs = new Date(job.started_at).getTime();
         const finishedMs = new Date(job.finished_at).getTime();
-        const elapsedSeconds = (!Number.isNaN(startedMs) && !Number.isNaN(finishedMs))
-          ? Math.max(0, (finishedMs - startedMs) / 1000)
-          : 0;
+        const elapsedSeconds = !Number.isNaN(startedMs) && !Number.isNaN(finishedMs) ? Math.max(0, (finishedMs - startedMs) / 1000) : 0;
         analysisProcessingTimeText.textContent = formatClockDuration(elapsedSeconds);
       } else {
         analysisProcessingTimeText.textContent = "00:00:00";
@@ -851,9 +842,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const metrics = calculateProcessingMetrics(payload);
-    analysisEstimatedTimeText.textContent = metrics.estimatedRemainingSeconds === null
-      ? "Estimating..."
-      : formatEstimate(metrics.estimatedRemainingSeconds);
+    analysisEstimatedTimeText.textContent =
+      metrics.estimatedRemainingSeconds === null ? "Estimating..." : formatEstimate(metrics.estimatedRemainingSeconds);
     analysisProcessingTimeText.textContent = formatClockDuration(metrics.elapsedSeconds);
   }
 
@@ -881,7 +871,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return false;
     }
 
-    return (Date.now() - referenceTime.getTime()) > 45000;
+    return Date.now() - referenceTime.getTime() > 45000;
   }
 
   async function fetchLatestPreviewFrame() {
@@ -958,17 +948,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     state.overlayLoadPromise = fetch(`${overlayUrl}?t=${Date.now()}`, {
       credentials: "same-origin",
       cache: "no-store",
-    }).then(async (response) => {
-      if (!response.ok) {
-        throw new Error("Failed to load overlay metadata");
-      }
-      return response.json();
-    }).then((payload) => {
-      state.overlayData = payload;
-      return payload;
-    }).finally(() => {
-      state.overlayLoadPromise = null;
-    });
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Failed to load overlay metadata");
+        }
+        return response.json();
+      })
+      .then((payload) => {
+        state.overlayData = payload;
+        return payload;
+      })
+      .finally(() => {
+        state.overlayLoadPromise = null;
+      });
 
     return state.overlayLoadPromise;
   }
@@ -1011,9 +1004,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function overlaySourceStepSeconds() {
-    const performance = state.overlayData && state.overlayData.analysis && state.overlayData.analysis.performance
-      ? state.overlayData.analysis.performance
-      : {};
+    const performance =
+      state.overlayData && state.overlayData.analysis && state.overlayData.analysis.performance ? state.overlayData.analysis.performance : {};
     const effectiveAnalysisFps = Number(performance.effective_analysis_fps || 0);
     if (effectiveAnalysisFps > 0) {
       return 1 / effectiveAnalysisFps;
@@ -1044,7 +1036,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function lerpNumber(startValue, endValue, ratio) {
-    return Number(startValue || 0) + ((Number(endValue || 0) - Number(startValue || 0)) * ratio);
+    return Number(startValue || 0) + (Number(endValue || 0) - Number(startValue || 0)) * ratio;
   }
 
   function findOverlayFrameWindow(timeSeconds) {
@@ -1132,12 +1124,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
 
-      if (previousDetection && previousTime !== null && (timeSeconds - previousTime) <= holdWindowSeconds) {
+      if (previousDetection && previousTime !== null && timeSeconds - previousTime <= holdWindowSeconds) {
         mergedDetections.push(previousDetection);
         return;
       }
 
-      if (nextDetection && nextTime !== null && (nextTime - timeSeconds) <= (holdWindowSeconds * 0.75)) {
+      if (nextDetection && nextTime !== null && nextTime - timeSeconds <= holdWindowSeconds * 0.75) {
         mergedDetections.push(nextDetection);
       }
     });
@@ -1155,27 +1147,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function drawOverlayLines(contentBox) {
     const analysis = state.overlayData && state.overlayData.analysis ? state.overlayData.analysis : null;
-    const lines = analysis && Array.isArray(analysis.lines) && analysis.lines.length
-      ? analysis.lines
-      : (analysis && analysis.line ? [analysis.line] : []);
+    const lines =
+      analysis && Array.isArray(analysis.lines) && analysis.lines.length ? analysis.lines : analysis && analysis.line ? [analysis.line] : [];
     if (!lines.length || !contentBox) {
       return;
     }
 
     const colors = ["#FACC15", "#22D3EE"];
     lines.forEach((line, index) => {
-      const startPoint = typeof overlayMath.mapNormalizedPointToDisplay === "function"
-        ? overlayMath.mapNormalizedPointToDisplay({ x: line.start_x, y: line.start_y }, contentBox)
-        : {
-          x: contentBox.left + (Number(line.start_x || 0) * contentBox.width),
-          y: contentBox.top + (Number(line.start_y || 0) * contentBox.height),
-        };
-      const endPoint = typeof overlayMath.mapNormalizedPointToDisplay === "function"
-        ? overlayMath.mapNormalizedPointToDisplay({ x: line.end_x, y: line.end_y }, contentBox)
-        : {
-          x: contentBox.left + (Number(line.end_x || 0) * contentBox.width),
-          y: contentBox.top + (Number(line.end_y || 0) * contentBox.height),
-        };
+      const startPoint =
+        typeof overlayMath.mapNormalizedPointToDisplay === "function"
+          ? overlayMath.mapNormalizedPointToDisplay({ x: line.start_x, y: line.start_y }, contentBox)
+          : {
+            x: contentBox.left + Number(line.start_x || 0) * contentBox.width,
+            y: contentBox.top + Number(line.start_y || 0) * contentBox.height,
+          };
+      const endPoint =
+        typeof overlayMath.mapNormalizedPointToDisplay === "function"
+          ? overlayMath.mapNormalizedPointToDisplay({ x: line.end_x, y: line.end_y }, contentBox)
+          : {
+            x: contentBox.left + Number(line.end_x || 0) * contentBox.width,
+            y: contentBox.top + Number(line.end_y || 0) * contentBox.height,
+          };
       overlayContext.save();
       overlayContext.strokeStyle = colors[index % colors.length];
       overlayContext.lineWidth = 3;
@@ -1192,29 +1185,31 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
     detections.forEach((detection) => {
-      const box = typeof overlayMath.mapNormalizedRectToDisplay === "function"
-        ? overlayMath.mapNormalizedRectToDisplay(
-          {
-            x1: detection.x1,
-            y1: detection.y1,
-            x2: detection.x2,
-            y2: detection.y2,
-          },
-          contentBox
-        )
-        : {
-          x1: contentBox.left + (Number(detection.x1 || 0) * contentBox.width),
-          y1: contentBox.top + (Number(detection.y1 || 0) * contentBox.height),
-          x2: contentBox.left + (Number(detection.x2 || 0) * contentBox.width),
-          y2: contentBox.top + (Number(detection.y2 || 0) * contentBox.height),
-          width: Math.max((Number(detection.x2 || 0) - Number(detection.x1 || 0)) * contentBox.width, 1),
-          height: Math.max((Number(detection.y2 || 0) - Number(detection.y1 || 0)) * contentBox.height, 1),
-        };
+      const box =
+        typeof overlayMath.mapNormalizedRectToDisplay === "function"
+          ? overlayMath.mapNormalizedRectToDisplay(
+            {
+              x1: detection.x1,
+              y1: detection.y1,
+              x2: detection.x2,
+              y2: detection.y2,
+            },
+            contentBox,
+          )
+          : {
+            x1: contentBox.left + Number(detection.x1 || 0) * contentBox.width,
+            y1: contentBox.top + Number(detection.y1 || 0) * contentBox.height,
+            x2: contentBox.left + Number(detection.x2 || 0) * contentBox.width,
+            y2: contentBox.top + Number(detection.y2 || 0) * contentBox.height,
+            width: Math.max((Number(detection.x2 || 0) - Number(detection.x1 || 0)) * contentBox.width, 1),
+            height: Math.max((Number(detection.y2 || 0) - Number(detection.y1 || 0)) * contentBox.height, 1),
+          };
       const x1 = box.x1;
       const y1 = box.y1;
       const width = box.width;
       const height = box.height;
-      const overlayLabel = detection.display_label || detection.vehicle_type_label || detection.detected_label || detection.source_label || detection.vehicle_class;
+      const overlayLabel =
+        detection.display_label || detection.vehicle_type_label || detection.detected_label || detection.source_label || detection.vehicle_class;
       const label = `${detection.track_id ?? "-"} ${overlayLabel} ${(Number(detection.confidence || 0) * 100).toFixed(0)}%`;
 
       overlayContext.save();
@@ -1224,7 +1219,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       overlayContext.font = "600 13px Inter, sans-serif";
       const textWidth = overlayContext.measureText(label).width;
-      const textX = Math.min(Math.max(x1, contentBox.left + 4), Math.max((contentBox.left + contentBox.width) - textWidth - 16, contentBox.left + 4));
+      const textX = Math.min(Math.max(x1, contentBox.left + 4), Math.max(contentBox.left + contentBox.width - textWidth - 16, contentBox.left + 4));
       const textY = Math.max(y1 - 22, contentBox.top + 6);
       overlayContext.fillStyle = "rgba(0, 20, 48, 0.88)";
       overlayContext.fillRect(textX, textY, textWidth + 12, 20);
@@ -1272,12 +1267,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function showPlayback(options) {
-    const {
-      videoUrl,
-      hint,
-      badgeText = "Playback",
-      overlayUrl = null,
-    } = options;
+    const { videoUrl, hint, badgeText = "Playback", overlayUrl = null } = options;
 
     stopLivePreview();
     showPlaybackShell();
@@ -1317,7 +1307,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    eventsBody.innerHTML = events.map((event, index) => `
+    eventsBody.innerHTML = events
+      .map(
+        (event, index) => `
       <tr>
         <td>${index + 1}</td>
         <td>
@@ -1341,43 +1333,37 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td>${app.escapeHtml(event.direction)}</td>
         <td>${event.confidence ? `${(Number(event.confidence) * 100).toFixed(1)}%` : "-"}</td>
       </tr>
-    `).join("");
+    `,
+      )
+      .join("");
   }
 
   function getCurrentVisibleEvents() {
-    const events = state.lastAnalysisPayload && Array.isArray(state.lastAnalysisPayload.recent_events)
-      ? state.lastAnalysisPayload.recent_events
-      : [];
+    const events = state.lastAnalysisPayload && Array.isArray(state.lastAnalysisPayload.recent_events) ? state.lastAnalysisPayload.recent_events : [];
     return getVisibleEvents(events);
   }
 
   function safeExcelCell(value) {
     const text = String(value ?? "");
-    return app.escapeHtml(text)
-      .replace(/\n/g, "<br/>");
+    return app.escapeHtml(text).replace(/\n/g, "<br/>");
   }
 
   function buildExportFileName() {
     const video = getSelectedVideo();
-    const baseName = String(
-      (video && (displayPlaybackFilename(video) || video.original_filename)) || "detected_vehicles"
-    )
-      .replace(/\.[^.]+$/, "")
-      .replace(/[^A-Za-z0-9_-]+/g, "_")
-      .replace(/^_+|_+$/g, "")
-      .slice(0, 80) || "detected_vehicles";
-    const lineSuffix = state.availableLines.length > 1 && state.selectedLineOrder
-      ? `_line_${state.selectedLineOrder}`
-      : "";
+    const baseName =
+      String((video && (displayPlaybackFilename(video) || video.original_filename)) || "detected_vehicles")
+        .replace(/\.[^.]+$/, "")
+        .replace(/[^A-Za-z0-9_-]+/g, "_")
+        .replace(/^_+|_+$/g, "")
+        .slice(0, 80) || "detected_vehicles";
+    const lineSuffix = state.availableLines.length > 1 && state.selectedLineOrder ? `_line_${state.selectedLineOrder}` : "";
     const timestamp = new Date().toISOString().replace(/[:T]/g, "-").slice(0, 19);
     return `${baseName}_detected_vehicles${lineSuffix}_${timestamp}.xls`;
   }
 
   function buildExcelHtml(events) {
     const video = getSelectedVideo();
-    const lineLabel = state.availableLines.length > 1 && state.selectedLineOrder
-      ? formatLineDisplayName(state.selectedLineOrder)
-      : "All Lines";
+    const lineLabel = state.availableLines.length > 1 && state.selectedLineOrder ? formatLineDisplayName(state.selectedLineOrder) : "All Lines";
     const exportedAt = new Date().toLocaleString("en-GB", {
       year: "numeric",
       month: "2-digit",
@@ -1387,10 +1373,32 @@ document.addEventListener("DOMContentLoaded", async () => {
       second: "2-digit",
       hour12: false,
     });
-    const rows = events.map((event, index) => `
+    const groupedEvents = {};
+    const processedEvents = [];
+    events.forEach(e => {
+      if (e.track_id) {
+        if (!groupedEvents[e.track_id]) {
+          groupedEvents[e.track_id] = { ...e, t1: "-", t2: "-" };
+          processedEvents.push(groupedEvents[e.track_id]);
+        }
+        if (e.count_line_order === 1) {
+          groupedEvents[e.track_id].t1 = formatCrossedTimeDisplay(e.crossed_at_seconds);
+        } else if (e.count_line_order === 2) {
+          groupedEvents[e.track_id].t2 = formatCrossedTimeDisplay(e.crossed_at_seconds);
+        }
+      } else {
+        processedEvents.push({ ...e, t1: "-", t2: "-" });
+      }
+    });
+
+    const rows = processedEvents
+      .map(
+        (event, index) => `
       <tr>
         <td>${index + 1}</td>
         <td>${safeExcelCell(formatCrossedTimeDisplay(event.crossed_at_seconds))}</td>
+        <td>${safeExcelCell(event.t1)}</td>
+        <td>${safeExcelCell(event.t2)}</td>
         <td>${safeExcelCell(event.track_id ?? "-")}</td>
         <td>${safeExcelCell(formatDetectedType(event))}</td>
         <td>${safeExcelCell(String(event.golongan_code || "-"))}</td>
@@ -1398,7 +1406,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td>${safeExcelCell(event.direction || "-")}</td>
         <td>${safeExcelCell(event.confidence ? `${(Number(event.confidence) * 100).toFixed(1)}%` : "-")}</td>
       </tr>
-    `).join("");
+    `,
+      )
+      .join("");
 
     return `<!DOCTYPE html>
 <html>
@@ -1416,7 +1426,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 </head>
 <body>
   <table class="meta">
-    <tr><td class="title" colspan="2">Detected Vehicles Export</td></tr>
+    <tr><td class="title" colspan="2">Detected Vehicles Speed Export</td></tr>
     <tr><td><strong>Video</strong></td><td>${safeExcelCell((video && (displayPlaybackFilename(video) || video.original_filename)) || "-")}</td></tr>
     <tr><td><strong>Description</strong></td><td>${safeExcelCell((video && video.description) || "-")}</td></tr>
     <tr><td><strong>Line</strong></td><td>${safeExcelCell(lineLabel)}</td></tr>
@@ -1429,6 +1439,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       <tr>
         <th>No</th>
         <th>Time</th>
+        <th>T1</th> 
+        <th>T2</th>
         <th>ID</th>
         <th>Detected Type</th>
         <th>Class Code</th>
@@ -1445,6 +1457,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 </html>`;
   }
 
+  function exportSpeedExcel() {
+    if (!state.selectedVideoId) {
+      app.setAlert(alertBox, "danger", "Select a video first");
+      return;
+    }
+
+    window.location.href = `/api/videos/${state.selectedVideoId}/analysis/excel-export`;
+    app.setAlert(alertBox, "success", "Starting Speed Excel download...");
+  }
+
   function exportVisibleEventsToExcel() {
     const events = getCurrentVisibleEvents();
     if (!state.selectedVideoId) {
@@ -1456,8 +1478,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    const html = buildExcelHtml(events);
-    const blob = new Blob(["\ufeff", html], {
+    const excelHtml = buildExcelHtml(events);
+    const blob = new Blob(["\ufeff", excelHtml], {
       type: "application/vnd.ms-excel;charset=utf-8",
     });
     const downloadUrl = URL.createObjectURL(blob);
@@ -1467,7 +1489,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
     app.setAlert(alertBox, "success", "Detected vehicle data exported to Excel");
   }
 
@@ -1477,9 +1498,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const duration = Number(videoPlayer.duration || 0);
-    const targetSeconds = duration > 0
-      ? Math.min(Math.max(Number(state.pendingSeekSeconds), 0), Math.max(duration - 0.05, 0))
-      : Math.max(Number(state.pendingSeekSeconds), 0);
+    const targetSeconds =
+      duration > 0
+        ? Math.min(Math.max(Number(state.pendingSeekSeconds), 0), Math.max(duration - 0.05, 0))
+        : Math.max(Number(state.pendingSeekSeconds), 0);
 
     state.pendingSeekSeconds = null;
     videoPlayer.currentTime = targetSeconds;
@@ -1587,32 +1609,33 @@ document.addEventListener("DOMContentLoaded", async () => {
       setPreviewMode(
         "badge-light-info",
         "Converting",
-        "The uploaded file is being converted to MP4 in the background. Playback and analysis will become available automatically when conversion finishes."
+        "The uploaded file is being converted to MP4 in the background. Playback and analysis will become available automatically when conversion finishes.",
       );
     } else if (isRunning && !isStaleRunning) {
       stopLivePreview();
       await showPlayback({
         videoUrl: playbackUrl,
         overlayUrl: null,
-        hint: jobStatus === "queued"
-          ? "The analysis worker is preparing the model. You can still play the video now. Overlay markers will appear only after analysis completes."
-          : "Analysis is running in the background. The video can still be played normally now. Overlay markers will appear only after analysis completes.",
+        hint:
+          jobStatus === "queued"
+            ? "The analysis worker is preparing the model. You can still play the video now. Overlay markers will appear only after analysis completes."
+            : "Analysis is running in the background. The video can still be played normally now. Overlay markers will appear only after analysis completes.",
         badgeText: jobStatus === "queued" ? "Preparing Analysis" : "Playback During Analysis",
       });
     } else {
       const playbackHint = isStaleRunning
         ? "The previous analysis job is no longer active. Click Start Analysis to run it again."
         : payload.analysis_overlay_url
-        ? "The original video plays normally. Detection boxes are drawn in sync on the canvas overlay using batch analysis results."
-        : payload.annotated_video_url
-        ? "Analysis is complete. An annotated result video is available."
-        : "No live preview is active yet. You can play the original video or start analysis.";
+          ? "The original video plays normally. Detection boxes are drawn in sync on the canvas overlay using batch analysis results."
+          : payload.annotated_video_url
+            ? "Analysis is complete. An annotated result video is available."
+            : "No live preview is active yet. You can play the original video or start analysis.";
 
       await showPlayback({
         videoUrl: playbackUrl,
         overlayUrl: payload.analysis_overlay_url,
         hint: playbackHint,
-        badgeText: payload.analysis_overlay_url ? "Smooth Overlay Playback" : (payload.annotated_video_url ? "Annotated Playback" : "Playback"),
+        badgeText: payload.analysis_overlay_url ? "Smooth Overlay Playback" : payload.annotated_video_url ? "Annotated Playback" : "Playback",
       });
 
       if (payload.annotated_video_url) {
@@ -1628,7 +1651,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       setAnalysisActionButton({ mode: "start", disabled: !state.selectedVideoId });
     }
-    setButtonDisabled(exportAnalysisExcelButton, !state.selectedVideoId || !visibleEvents.length);
+    setButtonDisabled(exportAnalysisDetectedExcelButton, !state.selectedVideoId || !visibleEvents.length);
+    setButtonDisabled(exportAnalysisSpeedExcelButton, !state.selectedVideoId || !visibleEvents.length);
     setButtonDisabled(clearAnalysisLogsButton, !state.selectedVideoId || isConverting || (isRunning && !isStaleRunning));
     setRefreshButtonLoading(false);
 
@@ -1673,7 +1697,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       analysisProcessingTimeText.textContent = "00:00:00";
       setCountLinesButton.href = "/count-lines";
       setButtonDisabled(clearAnalysisLogsButton, true);
-      setButtonDisabled(exportAnalysisExcelButton, true);
+      setButtonDisabled(exportAnalysisDetectedExcelButton, true);
+      setButtonDisabled(exportAnalysisSpeedExcelButton, true);
       stopStatusClock();
       stopLivePreview();
       resetOverlayState();
@@ -1681,7 +1706,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       state.currentPlaybackUrl = null;
       videoPlayer.load();
       showPlaybackShell();
-      setPreviewMode("badge-light", "Idle", "While analysis is running, this area will show a live preview. After processing finishes, the video will play normally with synchronized overlay boxes.");
+      setPreviewMode(
+        "badge-light",
+        "Idle",
+        "While analysis is running, this area will show a live preview. After processing finishes, the video will play normally with synchronized overlay boxes.",
+      );
       setProgress(0);
       return;
     }
@@ -1827,8 +1856,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  exportAnalysisExcelButton.addEventListener("click", () => {
+  exportAnalysisDetectedExcelButton.addEventListener("click", () => {
     exportVisibleEventsToExcel();
+  });
+  exportAnalysisSpeedExcelButton.addEventListener("click", () => {
+    exportSpeedExcel();
   });
 
   startAnalysisButton.addEventListener("click", async () => {

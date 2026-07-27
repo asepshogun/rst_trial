@@ -66,6 +66,12 @@ def get_or_create_detection_settings(db: Session) -> DetectionSettings:
         if settings_row.model_path is None:
             settings_row.model_path = "yolov8s.pt"
             updated = True
+        if not hasattr(settings_row, "csv_flush_mode") or getattr(settings_row, "csv_flush_mode", None) is None:
+            try:
+                settings_row.csv_flush_mode = "concurrent"
+                updated = True
+            except Exception:
+                pass
         if updated:
             db.commit()
             db.refresh(settings_row)
@@ -87,6 +93,7 @@ def get_or_create_detection_settings(db: Session) -> DetectionSettings:
         preview_max_width=DEFAULT_PREVIEW_MAX_WIDTH,
         preview_jpeg_quality=DEFAULT_PREVIEW_JPEG_QUALITY,
         model_path="yolov8s.pt",
+        csv_flush_mode="concurrent",
     )
     db.add(settings_row)
     db.commit()
@@ -110,4 +117,5 @@ def build_detection_settings_overrides(db: Session) -> dict:
         "preview_max_width": int(settings_row.preview_max_width),
         "preview_jpeg_quality": int(settings_row.preview_jpeg_quality),
         "model_path": str(settings_row.model_path or "yolov8s.pt"),
+        "csv_flush_mode": str(getattr(settings_row, "csv_flush_mode", None) or "concurrent"),
     }

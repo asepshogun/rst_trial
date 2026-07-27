@@ -32,7 +32,6 @@ def ensure_bootstrap_data(db: Session) -> None:
         return
 
     _ensure_admin_user(db)
-    _ensure_default_site(db)
     if "detection_settings" in table_names:
         _ensure_detection_settings(db)
     if "master_classes" in table_names:

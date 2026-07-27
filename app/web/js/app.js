@@ -112,7 +112,7 @@
   async function redirectIfAuthenticated() {
     const session = await getSession();
     if (session.authenticated) {
-      window.location.href = "/videos";
+      window.location.href = session.user && session.user.is_admin ? "/dashboard" : "/videos";
     }
   }
 

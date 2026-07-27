@@ -1,4 +1,4 @@
-﻿{% extends "layouts/base.html" %}
+{% extends "layouts/base.html" %}
 
 {% block page_styles %}
 <link rel="stylesheet" href="/assets/css/settings.css" />
@@ -135,6 +135,17 @@
           <input id="previewJpegQualityInput" name="preview_jpeg_quality" class="form-control" type="number" min="30"
             max="95" step="1" required />
           <div class="form-text">Preview compression quality. Higher values cost more disk and bandwidth.</div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+          <label class="form-label" for="csvFlushModeSelect">CSV Flush Mode</label>
+          <select id="csvFlushModeSelect" name="csv_flush_mode" class="form-select">
+            <option value="concurrent">Concurrent (Background Thread)</option>
+            <option value="linear">Linear (Synchronous)</option>
+          </select>
+          <div class="form-text">
+            <strong>Concurrent</strong>: CSV ditulis di background, analisis tetap berjalan.
+            <strong>Linear</strong>: analisis menunggu CSV selesai ditulis.
+          </div>
         </div>
       </div>
 

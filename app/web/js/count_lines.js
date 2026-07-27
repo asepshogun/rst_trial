@@ -440,6 +440,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const video = getSelectedVideo();
     renderSelectedVideoSummary();
     renderVideoPickerList();
+
+    const errorOverlay = document.getElementById("countLinesVideoError");
+    if (errorOverlay) errorOverlay.classList.add("d-none");
+
     if (!video) {
       videoPlayer.removeAttribute("src");
       state.currentVideoUrl = null;
@@ -521,6 +525,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   videoPlayer.addEventListener("timeupdate", renderCanvas);
   videoPlayer.addEventListener("pause", renderCanvas);
   videoPlayer.addEventListener("play", renderCanvas);
+  videoPlayer.addEventListener("error", () => {
+    const errorOverlay = document.getElementById("countLinesVideoError");
+    if (errorOverlay && state.currentVideoUrl) {
+      errorOverlay.classList.remove("d-none");
+    }
+  });
   window.addEventListener("resize", renderCanvas);
 
   canvas.addEventListener("click", (event) => {
@@ -636,7 +646,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (playPauseBtn) {
     playPauseBtn.addEventListener("click", () => {
-      if (videoPlayer.paused) videoPlayer.play(); else videoPlayer.pause();
+      if (!state.currentVideoUrl) return;
+      if (videoPlayer.paused) videoPlayer.play().catch(() => {}); 
+      else videoPlayer.pause();
     });
   }
 

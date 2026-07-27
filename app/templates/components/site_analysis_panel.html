@@ -1,0 +1,83 @@
+{#
+  Component: Site Analysis Panel
+  Usage: {% include "components/site_analysis_panel.html" %}
+  Requires: analysis.css loaded on the page
+  Populated by: renderSiteAnalysisPanel() in dashboard.js
+#}
+<div class="nc-card p-0 overflow-hidden mb-4">
+  <div class="an-db-body" id="siteAnalysisPanel">
+
+    <!-- LEFT: Overall total dark card + Distribution list -->
+    <div class="an-db-left">
+
+      <div class="an-overall-card">
+        <div class="an-overall-kicker">Overall Total</div>
+        <div class="an-overall-number-row">
+          <span id="siteOverallTotal" class="an-overall-number">0</span>
+          <span class="an-overall-label-suffix">vehicles detected</span>
+        </div>
+        <div class="an-overall-desc">Accumulated count across all classes from all analyses at this site.</div>
+        <div id="siteOverallBar" class="an-overall-bar"></div>
+        <div id="siteOverallLegend" class="an-overall-legend"></div>
+      </div>
+
+      <div class="an-db-dist-section">
+        <div class="an-db-dist-header">
+          <div>
+            <div class="an-db-kicker">Distribution</div>
+            <div class="an-db-title">Detections by class</div>
+          </div>
+        </div>
+        <div id="siteDistributionBody" class="an-db-dist-list"></div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Mini stats + Composition donut -->
+    <div class="an-db-right">
+
+      <div class="an-mini-stat">
+        <div class="an-mini-stat-icon-wrap">
+          <i id="siteBusiestClassIcon" class="ti ti-car" aria-hidden="true"></i>
+        </div>
+        <div class="an-mini-stat-content">
+          <div class="an-mini-stat-kicker">Busiest Class</div>
+          <div id="siteBusiestClassLabel" class="an-mini-stat-value">—</div>
+          <div id="siteBusiestClassSub" class="an-mini-stat-sub">—</div>
+        </div>
+      </div>
+
+      <div class="an-mini-stat">
+        <div class="an-mini-stat-icon-wrap">
+          <i class="ti ti-chart-pie" aria-hidden="true"></i>
+        </div>
+        <div class="an-mini-stat-content">
+          <div class="an-mini-stat-kicker">Classes Detected</div>
+          <div id="siteClassesDetectedValue" class="an-mini-stat-value">—</div>
+          <div id="siteClassesDetectedSub" class="an-mini-stat-sub">—</div>
+        </div>
+      </div>
+
+      <div class="an-mini-stat">
+        <div class="an-mini-stat-icon-wrap">
+          <i class="ti ti-truck" aria-hidden="true"></i>
+        </div>
+        <div class="an-mini-stat-content">
+          <div class="an-mini-stat-kicker">Heavy Vehicles</div>
+          <div id="siteHeavyVehiclesValue" class="an-mini-stat-value">—</div>
+          <div id="siteHeavyVehiclesSub" class="an-mini-stat-sub">—</div>
+        </div>
+      </div>
+
+      <div class="an-composition-card">
+        <div class="an-composition-header">
+          <div class="an-db-kicker">Composition</div>
+          <div class="an-db-title">By category</div>
+        </div>
+        <div id="siteCategoryChart" class="an-donut-wrap"></div>
+        <div id="siteCategoryLegend" class="an-category-legend"></div>
+      </div>
+
+    </div>
+  </div>
+</div>

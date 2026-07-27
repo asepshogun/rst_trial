@@ -412,6 +412,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="video-list-info">
           <div class="video-list-name" title="${name}">${name}</div>
           <div class="video-list-meta">
+            ${video.site ? `<span style="color:var(--nc-primary);font-weight:600;"><i class="ti ti-map-pin" style="font-size:1.1em;vertical-align:-1px;"></i> ${app.escapeHtml(video.site.name)}</span> &middot; ` : ""}
             ${app.escapeHtml(video.uploaded_by || "-")} &middot; ${app.formatDateTime(video.created_at)}
             ${duration ? `&middot; ${duration}` : ""}
           </div>
@@ -488,6 +489,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           </div>
           ${subFilename ? `<div class="vc-sub-filename">${subFilename}</div>` : ""}
           <div class="video-card-meta">
+            ${video.site ? `<span style="color:var(--nc-primary);font-weight:600;"><i class="ti ti-map-pin" style="font-size:1.1em;vertical-align:-1px;"></i> ${app.escapeHtml(video.site.name)}</span><br>` : ""}
             ${resolution}${app.escapeHtml(video.uploaded_by || "-")} · ${app.formatDateTime(video.created_at)}
           </div>
         </div>
@@ -599,6 +601,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     ensurePolling();
   }
 
+  async function loadSites() {
+    try {
+      const sites = await app.apiFetch("/api/dashboard/sites");
+      const siteSelect = document.getElementById("uploadSiteSelect");
+      if (!siteSelect) return;
+      
+      siteSelect.innerHTML = '<option value="" disabled selected>Select a real-world location</option>';
+      sites.forEach(site => {
+        const option = document.createElement("option");
+        option.value = site.id;
+        option.textContent = site.name;
+        siteSelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error("Failed to load sites for upload modal:", error);
+    }
+  }
+
   function openPreviewModal(video) {
     previewVideoTitle.textContent = displayPlaybackFilename(video) || video.original_filename || "Video Preview";
     if (previewVideoLoading) {
@@ -618,6 +638,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await app.requireSession();
     syncViewToggle();
     await loadVideos();
+    await loadSites();
     resetUploadForm();
   } catch (error) {
     app.setAlert(videosAlert, "danger", error.message);

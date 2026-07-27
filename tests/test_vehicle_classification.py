@@ -2,7 +2,24 @@ from __future__ import annotations
 
 import unittest
 
-from app.constants import DEFAULT_MASTER_CLASSES, MASTER_CLASS_CODES
+from app.constants import (
+    DEFAULT_MASTER_CLASSES,
+    GOLONGAN_1,
+    GOLONGAN_2,
+    GOLONGAN_3,
+    GOLONGAN_4,
+    GOLONGAN_5,
+    GOLONGAN_6,
+    GOLONGAN_7,
+    MASTER_CLASS_CODES,
+    VEHICLE_CLASS_ANGKOT,
+    VEHICLE_CLASS_BUS,
+    VEHICLE_CLASS_MOBIL,
+    VEHICLE_CLASS_MOTOR,
+    VEHICLE_CLASS_PICKUP,
+    VEHICLE_CLASS_TR_2S,
+    VEHICLE_CLASS_TR_3S,
+)
 from app.services.analysis import (
     AnalysisRoi,
     ProcessConfig,
@@ -16,21 +33,7 @@ from app.services.analysis import (
     _resolve_effective_frame_stride,
     _stabilize_track_detection,
 )
-from app.services.vehicle_classification import (
-    VEHICLE_TYPE_ARTICULATED_TRUCK,
-    VEHICLE_TYPE_LARGE_BUS,
-    VEHICLE_TYPE_LIGHT_TRUCK_2_AXLE,
-    VEHICLE_TYPE_MEDIUM_PASSENGER,
-    VEHICLE_TYPE_MEDIUM_TRUCK_2_AXLE,
-    VEHICLE_TYPE_MOTORCYCLE,
-    VEHICLE_TYPE_NON_MOTORIZED,
-    VEHICLE_TYPE_PASSENGER_CAR,
-    VEHICLE_TYPE_PICKUP_MICRO_DELIVERY,
-    VEHICLE_TYPE_SEMITRAILER_TRUCK,
-    VEHICLE_TYPE_SMALL_BUS,
-    VEHICLE_TYPE_TRUCK_3_AXLE,
-    classify_vehicle,
-)
+from app.services.vehicle_classification import classify_vehicle
 
 
 class VehicleClassificationTest(unittest.TestCase):
@@ -39,7 +42,7 @@ class VehicleClassificationTest(unittest.TestCase):
         self.frame_width = 1920
         self.frame_height = 1080
 
-    def classify(self, vehicle_class: str, bbox: tuple[int, int, int, int]):
+    def classify(self, vehicle_class: str, bbox: tuple[int, int, int, int] = (900, 640, 1160, 880)):
         return classify_vehicle(
             vehicle_class=vehicle_class,
             source_label=vehicle_class,
@@ -49,82 +52,59 @@ class VehicleClassificationTest(unittest.TestCase):
             master_class_lookup=self.master_lookup,
         )
 
-    def test_master_class_codes_follow_official_standard(self) -> None:
-        self.assertEqual(
-            MASTER_CLASS_CODES,
-            ("1", "2", "3", "4", "5a", "5b", "6a", "6b", "7a", "7b", "7c", "8"),
-        )
-        self.assertEqual(DEFAULT_MASTER_CLASSES["1"]["label"], "Motorcycle / 3-wheel vehicle")
-        self.assertEqual(DEFAULT_MASTER_CLASSES["5a"]["label"], "Small bus")
-        self.assertEqual(DEFAULT_MASTER_CLASSES["7c"]["label"], "Semi-trailer truck")
+    def test_master_class_codes_follow_7_golongan_standard(self) -> None:
+        self.assertEqual(MASTER_CLASS_CODES, ("1", "2", "3", "4", "5", "6", "7"))
+        self.assertEqual(DEFAULT_MASTER_CLASSES["1"]["label"], "Motorcycle")
+        self.assertEqual(DEFAULT_MASTER_CLASSES["5"]["label"], "Bus")
+        self.assertEqual(DEFAULT_MASTER_CLASSES["7"]["label"], "3-Axle Truck")
 
-    def test_motorcycle_maps_to_class_1(self) -> None:
-        result = self.classify("motorcycle", (800, 700, 930, 980))
-        self.assertEqual(result.vehicle_type_code, VEHICLE_TYPE_MOTORCYCLE)
-        self.assertEqual(result.golongan_code, "1")
+    def test_motor_maps_to_golongan_1(self) -> None:
+        result = self.classify(VEHICLE_CLASS_MOTOR)
+        self.assertEqual(result.vehicle_type_code, VEHICLE_CLASS_MOTOR)
+        self.assertEqual(result.golongan_code, GOLONGAN_1)
 
-    def test_bicycle_maps_to_class_8(self) -> None:
-        result = self.classify("bicycle", (500, 620, 610, 930))
-        self.assertEqual(result.vehicle_type_code, VEHICLE_TYPE_NON_MOTORIZED)
-        self.assertEqual(result.golongan_code, "8")
+    def test_mobil_maps_to_golongan_2(self) -> None:
+        result = self.classify(VEHICLE_CLASS_MOBIL)
+        self.assertEqual(result.golongan_code, GOLONGAN_2)
 
-    def test_car_family_splits_into_class_2_3_and_4(self) -> None:
-        passenger_car = self.classify("car", (900, 640, 1160, 880))
-        medium_passenger = self.classify("car", (900, 560, 1180, 900))
-        pickup_delivery = self.classify("car", (400, 650, 1350, 900))
+    def test_angkot_maps_to_golongan_3(self) -> None:
+        result = self.classify(VEHICLE_CLASS_ANGKOT)
+        self.assertEqual(result.golongan_code, GOLONGAN_3)
 
-        self.assertEqual(passenger_car.vehicle_type_code, VEHICLE_TYPE_PASSENGER_CAR)
-        self.assertEqual(passenger_car.golongan_code, "2")
-        self.assertEqual(medium_passenger.vehicle_type_code, VEHICLE_TYPE_MEDIUM_PASSENGER)
-        self.assertEqual(medium_passenger.golongan_code, "3")
-        self.assertEqual(pickup_delivery.vehicle_type_code, VEHICLE_TYPE_PICKUP_MICRO_DELIVERY)
-        self.assertEqual(pickup_delivery.golongan_code, "4")
+    def test_pickup_maps_to_golongan_4(self) -> None:
+        result = self.classify(VEHICLE_CLASS_PICKUP)
+        self.assertEqual(result.golongan_code, GOLONGAN_4)
 
-    def test_foreground_mpv_does_not_default_to_pickup_delivery(self) -> None:
-        result = self.classify("car", (356, 570, 1210, 1040))
-        self.assertIn(result.vehicle_type_code, {VEHICLE_TYPE_PASSENGER_CAR, VEHICLE_TYPE_MEDIUM_PASSENGER})
-        self.assertIn(result.golongan_code, {"2", "3"})
+    def test_bus_maps_to_golongan_5(self) -> None:
+        result = self.classify(VEHICLE_CLASS_BUS)
+        self.assertEqual(result.golongan_code, GOLONGAN_5)
 
-    def test_bus_family_splits_into_5a_and_5b(self) -> None:
-        small_bus = self.classify("bus", (860, 560, 1220, 900))
-        large_bus = self.classify("bus", (760, 480, 1350, 950))
+    def test_truck_2_axle_maps_to_golongan_6(self) -> None:
+        result = self.classify(VEHICLE_CLASS_TR_2S)
+        self.assertEqual(result.golongan_code, GOLONGAN_6)
 
-        self.assertEqual(small_bus.vehicle_type_code, VEHICLE_TYPE_SMALL_BUS)
-        self.assertEqual(small_bus.golongan_code, "5a")
-        self.assertEqual(large_bus.vehicle_type_code, VEHICLE_TYPE_LARGE_BUS)
-        self.assertEqual(large_bus.golongan_code, "5b")
+    def test_truck_3_axle_maps_to_golongan_7(self) -> None:
+        result = self.classify(VEHICLE_CLASS_TR_3S)
+        self.assertEqual(result.golongan_code, GOLONGAN_7)
 
-    def test_truck_family_splits_into_6a_6b_7a_7b_and_7c(self) -> None:
-        light_truck = self.classify("truck", (900, 600, 1240, 900))
-        medium_truck = self.classify("truck", (860, 520, 1280, 930))
-        truck_3_axle = self.classify("truck", (820, 460, 1350, 960))
-        articulated = self.classify("truck", (680, 500, 1490, 930))
-        semi_trailer = self.classify("truck", (520, 470, 1650, 950))
+    def test_unknown_class_falls_back_to_golongan_2(self) -> None:
+        # Kalau id kelas dari model tidak dikenal (mis. model diganti lagi
+        # tanpa constants.py disesuaikan), classify_vehicle tidak boleh crash.
+        result = self.classify("kelas_asing_tidak_dikenal")
+        self.assertEqual(result.golongan_code, GOLONGAN_2)
 
-        self.assertEqual(light_truck.vehicle_type_code, VEHICLE_TYPE_LIGHT_TRUCK_2_AXLE)
-        self.assertEqual(light_truck.golongan_code, "6a")
-        self.assertEqual(medium_truck.vehicle_type_code, VEHICLE_TYPE_MEDIUM_TRUCK_2_AXLE)
-        self.assertEqual(medium_truck.golongan_code, "6b")
-        self.assertEqual(truck_3_axle.vehicle_type_code, VEHICLE_TYPE_TRUCK_3_AXLE)
-        self.assertEqual(truck_3_axle.golongan_code, "7a")
-        self.assertEqual(articulated.vehicle_type_code, VEHICLE_TYPE_ARTICULATED_TRUCK)
-        self.assertEqual(articulated.golongan_code, "7b")
-        self.assertEqual(semi_trailer.vehicle_type_code, VEHICLE_TYPE_SEMITRAILER_TRUCK)
-        self.assertEqual(semi_trailer.golongan_code, "7c")
-
-    def test_small_false_truck_can_be_recovered_to_car_family(self) -> None:
-        result = self.classify("truck", (980, 690, 1170, 900))
-        self.assertIn(result.vehicle_type_code, {VEHICLE_TYPE_PASSENGER_CAR, VEHICLE_TYPE_PICKUP_MICRO_DELIVERY})
-        self.assertIn(result.golongan_code, {"2", "4"})
-
-    def test_track_reference_class_preserves_large_bus_when_later_frames_flip_to_truck(self) -> None:
+    def test_track_reference_class_stays_stable_when_later_frames_flip_class(self) -> None:
+        # Simulasikan sebuah track yang di frame awal terdeteksi sebagai bus,
+        # lalu beberapa frame berikutnya salah terdeteksi sebagai truk 2-sumbu.
+        # Stabilizer di analysis.py (bukan classify_vehicle) yang menjaga
+        # supaya golongan akhir tidak lompat-lompat.
         track_states = {}
         first = _stabilize_track_detection(
             track_states=track_states,
             track_id=2992,
             frame_number=900,
-            vehicle_class="bus",
-            source_label="bus",
+            vehicle_class=VEHICLE_CLASS_BUS,
+            source_label=VEHICLE_CLASS_BUS,
             confidence=0.64,
             bbox=(40, 288, 322, 655),
             frame_width=self.frame_width,
@@ -134,17 +114,16 @@ class VehicleClassificationTest(unittest.TestCase):
             track_states=track_states,
             track_id=2992,
             frame_number=910,
-            vehicle_class="truck",
-            source_label="truck",
+            vehicle_class=VEHICLE_CLASS_TR_2S,
+            source_label=VEHICLE_CLASS_TR_2S,
             confidence=0.82,
             bbox=(410, 163, 566, 267),
             frame_width=self.frame_width,
             frame_height=self.frame_height,
         )
 
-        self.assertEqual(first["reference_vehicle_class"], "bus")
-        self.assertEqual(second["reference_vehicle_class"], "bus")
-        self.assertEqual(second["reference_source_label"], "bus")
+        self.assertEqual(first["reference_vehicle_class"], VEHICLE_CLASS_BUS)
+        self.assertEqual(second["reference_vehicle_class"], VEHICLE_CLASS_BUS)
 
         result = classify_vehicle(
             vehicle_class=second["reference_vehicle_class"],
@@ -154,10 +133,14 @@ class VehicleClassificationTest(unittest.TestCase):
             frame_height=self.frame_height,
             master_class_lookup=self.master_lookup,
         )
-        self.assertEqual(result.vehicle_type_code, VEHICLE_TYPE_LARGE_BUS)
-        self.assertEqual(result.golongan_code, "5b")
+        self.assertEqual(result.golongan_code, GOLONGAN_5)
 
-    def test_overlay_event_builder_recovers_large_bus_when_crossing_frames_flip_to_truck(self) -> None:
+    def test_overlay_event_builder_keeps_stable_golongan_on_single_frame_misdetection(self) -> None:
+        # Satu frame yang salah deteksi (truk) di tengah rangkaian deteksi
+        # bus TIDAK boleh langsung mengubah golongan track, supaya hasil
+        # akhir tidak "kedip-kedip" akibat noise sesaat. (Kalau salah deteksi
+        # itu bertahan 2+ frame berturut-turut, barulah class boleh berpindah
+        # -- itu skenario lain, lihat test stabilizer di atas.)
         class Line:
             def __init__(self, line_order: int, name: str, start_y: float, end_y: float) -> None:
                 self.line_order = line_order
@@ -178,9 +161,9 @@ class VehicleClassificationTest(unittest.TestCase):
                 "detections": [
                     {
                         "track_id": 2992,
-                        "vehicle_class": "bus",
-                        "source_label": "bus",
-                        "detected_label": "bus",
+                        "vehicle_class": VEHICLE_CLASS_BUS,
+                        "source_label": VEHICLE_CLASS_BUS,
+                        "detected_label": VEHICLE_CLASS_BUS,
                         "confidence": 0.64,
                         "x1": 0.20,
                         "y1": 0.25,
@@ -195,9 +178,9 @@ class VehicleClassificationTest(unittest.TestCase):
                 "detections": [
                     {
                         "track_id": 2992,
-                        "vehicle_class": "truck",
-                        "source_label": "truck",
-                        "detected_label": "truck",
+                        "vehicle_class": VEHICLE_CLASS_TR_2S,
+                        "source_label": VEHICLE_CLASS_TR_2S,
+                        "detected_label": VEHICLE_CLASS_TR_2S,
                         "confidence": 0.81,
                         "x1": 0.24,
                         "y1": 0.31,
@@ -212,10 +195,10 @@ class VehicleClassificationTest(unittest.TestCase):
                 "detections": [
                     {
                         "track_id": 2992,
-                        "vehicle_class": "truck",
-                        "source_label": "truck",
-                        "detected_label": "truck",
-                        "confidence": 0.78,
+                        "vehicle_class": VEHICLE_CLASS_BUS,
+                        "source_label": VEHICLE_CLASS_BUS,
+                        "detected_label": VEHICLE_CLASS_BUS,
+                        "confidence": 0.70,
                         "x1": 0.28,
                         "y1": 0.34,
                         "x2": 0.40,
@@ -235,14 +218,88 @@ class VehicleClassificationTest(unittest.TestCase):
 
         self.assertEqual(len(events), 2)
         self.assertEqual([event["count_line_order"] for event in events], [1, 2])
-        self.assertTrue(all(event["vehicle_class"] == "bus" for event in events))
-        self.assertTrue(all(event["vehicle_type_code"] == VEHICLE_TYPE_LARGE_BUS for event in events))
-        self.assertTrue(all(event["golongan_code"] == "5b" for event in events))
+        self.assertTrue(all(event["vehicle_class"].lower() == VEHICLE_CLASS_BUS.lower() for event in events))
+        self.assertTrue(all(event["golongan_code"] == GOLONGAN_5 for event in events))
 
-    def test_small_false_bus_can_be_recovered_to_motorcycle(self) -> None:
-        result = self.classify("bus", (980, 720, 1060, 930))
-        self.assertEqual(result.vehicle_type_code, VEHICLE_TYPE_MOTORCYCLE)
-        self.assertEqual(result.golongan_code, "1")
+    def test_overlay_event_builder_switches_class_after_sustained_flip(self) -> None:
+        # Kebalikan dari test di atas: kalau kelas baru bertahan 2+ frame
+        # berturut-turut dengan confidence lebih tinggi, track BOLEH
+        # (dan seharusnya) berpindah golongan.
+        class Line:
+            def __init__(self, line_order: int, name: str, start_y: float, end_y: float) -> None:
+                self.line_order = line_order
+                self.name = name
+                self.start_x = 0.1
+                self.start_y = start_y
+                self.end_x = 0.9
+                self.end_y = end_y
+
+        lines = [Line(1, "Line 1", 0.45, 0.45)]
+        overlay_frames = [
+            {
+                "source_frame": 10,
+                "time_seconds": 1.0,
+                "detections": [
+                    {
+                        "track_id": 3001,
+                        "vehicle_class": VEHICLE_CLASS_BUS,
+                        "source_label": VEHICLE_CLASS_BUS,
+                        "detected_label": VEHICLE_CLASS_BUS,
+                        "confidence": 0.64,
+                        "x1": 0.20,
+                        "y1": 0.25,
+                        "x2": 0.42,
+                        "y2": 0.72,
+                    }
+                ],
+            },
+            {
+                "source_frame": 11,
+                "time_seconds": 1.2,
+                "detections": [
+                    {
+                        "track_id": 3001,
+                        "vehicle_class": VEHICLE_CLASS_TR_2S,
+                        "source_label": VEHICLE_CLASS_TR_2S,
+                        "detected_label": VEHICLE_CLASS_TR_2S,
+                        "confidence": 0.81,
+                        "x1": 0.24,
+                        "y1": 0.31,
+                        "x2": 0.39,
+                        "y2": 0.55,
+                    }
+                ],
+            },
+            {
+                "source_frame": 12,
+                "time_seconds": 1.4,
+                "detections": [
+                    {
+                        "track_id": 3001,
+                        "vehicle_class": VEHICLE_CLASS_TR_2S,
+                        "source_label": VEHICLE_CLASS_TR_2S,
+                        "detected_label": VEHICLE_CLASS_TR_2S,
+                        "confidence": 0.78,
+                        "x1": 0.28,
+                        "y1": 0.34,
+                        "x2": 0.40,
+                        "y2": 0.40,
+                    }
+                ],
+            },
+        ]
+
+        events = _build_report_events_from_overlay_frames(
+            overlay_frames,
+            lines=lines,
+            source_width=self.frame_width,
+            source_height=self.frame_height,
+            master_class_lookup=self.master_lookup,
+        )
+
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["vehicle_class"].lower(), VEHICLE_CLASS_TR_2S.lower())
+        self.assertEqual(events[0]["golongan_code"], GOLONGAN_6)
 
     def test_analysis_roi_uses_full_width_and_line_context(self) -> None:
         class Line:
@@ -274,7 +331,7 @@ class VehicleClassificationTest(unittest.TestCase):
     def test_supplemental_motorcycle_duplicate_filter_keeps_adjacent_motorcycle(self) -> None:
         main_detections = [
             {
-                "vehicle_class": "car",
+                "vehicle_class": VEHICLE_CLASS_MOBIL,
                 "bbox": (700.0, 500.0, 1040.0, 760.0),
             }
         ]
@@ -309,7 +366,7 @@ class VehicleClassificationTest(unittest.TestCase):
 
     def test_class_specific_thresholds_keep_motorcycle_more_permissive_than_truck(self) -> None:
         config = ProcessConfig(
-            model_path="yolov8s.pt",
+            model_path="best.pt",
             tracker_config="bytetrack.yaml",
             frame_stride=1,
             target_analysis_fps=15.0,
@@ -317,7 +374,7 @@ class VehicleClassificationTest(unittest.TestCase):
             working_max_width=1600,
             preview_max_width=960,
             preview_jpeg_quality=70,
-            inference_imgsz=1152,
+            inference_imgsz=960,
             inference_device="cpu",
             confidence_threshold=0.12,
             motorcycle_min_confidence=0.12,
@@ -331,7 +388,7 @@ class VehicleClassificationTest(unittest.TestCase):
         tiny_truck_bbox = (850, 630, 905, 910)
         self.assertTrue(
             _is_detection_candidate(
-                "motorcycle",
+                VEHICLE_CLASS_MOTOR,
                 0.18,
                 motorcycle_bbox,
                 self.frame_width,
@@ -341,7 +398,7 @@ class VehicleClassificationTest(unittest.TestCase):
         )
         self.assertFalse(
             _is_detection_candidate(
-                "truck",
+                VEHICLE_CLASS_TR_2S,
                 0.18,
                 tiny_truck_bbox,
                 self.frame_width,

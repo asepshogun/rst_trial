@@ -24,6 +24,13 @@ def get_or_create_master_classes(db: Session) -> list[MasterClass]:
     row_map = {row.code: row for row in rows}
     changed = False
 
+    for row in rows:
+        if row.code not in DEFAULT_MASTER_CLASSES and row.sort_order < 1000:
+            row.sort_order += 1000
+            changed = True
+    if changed:
+        db.flush()
+
     for code, payload in DEFAULT_MASTER_CLASSES.items():
         row = row_map.get(code)
         if row:

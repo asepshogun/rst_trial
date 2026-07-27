@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+import subprocess
 from datetime import datetime, timezone
 from typing import Optional
 from uuid import UUID
@@ -35,6 +37,7 @@ from app.models import (
 )
 from app.schemas import (
     AnalysisJobRead,
+    AnalysisStartRequest,
     GolonganTotalRead,
     MasterClassRead,
     VideoAnalysisRead,
@@ -76,7 +79,12 @@ router = APIRouter(prefix="/api/videos", tags=["videos"])
 def _video_query():
     return (
         select(VideoUpload)
-        .options(joinedload(VideoUpload.analysis_job), joinedload(VideoUpload.count_lines))
+        .options(
+            joinedload(VideoUpload.analysis_job),
+            joinedload(VideoUpload.count_lines),
+            joinedload(VideoUpload.csv_report),
+            joinedload(VideoUpload.site),
+        )
         .order_by(VideoUpload.created_at.desc())
     )
 
@@ -215,6 +223,7 @@ def _serialize_vehicle_event(row: VehicleEvent, master_class_map: dict[str, str]
         "crossed_at_seconds": row.crossed_at_seconds,
         "crossed_at_frame": row.crossed_at_frame,
         "confidence": row.confidence,
+        "speed_kph": row.speed_kph,
         "created_at": row.created_at,
     }
     return VideoEventRead.model_validate(payload)
@@ -262,7 +271,8 @@ def _ensure_video_thumbnail(video: VideoUpload) -> None:
 
 
 def _ensure_video_conversion_state(video: VideoUpload, *, auto_process: bool = False, force: bool = False) -> bool:
-    if not requires_video_conversion(video.stored_filename, video.mime_type):
+    absolute_path = get_settings().storage_root / video.relative_path
+    if not requires_video_conversion(video.stored_filename, video.mime_type, absolute_path):
         return False
 
     if is_video_conversion_ready(video):
@@ -293,7 +303,7 @@ def _resolve_playback_file(video: VideoUpload) -> tuple[str, str]:
         return str(playback_absolute_path), "video/mp4"
 
     suffix = video.relative_path.rsplit(".", 1)[-1].lower() if "." in video.relative_path else ""
-    if suffix == "mp4" and (video.mime_type or "").lower() in {"video/mp4", ""}:
+    if suffix == "mp4":
         return str(original_absolute_path), "video/mp4"
 
     playback_relative_path = ensure_browser_playback(original_absolute_path, video.stored_filename)
@@ -365,6 +375,19 @@ def _build_analysis_response(video: VideoUpload, db: Session) -> VideoAnalysisRe
         if overlay_absolute_path.exists():
             overlay_url = build_storage_url(overlay_relative_path)
 
+    csv_status = "pending"
+    csv_progress = 0.0
+    csv_segments_completed = 0
+    csv_segment_count = 0
+    if video.csv_report:
+        csv_status = video.csv_report.status
+        csv_segments_completed = video.csv_report.segments_completed
+        csv_segment_count = video.csv_report.segment_count
+        if video.csv_report.segment_count > 0:
+            csv_progress = min(100.0, (video.csv_report.segments_completed / video.csv_report.segment_count) * 100.0)
+        elif csv_status == "completed":
+            csv_progress = 100.0
+
     return VideoAnalysisRead(
         video=VideoUploadRead.model_validate(video),
         video_url=_playback_endpoint_url(video.id),
@@ -386,7 +409,12 @@ def _build_analysis_response(video: VideoUpload, db: Session) -> VideoAnalysisRe
         totals=ordered_totals,
         recent_events=[_serialize_vehicle_event(row, master_class_map) for row in event_rows],
         progress_percent=_build_progress_percent(video.analysis_job),
+        csv_status=csv_status,
+        csv_progress=round(csv_progress, 1),
+        csv_segments_completed=csv_segments_completed,
+        csv_segment_count=csv_segment_count,
     )
+
 
 
 @router.get("", response_model=list[VideoUploadRead])
@@ -407,15 +435,28 @@ def upload_video(
     description: Optional[str] = Form(default=None),
     recorded_at: Optional[datetime] = Form(default=None),
     auto_process: bool = Form(default=False),
+    site_id: Optional[UUID] = Form(default=None),
     file: UploadFile = File(...),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> VideoUpload:
-    site = _get_default_site(db)
-    saved_file = save_upload_file(file)
+    if site_id:
+        site = db.get(Site, site_id)
+        if not site:
+            raise HTTPException(status_code=400, detail="Invalid site ID selected")
+    else:
+        site = _get_default_site(db)
+        
+    dt = recorded_at or datetime.now()
+    if dt.tzinfo is not None:
+        dt = dt.astimezone()
+    safe_site_name = re.sub(r'[^a-zA-Z0-9_\-]', '_', site.name)
+    custom_prefix = f"{safe_site_name}_{dt.strftime('%Y%m%d_%H%M%S')}"
+        
+    saved_file = save_upload_file(file, custom_prefix=custom_prefix)
     generate_video_thumbnail(saved_file.absolute_path, saved_file.stored_filename)
     metadata = probe_video(saved_file.absolute_path)
-    requires_conversion = requires_video_conversion(saved_file.stored_filename, saved_file.mime_type)
+    requires_conversion = requires_video_conversion(saved_file.stored_filename, saved_file.mime_type, saved_file.absolute_path)
 
     video = VideoUpload(
         site_id=site.id,
@@ -509,7 +550,8 @@ def get_video_playback(
     if has_updates:
         db.commit()
         db.refresh(video)
-    if requires_video_conversion(video.stored_filename, video.mime_type) and not is_video_conversion_ready(video):
+    source_absolute_path = get_settings().storage_root / video.relative_path
+    if requires_video_conversion(video.stored_filename, video.mime_type, source_absolute_path) and not is_video_conversion_ready(video):
         raise HTTPException(status_code=409, detail="Video conversion is still running. Please wait until the MP4 playback file is ready.")
     absolute_path, media_type = _resolve_playback_file(video)
     return FileResponse(absolute_path, media_type=media_type)
@@ -609,6 +651,15 @@ def delete_video(video_id: UUID, _: User = Depends(get_current_user), db: Sessio
         delete_relative_file(video.analysis_job.report_relative_path)
         delete_relative_file(_overlay_relative_path(video.analysis_job.id))
         delete_preview_artifacts(video.analysis_job.id)
+        
+        try:
+            from app.config import get_settings
+            settings = get_settings()
+            for f in settings.csv_dir.glob(f"{video.analysis_job.id}*"):
+                if f.is_file():
+                    f.unlink()
+        except OSError:
+            pass
 
     db.delete(video)
     db.commit()
@@ -617,6 +668,7 @@ def delete_video(video_id: UUID, _: User = Depends(get_current_user), db: Sessio
 @router.post("/{video_id}/analysis/start", response_model=AnalysisJobRead)
 def start_analysis(
     video_id: UUID,
+    payload: AnalysisStartRequest = AnalysisStartRequest(),
     _: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> AnalysisJob:
@@ -635,7 +687,8 @@ def start_analysis(
         db.commit()
         db.refresh(video)
 
-    if requires_video_conversion(video.stored_filename, video.mime_type) and not is_video_conversion_ready(video):
+    source_absolute_path = get_settings().storage_root / video.relative_path
+    if requires_video_conversion(video.stored_filename, video.mime_type, source_absolute_path) and not is_video_conversion_ready(video):
         raise HTTPException(
             status_code=409,
             detail="Video conversion is still running. Please wait until the MP4 playback file is ready before starting analysis.",
@@ -646,10 +699,24 @@ def start_analysis(
         if not _is_stale_running_job(job):
             raise HTTPException(status_code=409, detail="Analysis is already running")
 
+    line_source, effective_lines = _load_effective_count_lines(video, db)
+    if not effective_lines:
+        raise HTTPException(
+            status_code=400,
+            detail="No active count line is available for this video. Please set up count lines first."
+        )
+
     delete_preview_artifacts(job.id)
     delete_relative_file(_overlay_relative_path(job.id))
 
     config, config_json = _serialize_process_config(db)
+
+    device_override: dict | None = None
+    if payload.inference_device:
+        normalized_device = payload.inference_device.strip().lower()
+        if normalized_device in {"auto", "cpu", "cuda", "cuda:0", "mps"}:
+            config_json["inference_device"] = normalized_device
+            device_override = {"inference_device": normalized_device}
 
     job.status = JOB_STATUS_QUEUED
     job.error_message = None
@@ -667,7 +734,7 @@ def start_analysis(
     db.commit()
 
     start_preview(job.id)
-    launch_analysis_worker(video.id, job.id, None)
+    launch_analysis_worker(video.id, job.id, device_override)
     db.refresh(job)
     return job
 
@@ -819,4 +886,56 @@ def get_analysis_preview_frame(
             "X-Frame-Sequence": str(frame_sequence),
             "X-Preview-Finished": "1" if is_finished else "0",
         },
+    )
+
+
+@router.get("/{video_id}/analysis/excel-export")
+def download_analysis_excel(
+    video_id: UUID,
+    _: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    video = db.scalar(_video_query().where(VideoUpload.id == video_id))
+    if not video:
+        raise HTTPException(status_code=404, detail="Video not found")
+    if not video.analysis_job:
+        raise HTTPException(status_code=404, detail="Analysis job is not available yet")
+    
+    job = video.analysis_job
+    settings = get_settings()
+    report_path = settings.reports_dir / f"{job.id}.json"
+    if not report_path.exists():
+        raise HTTPException(status_code=404, detail="Analysis report not found. Has the analysis finished successfully?")
+        
+    script_path = settings.storage_root.parent / "scripts" / "analyze_speeds.py"
+    if not script_path.exists():
+        raise HTTPException(status_code=500, detail="Speed analysis script not found")
+        
+    distance = 5.0
+    if job.config_json and "line_pair_distance_m" in job.config_json:
+        distance = job.config_json["line_pair_distance_m"]
+        
+    out_excel_path = settings.storage_root.parent / "exports" / f"{job.id}_manual_export.xls"
+    out_excel_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    video_name = video.original_filename or str(video.id)
+    
+    try:
+        subprocess.run([
+            "python", str(script_path), str(report_path),
+            "--distance", str(distance),
+            "--excel", str(out_excel_path),
+            "--video-name", video_name,
+            "--manual-export"
+        ], check=True)
+    except subprocess.CalledProcessError:
+        raise HTTPException(status_code=500, detail="Failed to generate Excel. Check server logs.")
+        
+    if not out_excel_path.exists():
+        raise HTTPException(status_code=500, detail="Failed to generate Excel. File was not created.")
+        
+    return FileResponse(
+        path=out_excel_path,
+        media_type="application/vnd.ms-excel",
+        filename=f"detected_vehicles_{video_name}.xls"
     )

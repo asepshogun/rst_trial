@@ -1,4 +1,4 @@
-﻿{% extends "layouts/base.html" %}
+{% extends "layouts/base.html" %}
 
 {% block page_styles %}
 <link rel="stylesheet" href="/assets/css/videos.css" />
@@ -85,6 +85,13 @@
             <div class="col-12">
               <label class="form-label required">Video File</label>
               <input class="form-control" type="file" name="file" accept="video/*" required />
+            </div>
+            <div class="col-12">
+              <label class="form-label required">Location / Camera Site</label>
+              <select class="form-select" name="site_id" id="uploadSiteSelect" required>
+                <option value="" disabled selected>Loading sites...</option>
+              </select>
+              <div class="form-text">Select the real-world location where this video was recorded.</div>
             </div>
             <div class="col-12">
               <label class="form-label">Description</label>

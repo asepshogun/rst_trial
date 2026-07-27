@@ -7,80 +7,30 @@ from app.constants import (
     GOLONGAN_2,
     GOLONGAN_3,
     GOLONGAN_4,
-    GOLONGAN_5A,
-    GOLONGAN_5B,
-    GOLONGAN_6A,
-    GOLONGAN_6B,
-    GOLONGAN_7A,
-    GOLONGAN_7B,
-    GOLONGAN_7C,
-    GOLONGAN_8,
+    GOLONGAN_5,
+    GOLONGAN_6,
+    GOLONGAN_7,
+    GOLONGAN_LABELS,
     RAW_DETECTION_LABELS,
-    VEHICLE_CLASS_BICYCLE,
+    VEHICLE_CLASS_LABELS,
+    VEHICLE_CLASS_MOTOR,
+    VEHICLE_CLASS_MOBIL,
+    VEHICLE_CLASS_ANGKOT,
+    VEHICLE_CLASS_PICKUP,
     VEHICLE_CLASS_BUS,
-    VEHICLE_CLASS_CAR,
-    VEHICLE_CLASS_MOTORCYCLE,
-    VEHICLE_CLASS_TRUCK,
+    VEHICLE_CLASS_TR_2S,
+    VEHICLE_CLASS_TR_3S,
 )
 
-VEHICLE_TYPE_MOTORCYCLE = "motorcycle_three_wheeler"
-VEHICLE_TYPE_PASSENGER_CAR = "passenger_car"
-VEHICLE_TYPE_MEDIUM_PASSENGER = "medium_passenger"
-VEHICLE_TYPE_PICKUP_MICRO_DELIVERY = "pickup_micro_delivery"
-VEHICLE_TYPE_SMALL_BUS = "small_bus"
-VEHICLE_TYPE_LARGE_BUS = "large_bus"
-VEHICLE_TYPE_LIGHT_TRUCK_2_AXLE = "light_truck_2_axle"
-VEHICLE_TYPE_MEDIUM_TRUCK_2_AXLE = "medium_truck_2_axle"
-VEHICLE_TYPE_TRUCK_3_AXLE = "truck_3_axle"
-VEHICLE_TYPE_ARTICULATED_TRUCK = "articulated_truck"
-VEHICLE_TYPE_SEMITRAILER_TRUCK = "semi_trailer_truck"
-VEHICLE_TYPE_NON_MOTORIZED = "non_motorized"
-
-VEHICLE_TYPE_TO_GOLONGAN = {
-    VEHICLE_TYPE_MOTORCYCLE: GOLONGAN_1,
-    VEHICLE_TYPE_PASSENGER_CAR: GOLONGAN_2,
-    VEHICLE_TYPE_MEDIUM_PASSENGER: GOLONGAN_3,
-    VEHICLE_TYPE_PICKUP_MICRO_DELIVERY: GOLONGAN_4,
-    VEHICLE_TYPE_SMALL_BUS: GOLONGAN_5A,
-    VEHICLE_TYPE_LARGE_BUS: GOLONGAN_5B,
-    VEHICLE_TYPE_LIGHT_TRUCK_2_AXLE: GOLONGAN_6A,
-    VEHICLE_TYPE_MEDIUM_TRUCK_2_AXLE: GOLONGAN_6B,
-    VEHICLE_TYPE_TRUCK_3_AXLE: GOLONGAN_7A,
-    VEHICLE_TYPE_ARTICULATED_TRUCK: GOLONGAN_7B,
-    VEHICLE_TYPE_SEMITRAILER_TRUCK: GOLONGAN_7C,
-    VEHICLE_TYPE_NON_MOTORIZED: GOLONGAN_8,
+VEHICLE_CLASS_TO_GOLONGAN = {
+    VEHICLE_CLASS_MOTOR: GOLONGAN_1,
+    VEHICLE_CLASS_MOBIL: GOLONGAN_2,
+    VEHICLE_CLASS_ANGKOT: GOLONGAN_3,
+    VEHICLE_CLASS_PICKUP: GOLONGAN_4,
+    VEHICLE_CLASS_BUS: GOLONGAN_5,
+    VEHICLE_CLASS_TR_2S: GOLONGAN_6,
+    VEHICLE_CLASS_TR_3S: GOLONGAN_7,
 }
-
-VEHICLE_TYPE_LABELS = {
-    VEHICLE_TYPE_MOTORCYCLE: "motorcycle",
-    VEHICLE_TYPE_PASSENGER_CAR: "car (sedan, jeep, station wagon)",
-    VEHICLE_TYPE_MEDIUM_PASSENGER: "medium passenger transport",
-    VEHICLE_TYPE_PICKUP_MICRO_DELIVERY: "pickup / micro truck / delivery vehicle",
-    VEHICLE_TYPE_SMALL_BUS: "small bus",
-    VEHICLE_TYPE_LARGE_BUS: "large bus",
-    VEHICLE_TYPE_LIGHT_TRUCK_2_AXLE: "light 2-axle truck",
-    VEHICLE_TYPE_MEDIUM_TRUCK_2_AXLE: "medium 2-axle truck",
-    VEHICLE_TYPE_TRUCK_3_AXLE: "3-axle truck",
-    VEHICLE_TYPE_ARTICULATED_TRUCK: "articulated truck",
-    VEHICLE_TYPE_SEMITRAILER_TRUCK: "semi-trailer truck",
-    VEHICLE_TYPE_NON_MOTORIZED: "non-motorized vehicle",
-}
-
-
-@dataclass(frozen=True)
-class VehicleGeometry:
-    width: float
-    height: float
-    area: float
-    aspect_ratio: float
-    width_ratio: float
-    height_ratio: float
-    area_ratio: float
-    bottom_ratio: float
-    perspective_scale: float
-    normalized_width: float
-    normalized_height: float
-    normalized_area: float
 
 
 @dataclass(frozen=True)
@@ -96,7 +46,7 @@ def normalize_raw_detected_label(vehicle_class: str, source_label: str | None = 
     normalized_source = str(source_label or "").strip().lower()
     if normalized_source:
         return normalized_source
-    return RAW_DETECTION_LABELS.get(str(vehicle_class or "").strip().lower(), str(vehicle_class or "").strip().lower() or "-")
+    return RAW_DETECTION_LABELS.get(str(vehicle_class or "").strip(), str(vehicle_class or "").strip() or "-")
 
 
 def classify_vehicle(
@@ -108,221 +58,19 @@ def classify_vehicle(
     frame_height: int,
     master_class_lookup: dict[str, dict],
 ) -> VehicleClassificationResult:
+    """Signature dipertahankan sama persis dengan versi lama supaya
+    analysis.py tidak perlu diubah di titik pemanggilannya.
+    bbox/frame_width/frame_height sudah tidak dipakai untuk heuristik
+    karena model sudah langsung memberi golongan final."""
     raw_detected_label = normalize_raw_detected_label(vehicle_class, source_label)
-    geometry = _build_geometry(
-        bbox=bbox,
-        frame_width=frame_width,
-        frame_height=frame_height,
-    )
-    vehicle_type_code = _classify_vehicle_type(
-        vehicle_class=vehicle_class,
-        geometry=geometry,
-        source_label=source_label,
-    )
-    golongan_code = VEHICLE_TYPE_TO_GOLONGAN[vehicle_type_code]
-    golongan_payload = master_class_lookup.get(golongan_code) or {}
+    golongan_code = VEHICLE_CLASS_TO_GOLONGAN.get(vehicle_class, GOLONGAN_2)
+    golongan_entry = master_class_lookup.get(golongan_code) or {}
+    golongan_label = golongan_entry.get("label") or GOLONGAN_LABELS.get(golongan_code, golongan_code)
+    vehicle_type_label = VEHICLE_CLASS_LABELS.get(vehicle_class, raw_detected_label)
     return VehicleClassificationResult(
         raw_detected_label=raw_detected_label,
-        vehicle_type_code=vehicle_type_code,
-        vehicle_type_label=VEHICLE_TYPE_LABELS[vehicle_type_code],
+        vehicle_type_code=str(vehicle_class),
+        vehicle_type_label=vehicle_type_label,
         golongan_code=golongan_code,
-        golongan_label=str(golongan_payload.get("label") or golongan_code),
+        golongan_label=golongan_label,
     )
-
-
-def _build_geometry(
-    *,
-    bbox: tuple[float, float, float, float],
-    frame_width: int,
-    frame_height: int,
-) -> VehicleGeometry:
-    x1, y1, x2, y2 = bbox
-    width = max(float(x2) - float(x1), 1.0)
-    height = max(float(y2) - float(y1), 1.0)
-    area = width * height
-    safe_frame_width = max(float(frame_width), 1.0)
-    safe_frame_height = max(float(frame_height), 1.0)
-    width_ratio = width / safe_frame_width
-    height_ratio = height / safe_frame_height
-    area_ratio = area / max(safe_frame_width * safe_frame_height, 1.0)
-    bottom_ratio = min(max(float(y2) / safe_frame_height, 0.0), 1.0)
-    aspect_ratio = width / max(height, 1.0)
-
-    # Compensate partially for perspective so far-away vehicles are not always pushed to tiny classes.
-    perspective_scale = max(0.35, 0.35 + (bottom_ratio * 0.65))
-    normalized_width = width_ratio / perspective_scale
-    normalized_height = height_ratio / perspective_scale
-    normalized_area = area_ratio / max(perspective_scale * perspective_scale, 1e-6)
-
-    return VehicleGeometry(
-        width=width,
-        height=height,
-        area=area,
-        aspect_ratio=aspect_ratio,
-        width_ratio=width_ratio,
-        height_ratio=height_ratio,
-        area_ratio=area_ratio,
-        bottom_ratio=bottom_ratio,
-        perspective_scale=perspective_scale,
-        normalized_width=normalized_width,
-        normalized_height=normalized_height,
-        normalized_area=normalized_area,
-    )
-
-
-def _classify_vehicle_type(
-    *,
-    vehicle_class: str,
-    geometry: VehicleGeometry,
-    source_label: str | None = None,
-) -> str:
-    normalized_class = str(vehicle_class or "").strip().lower()
-    normalized_source = str(source_label or "").strip().lower()
-
-    # ----- Custom IF model source hints (bypass geometry when possible) -----
-    if "angkot" in normalized_source:
-        return VEHICLE_TYPE_MEDIUM_PASSENGER
-
-    if "pickup" in normalized_source:
-        return VEHICLE_TYPE_PICKUP_MICRO_DELIVERY
-
-    # ----- Standard classification path -----
-    if normalized_class == VEHICLE_CLASS_BICYCLE:
-        return VEHICLE_TYPE_NON_MOTORIZED
-
-    if normalized_class == VEHICLE_CLASS_MOTORCYCLE:
-        return VEHICLE_TYPE_MOTORCYCLE
-
-    if normalized_class == VEHICLE_CLASS_CAR:
-        return _classify_car_like(geometry)
-
-    if normalized_class == VEHICLE_CLASS_BUS:
-        return _classify_bus_like(geometry)
-
-    if normalized_class == VEHICLE_CLASS_TRUCK:
-        # Custom IF model differentiates small vs large trucks.
-        if "trukbesar" in normalized_source.replace(" ", ""):
-            return _classify_truck_large(geometry)
-        if "trukkecil" in normalized_source.replace(" ", ""):
-            return _classify_truck_small(geometry)
-        return _classify_truck_like(geometry)
-
-    return VEHICLE_TYPE_PASSENGER_CAR
-
-
-def _classify_car_like(geometry: VehicleGeometry) -> str:
-    # YOLO's coarse "car" label covers sedans, jeeps, MPVs, and SUVs.
-    # Keep this conservative so a wide foreground MPV is not promoted to a
-    # commercial pickup/micro-truck from a single ambiguous frame.
-    if geometry.normalized_height >= 0.32 or geometry.aspect_ratio <= 0.95:
-        return VEHICLE_TYPE_MEDIUM_PASSENGER
-
-    if (
-        geometry.aspect_ratio >= 1.85
-        and geometry.normalized_width >= 0.34
-        and geometry.normalized_height < 0.30
-    ):
-        return VEHICLE_TYPE_PICKUP_MICRO_DELIVERY
-
-    return VEHICLE_TYPE_PASSENGER_CAR
-
-
-def _classify_bus_like(geometry: VehicleGeometry) -> str:
-    if (
-        geometry.normalized_height < 0.24
-        and geometry.normalized_width < 0.08
-        and geometry.normalized_area < 0.012
-        and geometry.aspect_ratio < 0.75
-    ):
-        return VEHICLE_TYPE_MOTORCYCLE
-
-    if geometry.normalized_height < 0.14 and geometry.normalized_area < 0.010:
-        return VEHICLE_TYPE_MEDIUM_PASSENGER
-
-    if (
-        geometry.normalized_height >= 0.43
-        or geometry.normalized_width >= 0.30
-        or geometry.normalized_area >= 0.12
-    ):
-        return VEHICLE_TYPE_LARGE_BUS
-
-    return VEHICLE_TYPE_SMALL_BUS
-
-
-def _classify_truck_like(geometry: VehicleGeometry) -> str:
-    if (
-        geometry.normalized_height < 0.24
-        and geometry.normalized_width < 0.09
-        and geometry.normalized_area < 0.012
-        and geometry.aspect_ratio < 0.80
-    ):
-        return VEHICLE_TYPE_MOTORCYCLE
-
-    # Recover common false-positive SUVs / MPVs that the detector tagged as trucks.
-    if (
-        geometry.normalized_height < 0.28
-        and geometry.normalized_width < 0.18
-        and geometry.normalized_area < 0.045
-        and geometry.aspect_ratio < 1.9
-    ):
-        if geometry.aspect_ratio >= 1.45 or geometry.normalized_width >= 0.15:
-            return VEHICLE_TYPE_PICKUP_MICRO_DELIVERY
-        return VEHICLE_TYPE_PASSENGER_CAR
-
-    if geometry.aspect_ratio >= 2.2 or geometry.normalized_width >= 0.55 or geometry.normalized_area >= 0.27:
-        return VEHICLE_TYPE_SEMITRAILER_TRUCK
-
-    if geometry.aspect_ratio >= 1.55 or geometry.normalized_width >= 0.40 or geometry.normalized_area >= 0.18:
-        return VEHICLE_TYPE_ARTICULATED_TRUCK
-
-    if geometry.normalized_height >= 0.47 or geometry.normalized_width >= 0.28 or geometry.normalized_area >= 0.13:
-        return VEHICLE_TYPE_TRUCK_3_AXLE
-
-    if geometry.normalized_height >= 0.38 or geometry.normalized_width >= 0.23 or geometry.normalized_area >= 0.09:
-        return VEHICLE_TYPE_MEDIUM_TRUCK_2_AXLE
-
-    return VEHICLE_TYPE_LIGHT_TRUCK_2_AXLE
-
-
-def _classify_truck_small(geometry: VehicleGeometry) -> str:
-    """Sub-classify a custom IF 'TrukKecil' detection.
-
-    Biased toward lighter truck classes (golongan 6a / 6b) while still
-    allowing promotion to a heavier class when geometry is very large.
-    """
-    # Very large geometry overrides the "small truck" hint.
-    if geometry.aspect_ratio >= 2.2 or geometry.normalized_width >= 0.55 or geometry.normalized_area >= 0.27:
-        return VEHICLE_TYPE_SEMITRAILER_TRUCK
-
-    if geometry.aspect_ratio >= 1.55 or geometry.normalized_width >= 0.40 or geometry.normalized_area >= 0.18:
-        return VEHICLE_TYPE_ARTICULATED_TRUCK
-
-    if geometry.normalized_height >= 0.47 or geometry.normalized_width >= 0.28 or geometry.normalized_area >= 0.13:
-        return VEHICLE_TYPE_TRUCK_3_AXLE
-
-    if geometry.normalized_height >= 0.38 or geometry.normalized_width >= 0.23 or geometry.normalized_area >= 0.09:
-        return VEHICLE_TYPE_MEDIUM_TRUCK_2_AXLE
-
-    return VEHICLE_TYPE_LIGHT_TRUCK_2_AXLE
-
-
-def _classify_truck_large(geometry: VehicleGeometry) -> str:
-    """Sub-classify a custom IF 'TrukBesar' detection.
-
-    Biased toward heavier truck classes (golongan 7a / 7b / 7c) while
-    allowing fallback to a lighter class only when geometry is very small.
-    """
-    if geometry.aspect_ratio >= 2.2 or geometry.normalized_width >= 0.55 or geometry.normalized_area >= 0.27:
-        return VEHICLE_TYPE_SEMITRAILER_TRUCK
-
-    if geometry.aspect_ratio >= 1.55 or geometry.normalized_width >= 0.40 or geometry.normalized_area >= 0.18:
-        return VEHICLE_TYPE_ARTICULATED_TRUCK
-
-    # TrukBesar hint — default to 3-axle unless geometry is tiny.
-    if geometry.normalized_height >= 0.30 or geometry.normalized_width >= 0.18 or geometry.normalized_area >= 0.06:
-        return VEHICLE_TYPE_TRUCK_3_AXLE
-
-    if geometry.normalized_height >= 0.22 or geometry.normalized_width >= 0.14 or geometry.normalized_area >= 0.04:
-        return VEHICLE_TYPE_MEDIUM_TRUCK_2_AXLE
-
-    return VEHICLE_TYPE_TRUCK_3_AXLE

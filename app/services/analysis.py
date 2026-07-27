@@ -14,6 +14,10 @@ from sqlalchemy.orm import joinedload
 
 from app.config import get_settings
 from app.constants import (
+    COCO_CLASS_TO_VEHICLE_CLASS,
+    CSV_STATUS_COMPLETED,
+    CSV_STATUS_FAILED,
+    CSV_STATUS_PROCESSING,
     DEFAULT_BUS_MIN_CONFIDENCE,
     DEFAULT_CAR_MIN_CONFIDENCE,
     DEFAULT_MOTORCYCLE_MIN_CONFIDENCE,
@@ -26,37 +30,46 @@ from app.constants import (
     JOB_STATUS_PENDING,
     JOB_STATUS_PROCESSING,
     RAW_DETECTION_LABELS,
-    VEHICLE_CLASS_BICYCLE,
+    TRACKABLE_CLASS_IDS,
+    VEHICLE_CLASS_ANGKOT,
     VEHICLE_CLASS_BUS,
-    VEHICLE_CLASS_CAR,
-    VEHICLE_CLASS_MOTORCYCLE,
-    VEHICLE_CLASS_TRUCK,
+    VEHICLE_CLASS_MOBIL,
+    VEHICLE_CLASS_MOTOR,
+    VEHICLE_CLASS_PICKUP,
+    VEHICLE_CLASS_TR_2S,
+    VEHICLE_CLASS_TR_3S,
     VIDEO_STATUS_FAILED,
     VIDEO_STATUS_PROCESSING,
     VIDEO_STATUS_PROCESSED,
     VIDEO_STATUS_UPLOADED,
 )
 from app.database import SessionLocal
-from app.models import AnalysisGolonganTotal, AnalysisJob, CountLine, Site, VehicleEvent, VideoCountAggregate, VideoCountLine, VideoUpload
+from app.models import AnalysisGolonganTotal, AnalysisJob, CountLine, CsvReport, Site, VehicleEvent, VideoCountAggregate, VideoCountLine, VideoUpload
+from app.services.csv_pipeline import cleanup_inline_segment_files, merge_inline_segments, write_inline_segment_csv
 from app.services.live_preview import clear_preview, delete_preview_artifacts, finish_preview, publish_preview_frame, start_preview
 from app.services.master_classes import build_master_class_lookup, get_or_create_master_classes
-from app.services.model_adapter import detect_model_type, get_motorcycle_class_id, get_trackable_class_ids, map_class_to_vehicle
+
 from app.services.storage import delete_relative_file, ensure_storage_layout
 from app.services.vehicle_classification import classify_vehicle
 from app.services.video_conversion import resolve_analysis_video_path
 
 CLASS_MIN_AREA_RATIO = {
-    VEHICLE_CLASS_BICYCLE: 0.000008,
-    VEHICLE_CLASS_MOTORCYCLE: 0.000008,
-    VEHICLE_CLASS_CAR: 0.00018,
+    VEHICLE_CLASS_MOTOR: 0.000008,
+    VEHICLE_CLASS_MOBIL: 0.00018,
+    VEHICLE_CLASS_ANGKOT: 0.00018,
+    VEHICLE_CLASS_PICKUP: 0.00018,
     VEHICLE_CLASS_BUS: 0.00018,
-    VEHICLE_CLASS_TRUCK: 0.00035,
+    VEHICLE_CLASS_TR_2S: 0.00035,
+    VEHICLE_CLASS_TR_3S: 0.00035,
 }
 
 LARGE_VEHICLE_MIN_LONG_SIDE_RATIO = {
     VEHICLE_CLASS_BUS: 0.032,
-    VEHICLE_CLASS_TRUCK: 0.030,
+    VEHICLE_CLASS_TR_2S: 0.030,
+    VEHICLE_CLASS_TR_3S: 0.030,
 }
+
+MOTORCYCLE_SOURCE_CLASS_ID = 0
 
 ROAD_ROI_DEFAULT_TOP_RATIO = 0.06
 ROAD_ROI_CONTEXT_ABOVE_LINE_RATIO = 0.40
@@ -179,6 +192,8 @@ class ProcessConfig:
     truck_min_confidence: float
     iou_threshold: float
     save_annotated_video: bool
+    line_pair_distance_m: float
+    csv_flush_mode: str
 
 
 def _get_stop_event(job_id: UUID, create: bool = False) -> Optional[threading.Event]:
@@ -239,6 +254,26 @@ def _cleanup_stopped_analysis(db, video_id: UUID, job_id: UUID) -> None:
     db.commit()
 
 
+def _to_standard_vehicle_class(raw_class: str) -> str:
+    raw_class = str(raw_class).strip()
+    if raw_class == VEHICLE_CLASS_MOTOR:
+        return "motorcycle"
+    if raw_class == VEHICLE_CLASS_BUS:
+        return "bus"
+    if raw_class in (VEHICLE_CLASS_TR_2S, VEHICLE_CLASS_TR_3S, VEHICLE_CLASS_PICKUP):
+        return "truck"
+    if raw_class in (VEHICLE_CLASS_MOBIL, VEHICLE_CLASS_ANGKOT):
+        return "car"
+    
+    lower = raw_class.lower()
+    if "motor" in lower: return "motorcycle"
+    if "bus" in lower: return "bus"
+    if "truck" in lower or "tr_" in lower or "pickup" in lower: return "truck"
+    if "sepeda" in lower or "bicycle" in lower: return "bicycle"
+    return "car"
+
+
+
 def _persist_vehicle_events(
     db,
     *,
@@ -273,7 +308,14 @@ def _persist_vehicle_events(
             VehicleEvent(
                 video_upload_id=video.id,
                 analysis_job_id=job.id,
-                site_id=site.id,
+                site_id=site.id if site else None,
+                site_code=site.code if site else None,
+                site_name=site.name if site else None,
+                location_description=site.location_description if site else None,
+                latitude=site.latitude if site else None,
+                longitude=site.longitude if site else None,
+                recorded_at=video.recorded_at,
+                video_filename=video.original_filename or video.stored_filename,
                 sequence_no=sequence_no,
                 track_id=int(event["track_id"]) if event.get("track_id") is not None else None,
                 vehicle_class=str(event["vehicle_class"]),
@@ -417,6 +459,16 @@ def build_process_config(overrides: Optional[dict] = None) -> ProcessConfig:
             if overrides.get("save_annotated_video") is not None
             else settings.save_annotated_video
         ),
+        line_pair_distance_m=float(
+            overrides.get("line_pair_distance_m")
+            if overrides.get("line_pair_distance_m") is not None
+            else 5.0
+        ),
+        csv_flush_mode=str(
+            overrides.get("csv_flush_mode")
+            if overrides.get("csv_flush_mode") is not None
+            else settings.csv_flush_mode
+        ),
     )
 
 
@@ -500,6 +552,8 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             "truck_min_confidence": config.truck_min_confidence,
             "iou_threshold": config.iou_threshold,
             "save_annotated_video": config.save_annotated_video,
+            "line_pair_distance_m": config.line_pair_distance_m,
+            "csv_flush_mode": config.csv_flush_mode,
         }
         job.summary_json = _build_summary({}, 0, 0, 0, master_class_lookup=master_class_lookup)
         video.status = VIDEO_STATUS_PROCESSING
@@ -563,9 +617,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             )
 
         model = YOLO(config.model_path)
-        model_type = detect_model_type(model)
-        trackable_ids = get_trackable_class_ids(model_type)
-        motorcycle_class_id = get_motorcycle_class_id(model_type)
+        trackable_ids = list(TRACKABLE_CLASS_IDS)
         supplemental_motorcycle_model = YOLO(config.model_path) if motorcycle_focus_rois else None
         inference_device = _resolve_inference_device(config.inference_device)
         try:
@@ -591,7 +643,6 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             "working_resolution": {"width": working_width, "height": working_height},
             "analysis_roi": analysis_roi.to_summary(),
             "small_object_strategy": "road_roi_plus_motorcycle_focus_tiles",
-            "model_type": model_type.value,
             "motorcycle_focus_rois": [roi.to_summary() for roi in motorcycle_focus_rois],
             "inference_imgsz": config.inference_imgsz,
             "inference_device": inference_device,
@@ -604,19 +655,23 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             },
             "raw_detection_total": 0,
             "raw_detection_by_class": {
-                VEHICLE_CLASS_MOTORCYCLE: 0,
-                VEHICLE_CLASS_CAR: 0,
+                VEHICLE_CLASS_MOTOR: 0,
+                VEHICLE_CLASS_MOBIL: 0,
+                VEHICLE_CLASS_ANGKOT: 0,
+                VEHICLE_CLASS_PICKUP: 0,
                 VEHICLE_CLASS_BUS: 0,
-                VEHICLE_CLASS_TRUCK: 0,
-                VEHICLE_CLASS_BICYCLE: 0,
+                VEHICLE_CLASS_TR_2S: 0,
+                VEHICLE_CLASS_TR_3S: 0,
             },
             "accepted_detection_total": 0,
             "accepted_detection_by_class": {
-                VEHICLE_CLASS_MOTORCYCLE: 0,
-                VEHICLE_CLASS_CAR: 0,
+                VEHICLE_CLASS_MOTOR: 0,
+                VEHICLE_CLASS_MOBIL: 0,
+                VEHICLE_CLASS_ANGKOT: 0,
+                VEHICLE_CLASS_PICKUP: 0,
                 VEHICLE_CLASS_BUS: 0,
-                VEHICLE_CLASS_TRUCK: 0,
-                VEHICLE_CLASS_BICYCLE: 0,
+                VEHICLE_CLASS_TR_2S: 0,
+                VEHICLE_CLASS_TR_3S: 0,
             },
             "rejected_detection_total": 0,
             "rejected_detection_by_reason": {},
@@ -647,6 +702,45 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
         report_events: list[dict] = []
         overlay_frames: list[dict] = []
         started_monotonic = time.perf_counter()
+
+        # --- Inline CSV segment tracking ---
+        _segment_duration = float(settings.analysis_segment_duration_seconds)
+        _video_duration = float(video.duration_seconds or 0.0)
+        _expected_segments = max(int(math.ceil(_video_duration / _segment_duration)), 1) if _video_duration > 0 else 0
+        _next_segment_boundary = _segment_duration
+        _flushed_segment_count = 0
+        _segment_total_rows = 0
+        _site_name = site.name if site else "Unknown"
+        _site_id_str = str(site.id) if site else ""
+        _video_filename = video.original_filename or video.stored_filename
+        _recorded_at_str = video.recorded_at.isoformat() if video.recorded_at else ""
+
+        # Create CsvReport early so dashboard can track progress
+        _csv_report = db.scalar(
+            select(CsvReport).where(CsvReport.analysis_job_id == job.id)
+        )
+        if _csv_report:
+            _csv_report.status = CSV_STATUS_PROCESSING
+            _csv_report.error_message = None
+            _csv_report.segments_completed = 0
+            _csv_report.segment_count = _expected_segments
+            _csv_report.segment_duration_seconds = settings.analysis_segment_duration_seconds
+            _csv_report.total_rows = 0
+            _csv_report.csv_relative_path = None
+            _csv_report.started_at = _utc_now()
+            _csv_report.finished_at = None
+        else:
+            _csv_report = CsvReport(
+                video_upload_id=video.id,
+                analysis_job_id=job.id,
+                site_id=site.id,
+                status=CSV_STATUS_PROCESSING,
+                segment_duration_seconds=settings.analysis_segment_duration_seconds,
+                segment_count=_expected_segments,
+                started_at=_utc_now(),
+            )
+            db.add(_csv_report)
+        db.commit()
 
         while True:
             _raise_if_stop_requested(job_id)
@@ -696,7 +790,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 performance_meta["raw_detection_total"] += len(track_ids)
 
                 for track_id, class_id, confidence, xyxy in zip(track_ids, class_ids, confidences, box_values):
-                    vehicle_class = map_class_to_vehicle(model_type, class_id)
+                    vehicle_class = COCO_CLASS_TO_VEHICLE_CLASS.get(class_id)
                     if not vehicle_class:
                         continue
                     performance_meta["raw_detection_by_class"][vehicle_class] = (
@@ -745,7 +839,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 focus_rois=motorcycle_focus_rois,
                 config=config,
                 inference_device=inference_device,
-                motorcycle_class_id=motorcycle_class_id,
+                motorcycle_class_id=MOTORCYCLE_SOURCE_CLASS_ID,
             )
             _prune_supplemental_motorcycle_tracks(supplemental_motorcycle_tracks, frame_number)
             performance_meta["supplemental_motorcycle_raw_total"] += len(supplemental_motorcycle_detections)
@@ -756,7 +850,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                     continue
 
                 rejection_reason = _detection_candidate_rejection_reason(
-                    vehicle_class=VEHICLE_CLASS_MOTORCYCLE,
+                    vehicle_class=VEHICLE_CLASS_MOTOR,
                     confidence=float(supplemental_detection["confidence"]),
                     bbox=raw_bbox,
                     frame_width=max(working_width, 1),
@@ -785,15 +879,15 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                     performance_meta["supplemental_motorcycle_track_matched_total"] += 1
 
                 performance_meta["accepted_detection_total"] += 1
-                performance_meta["accepted_detection_by_class"][VEHICLE_CLASS_MOTORCYCLE] = (
-                    int(performance_meta["accepted_detection_by_class"].get(VEHICLE_CLASS_MOTORCYCLE, 0)) + 1
+                performance_meta["accepted_detection_by_class"][VEHICLE_CLASS_MOTOR] = (
+                    int(performance_meta["accepted_detection_by_class"].get(VEHICLE_CLASS_MOTOR, 0)) + 1
                 )
                 performance_meta["supplemental_motorcycle_accepted_total"] += 1
                 raw_frame_detections.append(
                     {
                         "track_id": int(track_id),
-                        "vehicle_class": VEHICLE_CLASS_MOTORCYCLE,
-                        "source_label": VEHICLE_CLASS_MOTORCYCLE,
+                        "vehicle_class": VEHICLE_CLASS_MOTOR,
+                        "source_label": VEHICLE_CLASS_MOTOR,
                         "confidence": float(supplemental_detection["confidence"]),
                         "bbox": raw_bbox,
                         "source": "motorcycle_focus_tile",
@@ -806,7 +900,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 len(supplemental_motorcycle_tracks),
             )
 
-            if any(detection["vehicle_class"] == VEHICLE_CLASS_MOTORCYCLE for detection in raw_frame_detections):
+            if any(detection["vehicle_class"] == VEHICLE_CLASS_MOTOR for detection in raw_frame_detections):
                 performance_meta["frames_with_motorcycle_detection"] += 1
 
             for raw_detection in raw_frame_detections:
@@ -894,10 +988,17 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                                 VehicleEvent(
                                     video_upload_id=video.id,
                                     analysis_job_id=job.id,
-                                    site_id=site.id,
+                                    site_id=site.id if site else None,
+                                    site_code=site.code if site else None,
+                                    site_name=site.name if site else None,
+                                    location_description=site.location_description if site else None,
+                                    latitude=site.latitude if site else None,
+                                    longitude=site.longitude if site else None,
+                                    recorded_at=video.recorded_at,
+                                    video_filename=video.original_filename or video.stored_filename,
                                     sequence_no=sequence_no,
                                     track_id=int(track_id),
-                                    vehicle_class=reference_vehicle_class,
+                                    vehicle_class=_to_standard_vehicle_class(reference_vehicle_class),
                                     detected_label=classification_result.raw_detected_label,
                                     vehicle_type_code=classification_result.vehicle_type_code,
                                     vehicle_type_label=classification_result.vehicle_type_label,
@@ -924,7 +1025,7 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                                 {
                                     "sequence_no": sequence_no,
                                     "track_id": int(track_id),
-                                    "vehicle_class": reference_vehicle_class,
+                                    "vehicle_class": _to_standard_vehicle_class(reference_vehicle_class),
                                     "detected_label": classification_result.raw_detected_label,
                                     "vehicle_type_code": classification_result.vehicle_type_code,
                                     "vehicle_type_label": classification_result.vehicle_type_label,
@@ -1016,6 +1117,85 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                 )
                 db.commit()
 
+            _current_video_seconds = float(frame_number / fps)
+            if _current_video_seconds >= _next_segment_boundary:
+                db.commit()  # ensure all pending events are persisted
+                _seg_time_start = _next_segment_boundary - _segment_duration
+                _flush_args = (
+                    job.id, video.id, _site_name, _site_id_str, _video_filename, _recorded_at_str,
+                    _flushed_segment_count, _seg_time_start, _next_segment_boundary,
+                    _flushed_segment_count + 1
+                )
+
+                if config.csv_flush_mode == "linear":
+                    try:
+                        _seg_path, _seg_rows = write_inline_segment_csv(
+                            db,
+                            job_id=job.id,
+                            video_id=video.id,
+                            site_name=_site_name,
+                            site_id_str=_site_id_str,
+                            video_filename=_video_filename,
+                            recorded_at_str=_recorded_at_str,
+                            segment_index=_flushed_segment_count,
+                            time_start=_seg_time_start,
+                            time_end=_next_segment_boundary,
+                        )
+                        _merged_path = merge_inline_segments(job.id, _flushed_segment_count + 1)
+                        _csv_report.segments_completed = _flushed_segment_count + 1
+                        _csv_report.total_rows = (_csv_report.total_rows or 0) + _seg_rows
+                        _csv_report.csv_relative_path = _merged_path.relative_to(settings.storage_root).as_posix()
+                        db.commit()
+                    except Exception as e:
+                        import logging as _log
+                        _log.getLogger(__name__).error("Linear CSV flush failed: %s", e)
+                else:
+                    def _async_inline_flush(
+                        j_id, v_id, s_name, s_id_str, v_filename, rec_at_str,
+                        seg_idx, t_start, t_end, segs_completed
+                    ):
+                        from app.database import SessionLocal
+                        from app.services.csv_pipeline import write_inline_segment_csv, merge_inline_segments
+                        from app.models import CsvReport
+                        from sqlalchemy import select
+                        from app.config import get_settings
+                        _settings = get_settings()
+                        local_db = SessionLocal()
+                        try:
+                            _seg_path, _seg_rows = write_inline_segment_csv(
+                                local_db,
+                                job_id=j_id,
+                                video_id=v_id,
+                                site_name=s_name,
+                                site_id_str=s_id_str,
+                                video_filename=v_filename,
+                                recorded_at_str=rec_at_str,
+                                segment_index=seg_idx,
+                                time_start=t_start,
+                                time_end=t_end,
+                            )
+                            _merged_path = merge_inline_segments(j_id, segs_completed)
+                            _report = local_db.scalar(select(CsvReport).where(CsvReport.analysis_job_id == j_id))
+                            if _report:
+                                _report.segments_completed = segs_completed
+                                _report.total_rows = (_report.total_rows or 0) + _seg_rows
+                                _report.csv_relative_path = _merged_path.relative_to(_settings.storage_root).as_posix()
+                                local_db.commit()
+                        except Exception as e:
+                            import logging
+                            logging.getLogger(__name__).error("Async CSV flush failed: %s", e)
+                        finally:
+                            local_db.close()
+
+                    threading.Thread(
+                        target=_async_inline_flush,
+                        args=_flush_args,
+                        daemon=True,
+                    ).start()
+
+                _flushed_segment_count += 1
+                _next_segment_boundary += _segment_duration
+
         report_events = _build_report_events_from_overlay_frames(
             overlay_frames,
             lines=lines,
@@ -1029,6 +1209,10 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             frame_width=max(source_width, 1),
             frame_height=max(source_height, 1),
             fps=fps,
+        )
+        report_events = _compute_vehicle_speeds(
+            report_events,
+            line_pair_distance_m=config.line_pair_distance_m,
         )
         report_events, counts_by_golongan = _persist_vehicle_events(
             db,
@@ -1135,6 +1319,85 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
         job.error_message = None
         video.processing_error = None
         db.commit()
+        try:
+            finish_preview(job_id)
+        except OSError:
+            pass
+        # --- Final CSV segment flush + merge after reconciliation ---
+        try:
+            _seg_time_start = _flushed_segment_count * _segment_duration
+            _seg_path, _seg_rows = write_inline_segment_csv(
+                db,
+                job_id=job.id,
+                video_id=video.id,
+                site_name=_site_name,
+                site_id_str=_site_id_str,
+                video_filename=_video_filename,
+                recorded_at_str=_recorded_at_str,
+                segment_index=_flushed_segment_count,
+                time_start=_seg_time_start,
+                time_end=None,
+            )
+            _flushed_segment_count += 1
+            _segment_total_rows += _seg_rows
+
+            _merged_path = merge_inline_segments(job.id, _flushed_segment_count)
+
+            _csv_report.segments_completed = _flushed_segment_count
+            _csv_report.segment_count = _flushed_segment_count
+            _csv_report.total_rows = _segment_total_rows
+            _csv_report.csv_relative_path = _merged_path.relative_to(
+                settings.storage_root
+            ).as_posix()
+            _csv_report.status = CSV_STATUS_COMPLETED
+            _csv_report.finished_at = _utc_now()
+            db.commit()
+
+            cleanup_inline_segment_files(job.id, _flushed_segment_count)
+        except Exception:
+            pass
+
+        import subprocess
+        from sqlalchemy.orm.attributes import flag_modified
+        try:
+            script_path = settings.storage_root.parent / "scripts" / "analyze_speeds.py"
+            speeds_csv_path = settings.storage_root.parent / "exports" / f"{job.id}_speeds.csv"
+            speeds_csv_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            excel_path = settings.storage_root.parent / "exports" / f"{job.id}_analysis.xls"
+            
+            summary = job.summary_json or {}
+            
+            if script_path.exists():
+                subprocess.run([
+                    "python", str(script_path), str(report_absolute_path),
+                    "--distance", str(config.line_pair_distance_m),
+                    "--csv", str(speeds_csv_path),
+                    "--excel", str(excel_path)
+                ], check=False)
+                summary["speed_script_status"] = "Success"
+                summary["auto_excel_export"] = str(excel_path)
+            else:
+                summary["speed_script_status"] = "Script not found"
+
+            job.summary_json = summary
+            flag_modified(job, "summary_json")
+            db.commit()
+            print(f"[analysis] Auto-saved Excel to {excel_path} and ran speed script.")
+        except Exception as e:
+            print(f"[analysis] Failed to auto-save Excel or run script: {e}")
+
+        try:
+            speed_csv_path = _export_speed_csv(
+                report_events,
+                video=video,
+                line_pair_distance_m=config.line_pair_distance_m,
+                out_dir=settings.storage_root / "speed_csv",
+            )
+            if speed_csv_path:
+                print(f"[analysis] wrote speed CSV: {speed_csv_path}")
+        except Exception:
+            pass
         try:
             finish_preview(job_id)
         except OSError:
@@ -1333,8 +1596,8 @@ def _collect_supplemental_motorcycle_detections(
             bbox = _translate_bbox_from_roi(tuple(float(value) for value in xyxy), focus_roi)
             detections.append(
                 {
-                    "vehicle_class": VEHICLE_CLASS_MOTORCYCLE,
-                    "source_label": VEHICLE_CLASS_MOTORCYCLE,
+                    "vehicle_class": VEHICLE_CLASS_MOTOR,
+                    "source_label": VEHICLE_CLASS_MOTOR,
                     "confidence": float(confidence),
                     "bbox": bbox,
                     "source": "motorcycle_focus_tile",
@@ -1440,9 +1703,9 @@ def _is_duplicate_supplemental_motorcycle_detection(
         iou = _bbox_iou(bbox, accepted_bbox)
         if iou >= 0.38:
             return True
-        if accepted_vehicle_class == VEHICLE_CLASS_MOTORCYCLE and _bbox_contains_point(accepted_bbox, center):
+        if accepted_vehicle_class == VEHICLE_CLASS_MOTOR and _bbox_contains_point(accepted_bbox, center):
             return True
-        if accepted_vehicle_class != VEHICLE_CLASS_MOTORCYCLE:
+        if accepted_vehicle_class != VEHICLE_CLASS_MOTOR:
             accepted_area = max(_bbox_area(accepted_bbox), 1.0)
             if iou >= 0.22 and supplemental_area >= accepted_area * 0.55:
                 return True
@@ -1534,13 +1797,13 @@ def _resolve_detection_label(vehicle_type_code: str, vehicle_type_label: str, ve
 
 
 def _resolve_class_min_confidence(vehicle_class: str, config: ProcessConfig) -> float:
-    if vehicle_class in {VEHICLE_CLASS_BICYCLE, VEHICLE_CLASS_MOTORCYCLE}:
+    if vehicle_class == VEHICLE_CLASS_MOTOR:
         return max(config.confidence_threshold, config.motorcycle_min_confidence)
-    if vehicle_class == VEHICLE_CLASS_CAR:
+    if vehicle_class in {VEHICLE_CLASS_MOBIL, VEHICLE_CLASS_ANGKOT, VEHICLE_CLASS_PICKUP}:
         return max(config.confidence_threshold, config.car_min_confidence)
     if vehicle_class == VEHICLE_CLASS_BUS:
         return max(config.confidence_threshold, config.bus_min_confidence)
-    if vehicle_class == VEHICLE_CLASS_TRUCK:
+    if vehicle_class in {VEHICLE_CLASS_TR_2S, VEHICLE_CLASS_TR_3S}:
         return max(config.confidence_threshold, config.truck_min_confidence)
     return config.confidence_threshold
 
@@ -1572,11 +1835,13 @@ def _detection_evidence_score(
     area_term = 0.78 + min(math.sqrt(normalized_area / 0.01), 1.0) * 0.28
     confidence_term = 0.45 + (max(float(confidence), 0.01) * 0.95)
     class_bias = {
-        VEHICLE_CLASS_MOTORCYCLE: 1.22,
-        VEHICLE_CLASS_BICYCLE: 1.06,
-        VEHICLE_CLASS_CAR: 1.0,
+        VEHICLE_CLASS_MOTOR: 1.22,
+        VEHICLE_CLASS_MOBIL: 1.0,
+        VEHICLE_CLASS_ANGKOT: 1.0,
+        VEHICLE_CLASS_PICKUP: 1.0,
         VEHICLE_CLASS_BUS: 1.0,
-        VEHICLE_CLASS_TRUCK: 1.0,
+        VEHICLE_CLASS_TR_2S: 1.0,
+        VEHICLE_CLASS_TR_3S: 1.0,
     }.get(vehicle_class, 1.0)
     continuity_term = 1.0
     if previous_bbox is not None:
@@ -1643,11 +1908,13 @@ def _draw_detection_boxes(
     import cv2
 
     class_colors = {
-        VEHICLE_CLASS_MOTORCYCLE: (0, 221, 109),
-        VEHICLE_CLASS_CAR: (82, 184, 255),
+        VEHICLE_CLASS_MOTOR: (0, 221, 109),
+        VEHICLE_CLASS_MOBIL: (82, 184, 255),
+        VEHICLE_CLASS_ANGKOT: (255, 165, 0),
+        VEHICLE_CLASS_PICKUP: (186, 107, 255),
         VEHICLE_CLASS_BUS: (87, 88, 255),
-        VEHICLE_CLASS_TRUCK: (0, 192, 255),
-        VEHICLE_CLASS_BICYCLE: (186, 107, 255),
+        VEHICLE_CLASS_TR_2S: (0, 192, 255),
+        VEHICLE_CLASS_TR_3S: (255, 77, 77),
     }
 
     for detection in detections:
@@ -1655,7 +1922,7 @@ def _draw_detection_boxes(
         y1 = int(round(float(detection["y1"]) * max(frame_height, 1)))
         x2 = int(round(float(detection["x2"]) * max(frame_width, 1)))
         y2 = int(round(float(detection["y2"]) * max(frame_height, 1)))
-        vehicle_class = str(detection.get("vehicle_class") or "").strip().lower()
+        vehicle_class = str(detection.get("vehicle_class") or "").strip()
         color = class_colors.get(vehicle_class, (82, 184, 255))
         cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
 
@@ -1727,8 +1994,8 @@ def _combined_track_class_score(
 
 
 def _track_class_switch_margin(current_class: str, candidate_class: str) -> float:
-    large_classes = {VEHICLE_CLASS_BUS, VEHICLE_CLASS_TRUCK}
-    small_vehicle_classes = {VEHICLE_CLASS_MOTORCYCLE, VEHICLE_CLASS_BICYCLE}
+    large_classes = {VEHICLE_CLASS_BUS, VEHICLE_CLASS_TR_2S, VEHICLE_CLASS_TR_3S}
+    small_vehicle_classes = {VEHICLE_CLASS_MOTOR}
     if current_class in large_classes and candidate_class in small_vehicle_classes:
         return TRACK_LARGE_TO_MOTORCYCLE_SWITCH_MARGIN
     if current_class in small_vehicle_classes and candidate_class in large_classes:
@@ -2074,7 +2341,7 @@ def _build_track_profiles_from_overlay_frames(
             if track_id <= 0:
                 continue
 
-            vehicle_class = str(detection.get("vehicle_class") or "").strip().lower()
+            vehicle_class = str(detection.get("vehicle_class") or "").strip()
             if not vehicle_class:
                 continue
 
@@ -2110,7 +2377,7 @@ def _build_track_profiles_from_overlay_frames(
         dominant_vehicle_class = _pick_dominant_track_class(
             state.class_scores,
             state.class_reference_scores,
-            state.reference_vehicle_class or VEHICLE_CLASS_CAR,
+            state.reference_vehicle_class or VEHICLE_CLASS_MOBIL,
         )
         dominant_bbox = state.class_reference_boxes.get(dominant_vehicle_class)
         if dominant_bbox is None:
@@ -2238,7 +2505,7 @@ def _build_report_events_from_overlay_frames(
                     report_events.append(
                         {
                             "track_id": track_id,
-                            "vehicle_class": final_vehicle_class,
+                            "vehicle_class": _to_standard_vehicle_class(final_vehicle_class),
                             "detected_label": final_detected_label,
                             "vehicle_type_code": final_vehicle_type_code,
                             "vehicle_type_label": final_vehicle_type_label,
@@ -2536,3 +2803,100 @@ def _resolve_source_label(names, class_id: int) -> str:
     if isinstance(names, list) and 0 <= class_id < len(names):
         return str(names[class_id])
     return str(class_id)
+
+
+def _compute_vehicle_speeds(
+    events: list[dict],
+    *,
+    line_pair_distance_m: float,
+    min_speed_kph: float = 1.0,
+    max_speed_kph: float = 200.0,
+) -> list[dict]:
+    """Estimate per-vehicle speed from the time gap between its two line crossings."""
+    if line_pair_distance_m <= 0:
+        return events
+
+    crossings_by_track: dict[int, list[dict]] = {}
+    for event in events:
+        track_id = event.get("track_id")
+        if track_id is None or event.get("synthesized"):
+            continue
+        crossings_by_track.setdefault(int(track_id), []).append(event)
+
+    for track_events in crossings_by_track.values():
+        earliest_per_line: dict[int, dict] = {}
+        for event in track_events:
+            order = event.get("count_line_order")
+            if order is None:
+                continue
+            order = int(order)
+            current = earliest_per_line.get(order)
+            if current is None or float(event.get("crossed_at_seconds") or 0.0) < float(
+                current.get("crossed_at_seconds") or 0.0
+            ):
+                earliest_per_line[order] = event
+        if len(earliest_per_line) < 2:
+            continue
+
+        ordered = sorted(
+            earliest_per_line.values(),
+            key=lambda event: float(event.get("crossed_at_seconds") or 0.0),
+        )
+        first_event, last_event = ordered[0], ordered[-1]
+        delta_seconds = float(last_event.get("crossed_at_seconds") or 0.0) - float(
+            first_event.get("crossed_at_seconds") or 0.0
+        )
+        if delta_seconds <= 0:
+            continue
+
+        speed_kph = (line_pair_distance_m / delta_seconds) * 3.6
+        if speed_kph < min_speed_kph or speed_kph > max_speed_kph:
+            continue
+        speed_kph = round(speed_kph, 1)
+        first_event["speed_kph"] = speed_kph
+        last_event["speed_kph"] = speed_kph
+
+    return events
+
+
+def _export_speed_csv(events: list[dict], *, video, line_pair_distance_m: float, out_dir) -> Optional[str]:
+    """Write one per-vehicle speed CSV for a finished job. Returns the path, or None."""
+    if line_pair_distance_m <= 0:
+        return None
+
+    import csv as _csv
+    from pathlib import Path as _Path
+
+    rows_by_track: dict[int, dict] = {}
+    for event in events:
+        if event.get("speed_kph") is None or event.get("track_id") is None:
+            continue
+        track_id = int(event["track_id"])
+        existing = rows_by_track.get(track_id)
+        if existing is None or float(event.get("crossed_at_seconds") or 0.0) < float(
+            existing.get("crossed_at_seconds") or 0.0
+        ):
+            rows_by_track[track_id] = event
+    if not rows_by_track:
+        return None
+
+    out_path = _Path(out_dir)
+    out_path.mkdir(parents=True, exist_ok=True)
+    original_name = getattr(video, "original_filename", None) or str(video.id)
+    stem = _Path(original_name).stem
+    safe_stem = "".join(c if (c.isalnum() or c in "-_") else "_" for c in stem)[:60]
+    csv_path = out_path / f"{safe_stem}__{str(video.id)[:8]}_speeds.csv"
+
+    with open(csv_path, "w", newline="", encoding="utf-8") as handle:
+        writer = _csv.writer(handle)
+        writer.writerow(["video_file", "track_id", "vehicle_class", "golongan_code", "crossed_at_seconds", "speed_kph"])
+        for track_id, event in sorted(rows_by_track.items(), key=lambda kv: float(kv[1].get("crossed_at_seconds") or 0.0)):
+            writer.writerow([
+                original_name,
+                track_id,
+                event.get("vehicle_class"),
+                event.get("golongan_code"),
+                round(float(event.get("crossed_at_seconds") or 0.0), 3),
+                event.get("speed_kph"),
+            ])
+    return str(csv_path)

@@ -66,6 +66,7 @@ class DetectionSettingsRead(ORMModel):
     preview_max_width: int = Field(ge=0, le=3840)
     preview_jpeg_quality: int = Field(ge=30, le=95)
     model_path: Optional[str] = None
+    csv_flush_mode: str = "concurrent"
     created_at: datetime
     updated_at: datetime
 
@@ -84,6 +85,7 @@ class DetectionSettingsUpdate(BaseModel):
     preview_max_width: int = Field(ge=0, le=3840)
     preview_jpeg_quality: int = Field(ge=30, le=95)
     model_path: Optional[str] = None
+    csv_flush_mode: Optional[str] = Field(default=None, pattern="^(concurrent|linear)$")
 
 
 class GpuAuditRuntimeRead(BaseModel):
@@ -192,6 +194,51 @@ class AnalysisJobRead(ORMModel):
     updated_at: datetime
 
 
+class AnalysisStartRequest(BaseModel):
+    inference_device: Optional[str] = Field(
+        default=None,
+        max_length=20,
+        description="Optional inference device override: 'auto', 'cuda', 'cpu', or 'mps'.",
+    )
+
+
+class SiteReadBasic(ORMModel):
+    id: UUID
+    name: str
+
+
+class SiteRead(ORMModel):
+    id: UUID
+    code: str
+    name: str
+    location_description: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    direction_normal_label: str
+    direction_opposite_label: str
+    created_at: datetime
+    updated_at: datetime
+
+
+class SiteCreate(BaseModel):
+    code: str = Field(min_length=1, max_length=50)
+    name: str = Field(min_length=1, max_length=255)
+    location_description: Optional[str] = Field(default=None, max_length=1000)
+    latitude: Optional[float] = Field(default=None, ge=-90.0, le=90.0)
+    longitude: Optional[float] = Field(default=None, ge=-180.0, le=180.0)
+    direction_normal_label: str = Field(default="Normal", min_length=1, max_length=255)
+    direction_opposite_label: str = Field(default="Opposite", min_length=1, max_length=255)
+
+
+class SiteUpdate(BaseModel):
+    name: str = Field(min_length=1, max_length=255)
+    location_description: Optional[str] = Field(default=None, max_length=1000)
+    latitude: Optional[float] = Field(default=None, ge=-90.0, le=90.0)
+    longitude: Optional[float] = Field(default=None, ge=-180.0, le=180.0)
+    direction_normal_label: str = Field(default="Normal", min_length=1, max_length=255)
+    direction_opposite_label: str = Field(default="Opposite", min_length=1, max_length=255)
+
+
 class VideoUploadRead(ORMModel):
     id: UUID
     original_filename: str
@@ -212,6 +259,7 @@ class VideoUploadRead(ORMModel):
     created_at: datetime
     updated_at: datetime
     analysis_job: Optional[AnalysisJobRead] = None
+    site: Optional[SiteReadBasic] = None
 
 
 class VideoCountLineRead(ORMModel):
@@ -270,6 +318,7 @@ class VideoEventRead(ORMModel):
     crossed_at_seconds: float
     crossed_at_frame: int
     confidence: Optional[float]
+    speed_kph: Optional[float] = None
     created_at: datetime
 
 
@@ -280,6 +329,29 @@ class GolonganTotalRead(ORMModel):
     vehicle_count: int
     created_at: datetime
     updated_at: datetime
+
+
+class FdComputeRequest(BaseModel):
+    line_spacing_m: float = Field(gt=0, description="Jarak antar garis hitung dalam meter")
+    direction: str = Field(default="normal", pattern="^(normal|opposite|all)$")
+    interval_s: int = Field(default=60, ge=10, le=3600)
+    max_match_dt_s: float = Field(default=5.0, gt=0, le=60)
+    min_speed_kmh: float = Field(default=1.0, ge=0)
+    max_speed_kmh: float = Field(default=120.0, gt=0)
+
+
+class FdResultRead(ORMModel):
+    id: UUID
+    video_upload_id: UUID
+    line_spacing_m: float
+    direction: str
+    interval_s: int
+    greenshields_vf: Optional[float]
+    greenshields_kj: Optional[float]
+    greenshields_q_cap: Optional[float]
+    matched_pairs_count: Optional[int]
+    intervals_json: list
+    created_at: datetime
 
 
 class VideoAnalysisRead(BaseModel):
@@ -295,3 +367,7 @@ class VideoAnalysisRead(BaseModel):
     totals: list[GolonganTotalRead] = Field(default_factory=list)
     recent_events: list[VideoEventRead] = Field(default_factory=list)
     progress_percent: float = 0.0
+    csv_status: str = "pending"
+    csv_progress: float = 0.0
+    csv_segments_completed: int = 0
+    csv_segment_count: int = 0

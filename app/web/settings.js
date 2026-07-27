@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const previewMaxWidthInput = document.getElementById("previewMaxWidthInput");
   const previewJpegQualityInput = document.getElementById("previewJpegQualityInput");
   const modelPathSelect = document.getElementById("modelPathSelect");
+  const csvFlushModeSelect = document.getElementById("csvFlushModeSelect");
 
   function setSaving(isSaving) {
     saveButton.disabled = isSaving;
@@ -41,6 +42,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Set model dropdown value if it exists in the options
     if (modelPathSelect && payload.model_path) {
       modelPathSelect.value = payload.model_path;
+    }
+    if (csvFlushModeSelect && payload.csv_flush_mode) {
+      csvFlushModeSelect.value = payload.csv_flush_mode;
     }
   }
 
@@ -127,6 +131,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       preview_max_width: Number(previewMaxWidthInput.value || 0),
       preview_jpeg_quality: Number(previewJpegQualityInput.value || 0),
       model_path: modelPathSelect.value || "yolov8s.pt",
+      csv_flush_mode: csvFlushModeSelect ? csvFlushModeSelect.value : undefined,
     };
 
     const validationError = [

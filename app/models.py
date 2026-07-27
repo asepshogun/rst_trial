@@ -103,7 +103,7 @@ class DetectionSettings(TimestampMixin, Base):
     model_path: Mapped[Optional[str]] = mapped_column(
         String(255),
         nullable=True,
-        default="yolov8s.pt",
+        default="v7.pt",
     )
     csv_flush_mode: Mapped[str] = mapped_column(
         String(20),

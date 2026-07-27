@@ -33,7 +33,7 @@ if not exist "%~dp0.env" (
         echo DEFAULT_WORKING_MAX_WIDTH=1600
         echo DEFAULT_PREVIEW_MAX_WIDTH=960
         echo DEFAULT_PREVIEW_JPEG_QUALITY=70
-        echo DEFAULT_INFERENCE_IMGSZ=640
+        echo DEFAULT_INFERENCE_IMGSZ=960
         echo DEFAULT_INFERENCE_DEVICE=auto
         echo SAVE_ANNOTATED_VIDEO=true
         echo BOOTSTRAP_ADMIN_USERNAME=admin

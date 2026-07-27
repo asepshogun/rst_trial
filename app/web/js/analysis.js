@@ -1642,21 +1642,42 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     const groupedEvents = {};
     const processedEvents = [];
+
     events.forEach(e => {
       if (e.track_id) {
         if (!groupedEvents[e.track_id]) {
           groupedEvents[e.track_id] = { ...e, t1: "-", t2: "-" };
           processedEvents.push(groupedEvents[e.track_id]);
         }
-        if (e.count_line_order === 1) {
+        
+        // PERBAIKAN: Gunakan Number() atau == (loose equality)
+        const lineOrder = Number(e.count_line_order); 
+        
+        if (lineOrder === 1) {
           groupedEvents[e.track_id].t1 = formatCrossedTimeDisplay(e.crossed_at_seconds);
-        } else if (e.count_line_order === 2) {
+        } else if (lineOrder === 2) {
           groupedEvents[e.track_id].t2 = formatCrossedTimeDisplay(e.crossed_at_seconds);
         }
       } else {
         processedEvents.push({ ...e, t1: "-", t2: "-" });
       }
     });
+
+    // events.forEach(e => {
+    //   if (e.track_id) {
+    //     if (!groupedEvents[e.track_id]) {
+    //       groupedEvents[e.track_id] = { ...e, t1: "-", t2: "-" };
+    //       processedEvents.push(groupedEvents[e.track_id]);
+    //     }
+    //     if (e.count_line_order === 1) {
+    //       groupedEvents[e.track_id].t1 = formatCrossedTimeDisplay(e.crossed_at_seconds);
+    //     } else if (e.count_line_order === 2) {
+    //       groupedEvents[e.track_id].t2 = formatCrossedTimeDisplay(e.crossed_at_seconds);
+    //     }
+    //   } else {
+    //     processedEvents.push({ ...e, t1: "-", t2: "-" });
+    //   }
+    // });
 
     const rows = processedEvents
       .map(
@@ -1715,7 +1736,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <th>Class Label</th>
         <th>Direction</th>
         <th>Confidence</th>
-        <th>Speed (km/h)</th>
+        <th>Speed (kM/h)</th>
       </tr>
     </thead>
     <tbody>

@@ -618,18 +618,20 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
 
         model = YOLO(config.model_path)
         trackable_ids = list(TRACKABLE_CLASS_IDS)
-        supplemental_motorcycle_model = YOLO(config.model_path) if motorcycle_focus_rois else None
+        #ARN
+        # supplemental_motorcycle_model = YOLO(config.model_path) if motorcycle_focus_rois else None
         inference_device = _resolve_inference_device(config.inference_device)
-        try:
-            model.to(inference_device)
-            if supplemental_motorcycle_model is not None:
-                supplemental_motorcycle_model.to(inference_device)
-        except Exception:
-            inference_device = "cpu"
-            model.to(inference_device)
-            if supplemental_motorcycle_model is not None:
-                supplemental_motorcycle_model.to(inference_device)
-        _raise_if_stop_requested(job_id)
+        # try:
+        #     model.to(inference_device)
+        #     if supplemental_motorcycle_model is not None:
+        #         supplemental_motorcycle_model.to(inference_device)
+        # except Exception:
+        #     inference_device = "cpu"
+        #     model.to(inference_device)
+        #     if supplemental_motorcycle_model is not None:
+        #         supplemental_motorcycle_model.to(inference_device)
+        # _raise_if_stop_requested(job_id)
+        #end of ARN
 
         performance_meta = {
             "source_fps": round(fps, 3),
@@ -675,13 +677,15 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             },
             "rejected_detection_total": 0,
             "rejected_detection_by_reason": {},
-            "supplemental_motorcycle_raw_total": 0,
-            "supplemental_motorcycle_duplicate_total": 0,
-            "supplemental_motorcycle_accepted_total": 0,
-            "supplemental_motorcycle_track_created_total": 0,
-            "supplemental_motorcycle_track_matched_total": 0,
-            "supplemental_motorcycle_active_track_count": 0,
-            "supplemental_motorcycle_max_active_tracks": 0,
+            #ARN
+            # "supplemental_motorcycle_raw_total": 0,
+            # "supplemental_motorcycle_duplicate_total": 0,
+            # "supplemental_motorcycle_accepted_total": 0,
+            # "supplemental_motorcycle_track_created_total": 0,
+            # "supplemental_motorcycle_track_matched_total": 0,
+            # "supplemental_motorcycle_active_track_count": 0,
+            # "supplemental_motorcycle_max_active_tracks": 0,
+            #end of ARN
             "frames_with_motorcycle_detection": 0,
             "stabilized_class_switch_total": 0,
             "stabilized_class_switch_by_pair": {},
@@ -694,8 +698,8 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
         track_last_points: dict[int, tuple[float, float]] = {}
         counted_track_lines: dict[int, set[int]] = {}
         track_states: dict[int, TrackState] = {}
-        supplemental_motorcycle_tracks: dict[int, SupplementalTrack] = {}
-        next_supplemental_motorcycle_track_id = SUPPLEMENTAL_MOTORCYCLE_TRACK_ID_START
+        # supplemental_motorcycle_tracks: dict[int, SupplementalTrack] = {} #ARN
+        # next_supplemental_motorcycle_track_id = SUPPLEMENTAL_MOTORCYCLE_TRACK_ID_START #ARN
         frame_number = 0
         processed_frames = 0
         sequence_no = 0
@@ -828,81 +832,81 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                             "source": "main_roi",
                         }
                     )
+            #ARN
+            # run_supplemental = (
+            #     supplemental_motorcycle_model is not None
+            #     and processed_frames % SUPPLEMENTAL_MOTORCYCLE_FRAME_STRIDE == 0
+            # )
+            # supplemental_motorcycle_detections = _collect_supplemental_motorcycle_detections(
+            #     model=supplemental_motorcycle_model if run_supplemental else None,
+            #     working_frame=working_frame,
+            #     focus_rois=motorcycle_focus_rois,
+            #     config=config,
+            #     inference_device=inference_device,
+            #     motorcycle_class_id=MOTORCYCLE_SOURCE_CLASS_ID,
+            # )
+            # _prune_supplemental_motorcycle_tracks(supplemental_motorcycle_tracks, frame_number)
+            # performance_meta["supplemental_motorcycle_raw_total"] += len(supplemental_motorcycle_detections)
+            # for supplemental_detection in supplemental_motorcycle_detections:
+            #     raw_bbox = supplemental_detection["bbox"]
+            #     if _is_duplicate_supplemental_motorcycle_detection(raw_bbox, raw_frame_detections):
+            #         performance_meta["supplemental_motorcycle_duplicate_total"] += 1
+            #         continue
 
-            run_supplemental = (
-                supplemental_motorcycle_model is not None
-                and processed_frames % SUPPLEMENTAL_MOTORCYCLE_FRAME_STRIDE == 0
-            )
-            supplemental_motorcycle_detections = _collect_supplemental_motorcycle_detections(
-                model=supplemental_motorcycle_model if run_supplemental else None,
-                working_frame=working_frame,
-                focus_rois=motorcycle_focus_rois,
-                config=config,
-                inference_device=inference_device,
-                motorcycle_class_id=MOTORCYCLE_SOURCE_CLASS_ID,
-            )
-            _prune_supplemental_motorcycle_tracks(supplemental_motorcycle_tracks, frame_number)
-            performance_meta["supplemental_motorcycle_raw_total"] += len(supplemental_motorcycle_detections)
-            for supplemental_detection in supplemental_motorcycle_detections:
-                raw_bbox = supplemental_detection["bbox"]
-                if _is_duplicate_supplemental_motorcycle_detection(raw_bbox, raw_frame_detections):
-                    performance_meta["supplemental_motorcycle_duplicate_total"] += 1
-                    continue
+            #     rejection_reason = _detection_candidate_rejection_reason(
+            #         vehicle_class=VEHICLE_CLASS_MOTOR,
+            #         confidence=float(supplemental_detection["confidence"]),
+            #         bbox=raw_bbox,
+            #         frame_width=max(working_width, 1),
+            #         frame_height=max(working_height, 1),
+            #         config=config,
+            #         min_confidence_override=SUPPLEMENTAL_MOTORCYCLE_CONFIDENCE_FLOOR,
+            #     )
+            #     if rejection_reason:
+            #         performance_meta["rejected_detection_total"] += 1
+            #         rejected_by_reason = performance_meta["rejected_detection_by_reason"]
+            #         reason = f"supplemental_{rejection_reason}"
+            #         rejected_by_reason[reason] = int(rejected_by_reason.get(reason, 0)) + 1
+            #         continue
 
-                rejection_reason = _detection_candidate_rejection_reason(
-                    vehicle_class=VEHICLE_CLASS_MOTOR,
-                    confidence=float(supplemental_detection["confidence"]),
-                    bbox=raw_bbox,
-                    frame_width=max(working_width, 1),
-                    frame_height=max(working_height, 1),
-                    config=config,
-                    min_confidence_override=SUPPLEMENTAL_MOTORCYCLE_CONFIDENCE_FLOOR,
-                )
-                if rejection_reason:
-                    performance_meta["rejected_detection_total"] += 1
-                    rejected_by_reason = performance_meta["rejected_detection_by_reason"]
-                    reason = f"supplemental_{rejection_reason}"
-                    rejected_by_reason[reason] = int(rejected_by_reason.get(reason, 0)) + 1
-                    continue
+            #     track_id, next_supplemental_motorcycle_track_id, track_status = _assign_supplemental_motorcycle_track_id(
+            #         tracks=supplemental_motorcycle_tracks,
+            #         bbox=raw_bbox,
+            #         frame_number=frame_number,
+            #         frame_width=max(working_width, 1),
+            #         frame_height=max(working_height, 1),
+            #         next_track_id=next_supplemental_motorcycle_track_id,
+            #     )
+            #     if track_status == "created":
+            #         performance_meta["supplemental_motorcycle_track_created_total"] += 1
+            #     else:
+            #         performance_meta["supplemental_motorcycle_track_matched_total"] += 1
 
-                track_id, next_supplemental_motorcycle_track_id, track_status = _assign_supplemental_motorcycle_track_id(
-                    tracks=supplemental_motorcycle_tracks,
-                    bbox=raw_bbox,
-                    frame_number=frame_number,
-                    frame_width=max(working_width, 1),
-                    frame_height=max(working_height, 1),
-                    next_track_id=next_supplemental_motorcycle_track_id,
-                )
-                if track_status == "created":
-                    performance_meta["supplemental_motorcycle_track_created_total"] += 1
-                else:
-                    performance_meta["supplemental_motorcycle_track_matched_total"] += 1
+            #     performance_meta["accepted_detection_total"] += 1
+            #     performance_meta["accepted_detection_by_class"][VEHICLE_CLASS_MOTOR] = (
+            #         int(performance_meta["accepted_detection_by_class"].get(VEHICLE_CLASS_MOTOR, 0)) + 1
+            #     )
+            #     performance_meta["supplemental_motorcycle_accepted_total"] += 1
+            #     raw_frame_detections.append(
+            #         {
+            #             "track_id": int(track_id),
+            #             "vehicle_class": VEHICLE_CLASS_MOTOR,
+            #             "source_label": VEHICLE_CLASS_MOTOR,
+            #             "confidence": float(supplemental_detection["confidence"]),
+            #             "bbox": raw_bbox,
+            #             "source": "motorcycle_focus_tile",
+            #         }
+            #     )
 
-                performance_meta["accepted_detection_total"] += 1
-                performance_meta["accepted_detection_by_class"][VEHICLE_CLASS_MOTOR] = (
-                    int(performance_meta["accepted_detection_by_class"].get(VEHICLE_CLASS_MOTOR, 0)) + 1
-                )
-                performance_meta["supplemental_motorcycle_accepted_total"] += 1
-                raw_frame_detections.append(
-                    {
-                        "track_id": int(track_id),
-                        "vehicle_class": VEHICLE_CLASS_MOTOR,
-                        "source_label": VEHICLE_CLASS_MOTOR,
-                        "confidence": float(supplemental_detection["confidence"]),
-                        "bbox": raw_bbox,
-                        "source": "motorcycle_focus_tile",
-                    }
-                )
+            # performance_meta["supplemental_motorcycle_active_track_count"] = len(supplemental_motorcycle_tracks)
+            # performance_meta["supplemental_motorcycle_max_active_tracks"] = max(
+            #     int(performance_meta.get("supplemental_motorcycle_max_active_tracks") or 0),
+            #     len(supplemental_motorcycle_tracks),
+            # )
 
-            performance_meta["supplemental_motorcycle_active_track_count"] = len(supplemental_motorcycle_tracks)
-            performance_meta["supplemental_motorcycle_max_active_tracks"] = max(
-                int(performance_meta.get("supplemental_motorcycle_max_active_tracks") or 0),
-                len(supplemental_motorcycle_tracks),
-            )
-
-            if any(detection["vehicle_class"] == VEHICLE_CLASS_MOTOR for detection in raw_frame_detections):
-                performance_meta["frames_with_motorcycle_detection"] += 1
-
+            # if any(detection["vehicle_class"] == VEHICLE_CLASS_MOTOR for detection in raw_frame_detections):
+            #     performance_meta["frames_with_motorcycle_detection"] += 1
+            #end of ARN
             for raw_detection in raw_frame_detections:
                 track_id = int(raw_detection["track_id"])
                 vehicle_class = str(raw_detection["vehicle_class"])
@@ -1056,14 +1060,14 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
                     "detections": frame_detections,
                 }
             )
-
-            _draw_detection_boxes(
-                annotated_frame,
-                frame_detections,
-                working_width,
-                working_height,
-            )
-
+            #ARN Nonaktifkan fungsi ini agar kotak/garis hijau dan persentase AI tidak digambar di layar
+            # _draw_detection_boxes(
+            #     annotated_frame,
+            #     frame_detections,
+            #     working_width,
+            #     working_height,
+            # )
+            #end of ARN
             if writer is not None:
                 _draw_overlay(
                     annotated_frame,

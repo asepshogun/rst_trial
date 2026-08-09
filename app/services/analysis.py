@@ -1373,12 +1373,14 @@ def run_video_analysis(video_id: UUID, job_id: UUID, overrides: Optional[dict] =
             summary = job.summary_json or {}
             
             import sys
+            video_name_for_excel = video.stored_filename or video.original_filename or str(video.id)
             if script_path.exists():
                 subprocess.run([
                     sys.executable, str(script_path), str(report_absolute_path),
                     "--distance", str(config.line_pair_distance_m),
                     "--csv", str(speeds_csv_path),
-                    "--excel", str(excel_path)
+                    "--excel", str(excel_path),
+                    "--video-name", video_name_for_excel
                 ], check=False)
                 summary["speed_script_status"] = "Success"
                 summary["auto_excel_export"] = str(excel_path)

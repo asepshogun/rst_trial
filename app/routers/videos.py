@@ -918,7 +918,7 @@ def download_analysis_excel(
     out_excel_path = settings.storage_root.parent / "exports" / f"{job.id}_manual_export.xlsx"
     out_excel_path.parent.mkdir(parents=True, exist_ok=True)
     
-    video_name = video.original_filename or str(video.id)
+    video_name = video.stored_filename or video.original_filename or str(video.id)
     
     import sys
     try:

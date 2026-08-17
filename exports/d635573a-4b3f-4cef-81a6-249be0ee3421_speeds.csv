@@ -1,0 +1,308 @@
+track_id,Detected Type,Class Code,Class Label,Direction,Confidence,line1_time_s,line2_time_s,dt_s,speed_kph
+6,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.6%,1.0,1.55,0.55,32.7
+3,Car / Sedan,2,Sedan / jeep / station wagon,opposite,85.2%,6.1,6.75,0.65,27.7
+163,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.9%,25.399,25.999,0.6,30.0
+390,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.7%,49.398,50.148,0.75,24.0
+629,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,69.1%,70.447,69.947,0.5,36.0
+800,Car / Sedan,2,Sedan / jeep / station wagon,opposite,51.0%,87.246,87.646,0.4,45.0
+805,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.7%,88.196,88.596,0.4,45.0
+884,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,81.8%,95.395,95.945,0.55,32.7
+894,Car / Sedan,2,Sedan / jeep / station wagon,opposite,92.1%,96.195,96.745,0.55,32.7
+1054,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,54.8%,107.795,106.995,0.8,22.5
+1058,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,92.1%,109.745,108.945,0.8,22.5
+1178,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,75.6%,119.394,120.094,0.7,25.7
+1161,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,91.0%,122.744,121.144,1.6,11.3
+1427,Bus,5,Bus,normal,91.5%,143.943,143.143,0.8,22.5
+1454,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,85.3%,145.543,146.343,0.8,22.5
+1464,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,51.2%,145.693,146.543,0.85,21.2
+1646,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,90.9%,163.592,162.742,0.85,21.2
+1692,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,67.2%,164.292,164.892,0.6,30.0
+1819,Car / Sedan,2,Sedan / jeep / station wagon,normal,89.8%,176.591,175.841,0.75,24.0
+1944,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.5%,186.891,187.641,0.75,24.0
+2428,Car / Sedan,2,Sedan / jeep / station wagon,opposite,93.1%,230.839,231.288,0.45,40.0
+2605,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,69.7%,248.138,247.388,0.75,24.0
+2680,Car / Sedan,2,Sedan / jeep / station wagon,opposite,92.6%,252.588,253.737,1.15,15.7
+2686,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,61.3%,253.687,254.687,1.0,18.0
+2736,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.5%,255.537,256.237,0.7,25.7
+2747,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.6%,256.587,257.237,0.65,27.7
+2780,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,62.5%,261.687,260.687,1.0,18.0
+2782,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.9%,261.087,261.887,0.8,22.5
+2811,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,55.3%,262.637,264.737,2.1,8.6
+2826,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.0%,263.587,264.187,0.6,30.0
+3004,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,93.4%,278.386,279.436,1.05,17.1
+3103,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.5%,285.936,286.586,0.65,27.7
+3126,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.2%,289.786,290.336,0.55,32.7
+3176,Car / Sedan,2,Sedan / jeep / station wagon,opposite,92.0%,293.036,293.535,0.5,36.0
+3424,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.7%,318.534,319.184,0.65,27.7
+3438,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.4%,319.934,320.584,0.65,27.7
+3651,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.1%,342.783,341.383,1.4,12.9
+3727,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.5%,346.533,345.783,0.75,24.0
+3951,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,70.1%,362.532,363.882,1.35,13.3
+4162,Public Transportation (Angkot),3,Medium passenger vehicle,normal,82.0%,384.381,383.731,0.65,27.7
+4202,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,68.5%,390.881,389.681,1.2,15.0
+4357,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,93.0%,398.88,399.23,0.35,51.4
+4402,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,79.4%,403.38,402.78,0.6,30.0
+4418,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,91.1%,406.03,406.53,0.5,36.0
+4446,Car / Sedan,2,Sedan / jeep / station wagon,opposite,92.6%,408.08,408.58,0.5,36.0
+4524,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,57.0%,413.779,412.529,1.25,14.4
+4539,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.7%,415.129,415.629,0.5,36.0
+4582,Bus,5,Bus,normal,92.5%,423.879,423.029,0.85,21.2
+4612,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,77.7%,426.529,427.129,0.6,30.0
+4629,Car / Sedan,2,Sedan / jeep / station wagon,normal,51.2%,429.979,428.979,1.0,18.0
+4737,Car / Sedan,2,Sedan / jeep / station wagon,opposite,93.7%,439.078,439.878,0.8,22.5
+4747,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.9%,439.778,440.378,0.6,30.0
+4816,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,93.1%,442.778,444.078,1.3,13.8
+4823,Car / Sedan,2,Sedan / jeep / station wagon,normal,89.7%,444.128,443.428,0.7,25.7
+4918,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.0%,448.028,448.528,0.5,36.0
+4987,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,80.0%,451.228,450.528,0.7,25.7
+5025,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.9%,454.327,455.177,0.85,21.2
+5119,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,53.2%,463.477,461.327,2.15,8.4
+5412,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.2%,481.826,480.926,0.9,20.0
+5565,Car / Sedan,2,Sedan / jeep / station wagon,normal,44.2%,491.176,490.626,0.55,32.7
+5681,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,85.7%,500.175,500.575,0.4,45.0
+5715,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,90.0%,505.525,504.125,1.4,12.9
+5776,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.2%,508.875,509.975,1.1,16.4
+6029,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,74.2%,536.723,535.173,1.55,11.6
+6247,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.6%,558.822,559.372,0.55,32.7
+6417,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.1%,571.272,571.922,0.65,27.7
+6431,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.0%,572.722,573.521,0.8,22.5
+6461,Public Transportation (Angkot),3,Medium passenger vehicle,normal,90.6%,575.721,575.121,0.6,30.0
+6465,Car / Sedan,2,Sedan / jeep / station wagon,opposite,93.7%,576.021,576.821,0.8,22.5
+6483,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.2%,580.171,579.621,0.55,32.7
+6548,Car / Sedan,2,Sedan / jeep / station wagon,normal,50.7%,587.271,586.671,0.6,30.0
+6618,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,79.8%,593.221,594.17,0.95,18.9
+6619,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,85.2%,593.221,594.12,0.9,20.0
+6663,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.7%,598.32,598.87,0.55,32.7
+6667,Car / Sedan,2,Sedan / jeep / station wagon,normal,90.0%,600.62,599.82,0.8,22.5
+6734,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.4%,604.07,604.72,0.65,27.7
+6917,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,82.5%,627.369,626.019,1.35,13.3
+7311,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.1%,656.667,656.167,0.5,36.0
+7461,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,65.0%,671.817,670.767,1.05,17.1
+7557,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,83.6%,681.316,680.416,0.9,20.0
+7843,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.6%,706.315,705.765,0.55,32.7
+7992,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.3%,715.814,715.164,0.65,27.7
+8075,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,61.6%,719.514,720.114,0.6,30.0
+8158,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.2%,725.364,725.964,0.6,30.0
+8161,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.1%,726.414,727.114,0.7,25.7
+8163,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,90.2%,727.914,728.664,0.75,24.0
+8167,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,73.6%,728.014,728.664,0.65,27.7
+8194,Car / Sedan,2,Sedan / jeep / station wagon,opposite,91.3%,732.564,733.314,0.75,24.0
+8230,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.9%,735.264,736.114,0.85,21.2
+8240,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.5%,736.114,736.763,0.65,27.7
+8251,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.7%,736.713,737.513,0.8,22.5
+8298,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.3%,744.063,744.663,0.6,30.0
+8295,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,84.0%,744.563,745.163,0.6,30.0
+8354,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.9%,754.063,754.763,0.7,25.7
+8381,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.3%,758.012,758.462,0.45,40.0
+8609,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,77.8%,778.661,777.761,0.9,20.0
+8719,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.0%,784.061,785.011,0.95,18.9
+8725,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.6%,786.511,785.011,1.5,12.0
+8816,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,83.9%,788.911,789.811,0.9,20.0
+9100,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.8%,818.309,819.009,0.7,25.7
+9101,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.7%,818.359,819.059,0.7,25.7
+9113,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.7%,818.959,819.709,0.75,24.0
+9515,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,61.1%,850.058,848.458,1.6,11.3
+9759,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,83.9%,861.657,862.507,0.85,21.2
+9981,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.9%,878.406,879.006,0.6,30.0
+9978,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,43.0%,880.356,878.956,1.4,12.9
+10037,Car / Sedan,2,Sedan / jeep / station wagon,opposite,93.5%,884.306,884.906,0.6,30.0
+10057,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.2%,885.506,886.006,0.5,36.0
+10105,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,90.7%,889.256,889.906,0.65,27.7
+10169,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.7%,893.906,894.756,0.85,21.2
+10158,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,72.4%,895.606,894.606,1.0,18.0
+10196,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,84.7%,895.206,896.155,0.95,18.9
+10279,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.2%,901.455,901.905,0.45,40.0
+10513,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.0%,923.754,924.904,1.15,15.7
+10543,Public Transportation (Angkot),3,Medium passenger vehicle,normal,40.4%,926.304,925.654,0.65,27.7
+10644,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.5%,935.054,934.404,0.65,27.7
+11156,Car / Sedan,2,Sedan / jeep / station wagon,normal,89.3%,987.701,986.251,1.45,12.4
+11335,Car / Sedan,2,Sedan / jeep / station wagon,normal,89.0%,999.3,998.65,0.65,27.7
+11343,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.3%,999.15,999.75,0.6,30.0
+11368,Public Transportation (Angkot),3,Medium passenger vehicle,normal,51.3%,1001.9,1000.75,1.15,15.7
+11396,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,36.2%,1004.85,1003.6,1.25,14.4
+11704,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.2%,1031.549,1030.899,0.65,27.7
+11766,Car / Sedan,2,Sedan / jeep / station wagon,opposite,92.3%,1035.349,1035.899,0.55,32.7
+11830,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,79.8%,1044.298,1042.798,1.5,12.0
+11936,Car / Sedan,2,Sedan / jeep / station wagon,opposite,79.1%,1048.748,1049.348,0.6,30.0
+11957,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.1%,1050.198,1050.698,0.5,36.0
+11962,Car / Sedan,2,Sedan / jeep / station wagon,opposite,93.6%,1051.048,1051.798,0.75,24.0
+11997,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.6%,1052.798,1053.298,0.5,36.0
+12123,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.1%,1058.297,1059.247,0.95,18.9
+12131,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.2%,1058.797,1059.297,0.5,36.0
+12149,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,92.1%,1061.697,1062.597,0.9,20.0
+12223,Car / Sedan,2,Sedan / jeep / station wagon,opposite,93.6%,1067.297,1067.797,0.5,36.0
+12293,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.1%,1070.347,1070.947,0.6,30.0
+12215,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,89.1%,1073.297,1071.547,1.75,10.3
+12464,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.0%,1089.296,1090.096,0.8,22.5
+12484,Public Transportation (Angkot),3,Medium passenger vehicle,normal,84.8%,1093.146,1092.396,0.75,24.0
+12513,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.4%,1095.296,1094.596,0.7,25.7
+12710,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.5%,1112.095,1111.295,0.8,22.5
+12759,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,84.3%,1114.795,1115.445,0.65,27.7
+13828,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,92.6%,1182.891,1182.241,0.65,27.7
+13964,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,83.2%,1195.641,1196.141,0.5,36.0
+13982,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.6%,1198.69,1199.341,0.65,27.7
+14003,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.3%,1199.991,1200.69,0.7,25.7
+14098,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,75.3%,1212.89,1208.64,4.25,4.2
+14117,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,74.1%,1211.14,1211.54,0.4,45.0
+14106,Car / Sedan,2,Sedan / jeep / station wagon,opposite,91.5%,1212.84,1215.24,2.4,7.5
+14223,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,74.7%,1218.389,1218.989,0.6,30.0
+14222,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,93.2%,1219.84,1220.889,1.05,17.1
+14299,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.1%,1221.689,1222.489,0.8,22.5
+14666,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.6%,1244.488,1245.038,0.55,32.7
+15684,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,81.0%,1331.134,1330.584,0.55,32.7
+15784,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.5%,1339.383,1338.084,1.3,13.8
+16152,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.5%,1360.483,1361.132,0.65,27.7
+16181,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.8%,1362.982,1363.732,0.75,24.0
+16208,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.0%,1365.782,1366.432,0.65,27.7
+16337,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,93.7%,1377.182,1378.132,0.95,18.9
+16602,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,90.1%,1397.181,1397.681,0.5,36.0
+16664,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,83.0%,1404.63,1405.18,0.55,32.7
+16710,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.8%,1408.18,1407.28,0.9,20.0
+16783,Car / Sedan,2,Sedan / jeep / station wagon,normal,86.2%,1413.33,1412.68,0.65,27.7
+16844,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.9%,1414.68,1415.18,0.5,36.0
+17232,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,92.3%,1446.728,1445.478,1.25,14.4
+17289,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.0%,1452.378,1451.528,0.85,21.2
+17307,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.0%,1452.428,1451.778,0.65,27.7
+17327,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,71.9%,1454.378,1452.278,2.1,8.6
+17421,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,92.3%,1459.878,1458.678,1.2,15.0
+17515,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,91.1%,1464.577,1463.227,1.35,13.3
+17573,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,81.8%,1467.827,1468.377,0.55,32.7
+17785,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.9%,1484.026,1483.476,0.55,32.7
+17873,Public Transportation (Angkot),3,Medium passenger vehicle,normal,91.1%,1494.976,1494.326,0.65,27.7
+18101,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.7%,1516.675,1515.975,0.7,25.7
+18127,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,46.2%,1516.675,1517.325,0.65,27.7
+18143,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,61.4%,1517.125,1517.775,0.65,27.7
+18157,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,85.2%,1518.075,1518.625,0.55,32.7
+18202,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,80.5%,1520.425,1521.074,0.65,27.7
+18208,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,85.4%,1520.824,1521.524,0.7,25.7
+18288,Car / Sedan,2,Sedan / jeep / station wagon,normal,87.0%,1526.074,1525.324,0.75,24.0
+18427,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.3%,1536.774,1538.174,1.4,12.9
+18477,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.0%,1541.174,1541.974,0.8,22.5
+18540,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,88.7%,1546.573,1547.523,0.95,18.9
+18605,Car / Sedan,2,Sedan / jeep / station wagon,opposite,80.0%,1550.173,1551.023,0.85,21.2
+18672,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.6%,1553.773,1552.823,0.95,18.9
+18741,Car / Sedan,2,Sedan / jeep / station wagon,opposite,93.2%,1559.173,1559.873,0.7,25.7
+19404,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.6%,1608.07,1607.52,0.55,32.7
+19554,Public Transportation (Angkot),3,Medium passenger vehicle,normal,70.5%,1622.219,1621.57,0.65,27.7
+19602,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,51.0%,1627.219,1626.119,1.1,16.4
+19780,Public Transportation (Angkot),3,Medium passenger vehicle,normal,84.9%,1640.269,1639.019,1.25,14.4
+20053,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.7%,1659.218,1659.668,0.45,40.0
+20186,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,80.8%,1667.417,1667.967,0.55,32.7
+20220,Public Transportation (Angkot),3,Medium passenger vehicle,normal,90.1%,1671.417,1670.917,0.5,36.0
+20253,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.1%,1672.967,1673.617,0.65,27.7
+20378,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.9%,1679.867,1680.517,0.65,27.7
+20509,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,91.0%,1688.166,1688.866,0.7,25.7
+20573,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,85.2%,1691.866,1692.466,0.6,30.0
+20833,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,52.8%,1716.015,1715.415,0.6,30.0
+20920,Car / Sedan,2,Sedan / jeep / station wagon,opposite,81.5%,1721.965,1722.614,0.65,27.7
+21050,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,77.3%,1735.014,1734.414,0.6,30.0
+21111,Public Transportation (Angkot),3,Medium passenger vehicle,normal,92.4%,1740.214,1739.164,1.05,17.1
+21582,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.9%,1773.062,1773.562,0.5,36.0
+21656,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.2%,1785.261,1785.961,0.7,25.7
+21666,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.1%,1785.761,1786.461,0.7,25.7
+21661,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.5%,1787.061,1786.561,0.5,36.0
+21879,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.2%,1810.41,1811.16,0.75,24.0
+21908,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.4%,1811.66,1812.46,0.8,22.5
+22022,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.4%,1821.81,1822.71,0.9,20.0
+22209,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.5%,1831.859,1832.409,0.55,32.7
+22236,Car / Sedan,2,Sedan / jeep / station wagon,opposite,71.3%,1833.659,1834.159,0.5,36.0
+22282,Car / Sedan,2,Sedan / jeep / station wagon,opposite,78.0%,1835.459,1836.009,0.55,32.7
+22371,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.0%,1840.459,1841.109,0.65,27.7
+22451,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.6%,1847.908,1847.008,0.9,20.0
+22580,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,93.3%,1853.758,1854.608,0.85,21.2
+22593,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,65.5%,1855.108,1856.308,1.2,15.0
+22742,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.6%,1866.857,1865.457,1.4,12.9
+22779,Car / Sedan,2,Sedan / jeep / station wagon,normal,91.0%,1870.957,1869.157,1.8,10.0
+22848,Car / Sedan,2,Sedan / jeep / station wagon,normal,87.1%,1875.057,1874.157,0.9,20.0
+22920,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.0%,1876.907,1877.507,0.6,30.0
+22919,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.8%,1876.957,1877.657,0.7,25.7
+22999,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.9%,1883.506,1884.056,0.55,32.7
+23074,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.8%,1889.956,1890.856,0.9,20.0
+23257,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.7%,1903.056,1903.656,0.6,30.0
+23331,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.8%,1907.555,1908.355,0.8,22.5
+23343,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,83.3%,1908.655,1909.405,0.75,24.0
+23340,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.9%,1909.355,1908.755,0.6,30.0
+23466,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.7%,1915.555,1916.355,0.8,22.5
+23647,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,91.6%,1931.004,1930.354,0.65,27.7
+23932,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.9%,1952.803,1953.703,0.9,20.0
+23953,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,81.6%,1955.503,1954.703,0.8,22.5
+24033,Car / Sedan,2,Sedan / jeep / station wagon,normal,91.5%,1966.152,1964.803,1.35,13.3
+24267,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,84.8%,1984.552,1985.101,0.55,32.7
+24289,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.2%,1986.251,1986.851,0.6,30.0
+24522,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,82.9%,2007.25,2007.85,0.6,30.0
+24682,Car / Sedan,2,Sedan / jeep / station wagon,opposite,92.5%,2017.5,2018.65,1.15,15.7
+24715,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.5%,2020.2,2020.95,0.75,24.0
+24969,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,73.4%,2038.299,2039.249,0.95,18.9
+25169,Car / Sedan,2,Sedan / jeep / station wagon,opposite,92.8%,2045.748,2046.498,0.75,24.0
+25184,Car / Sedan,2,Sedan / jeep / station wagon,normal,90.6%,2047.298,2046.399,0.9,20.0
+25181,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.8%,2046.448,2047.148,0.7,25.7
+25222,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.6%,2047.698,2048.348,0.65,27.7
+25234,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,86.5%,2049.198,2048.348,0.85,21.2
+25478,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,79.9%,2063.498,2064.348,0.85,21.2
+25453,Public Transportation (Angkot),3,Medium passenger vehicle,normal,92.0%,2069.247,2067.547,1.7,10.6
+25565,Car / Sedan,2,Sedan / jeep / station wagon,normal,89.9%,2070.497,2069.847,0.65,27.7
+25597,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,82.2%,2071.847,2072.547,0.7,25.7
+25813,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.8%,2087.696,2088.196,0.5,36.0
+25897,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,56.3%,2097.496,2095.646,1.85,9.7
+26101,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,81.6%,2110.195,2109.595,0.6,30.0
+26121,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,87.3%,2112.445,2111.245,1.2,15.0
+26321,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.5%,2129.744,2129.044,0.7,25.7
+26603,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.3%,2142.144,2142.644,0.5,36.0
+26641,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.3%,2146.044,2146.693,0.65,27.7
+26659,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,94.1%,2147.543,2148.193,0.65,27.7
+26819,Car / Sedan,2,Sedan / jeep / station wagon,opposite,77.0%,2158.043,2158.543,0.5,36.0
+26918,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,87.2%,2165.793,2166.693,0.9,20.0
+26930,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,93.4%,2166.843,2167.642,0.8,22.5
+26988,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,85.3%,2173.242,2174.092,0.85,21.2
+26996,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.8%,2173.842,2174.542,0.7,25.7
+27142,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.0%,2188.491,2187.841,0.65,27.7
+27318,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.2%,2202.291,2203.491,1.2,15.0
+27558,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.8%,2220.04,2220.64,0.6,30.0
+27604,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.8%,2224.24,2225.09,0.85,21.2
+27704,Car / Sedan,2,Sedan / jeep / station wagon,normal,86.6%,2229.189,2228.589,0.6,30.0
+27879,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,82.4%,2240.089,2239.339,0.75,24.0
+27973,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,75.0%,2249.588,2250.188,0.6,30.0
+28008,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.2%,2252.238,2251.488,0.75,24.0
+28274,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.0%,2270.087,2270.687,0.6,30.0
+28299,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.2%,2273.087,2273.637,0.55,32.7
+28338,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,82.0%,2279.187,2278.137,1.05,17.1
+28476,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,86.5%,2289.886,2289.036,0.85,21.2
+28540,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.6%,2291.486,2292.186,0.7,25.7
+28570,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,64.3%,2294.036,2295.036,1.0,18.0
+28616,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,87.8%,2299.036,2298.136,0.9,20.0
+28695,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,43.8%,2301.886,2301.036,0.85,21.2
+28734,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.2%,2303.086,2303.586,0.5,36.0
+28807,Car / Sedan,2,Sedan / jeep / station wagon,opposite,84.2%,2310.085,2310.635,0.55,32.7
+28886,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,90.6%,2318.535,2319.385,0.85,21.2
+29000,Car / Sedan,2,Sedan / jeep / station wagon,opposite,79.8%,2326.834,2327.285,0.45,40.0
+29195,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,93.0%,2337.834,2338.684,0.85,21.2
+29369,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.6%,2346.534,2347.184,0.65,27.7
+29484,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,57.9%,2352.683,2351.983,0.7,25.7
+29598,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,53.4%,2360.283,2359.533,0.75,24.0
+29666,Car / Sedan,2,Sedan / jeep / station wagon,normal,88.7%,2370.332,2369.632,0.7,25.7
+29838,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.3%,2384.832,2385.882,1.05,17.1
+29903,Car / Sedan,2,Sedan / jeep / station wagon,normal,86.6%,2395.531,2394.731,0.8,22.5
+30013,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,90.5%,2404.681,2403.731,0.95,18.9
+30104,Public Transportation (Angkot),3,Medium passenger vehicle,normal,50.6%,2413.13,2411.58,1.55,11.6
+30348,Car / Sedan,2,Sedan / jeep / station wagon,normal,89.6%,2434.979,2434.379,0.6,30.0
+30370,Car / Sedan,2,Sedan / jeep / station wagon,normal,87.6%,2437.429,2436.829,0.6,30.0
+30412,Car / Sedan,2,Sedan / jeep / station wagon,normal,88.4%,2440.329,2439.779,0.55,32.7
+30608,Public Transportation (Angkot),3,Medium passenger vehicle,normal,75.6%,2455.178,2454.528,0.65,27.7
+30781,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,90.0%,2466.028,2466.678,0.65,27.7
+30796,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.5%,2467.378,2468.128,0.75,24.0
+30856,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.7%,2471.177,2471.877,0.7,25.7
+30980,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,80.2%,2477.777,2476.927,0.85,21.2
+31031,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,82.9%,2480.927,2481.627,0.7,25.7
+31228,Motorcycle,1,Motorcycle / 3-wheel vehicle,normal,61.5%,2500.076,2498.926,1.15,15.7
+31433,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.3%,2515.525,2516.375,0.85,21.2
+31420,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,86.1%,2515.675,2516.275,0.6,30.0
+31539,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.3%,2526.625,2527.375,0.75,24.0
+31615,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,89.6%,2534.224,2534.774,0.55,32.7
+31657,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,93.0%,2540.174,2540.624,0.45,40.0
+31872,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,90.2%,2559.623,2560.473,0.85,21.2
+31926,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,86.5%,2564.823,2565.473,0.65,27.7
+32002,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,90.7%,2572.122,2571.322,0.8,22.5
+32035,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,88.2%,2573.372,2574.022,0.65,27.7
+32099,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.4%,2580.672,2579.872,0.8,22.5
+32494,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,82.4%,2611.77,2612.52,0.75,24.0
+32539,Motorcycle,1,Motorcycle / 3-wheel vehicle,opposite,82.5%,2614.77,2615.27,0.5,36.0

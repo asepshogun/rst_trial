@@ -1,0 +1,1601 @@
+track_id,Detected Type,Class Code,Class Label,Direction,Confidence,line1_time_s,line2_time_s,dt_s,speed_kph
+9,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.4%,3.533,4.533,1.0,18.0
+10,Car / Sedan,2,Sedan / jeep / station wagon,normal,56.8%,4.733,5.733,1.0,18.0
+12,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,82.9%,8.467,7.3,1.167,15.4
+17,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.4%,7.8,8.833,1.033,17.4
+29,Car / Sedan,2,Sedan / jeep / station wagon,normal,47.6%,9.433,10.433,1.0,18.0
+27,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.1%,10.633,9.6,1.033,17.4
+34,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.1%,10.2,11.167,0.967,18.6
+35,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.4%,10.6,11.533,0.933,19.3
+31,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.2%,11.9,10.9,1.0,18.0
+40,Car / Sedan,2,Sedan / jeep / station wagon,normal,85.7%,11.433,12.333,0.9,20.0
+47,Car / Sedan,2,Sedan / jeep / station wagon,normal,85.2%,14.533,15.333,0.8,22.5
+50,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,81.5%,15.933,15.033,0.9,20.0
+58,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.0%,17.033,17.967,0.933,19.3
+63,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.4%,17.933,17.067,0.867,20.8
+71,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.6%,21.467,22.433,0.967,18.6
+81,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.7%,25.633,26.733,1.1,16.4
+87,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.4%,26.667,27.733,1.067,16.9
+88,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.5%,27.933,29.0,1.067,16.9
+86,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.8%,29.367,31.367,2.0,9.0
+97,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.0%,29.8,30.8,1.0,18.0
+98,Car / Sedan,2,Sedan / jeep / station wagon,opposite,85.2%,30.8,29.867,0.933,19.3
+105,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,83.3%,31.467,33.5,2.033,8.9
+106,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.2%,31.733,32.767,1.033,17.4
+111,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.2%,32.667,33.733,1.067,16.9
+118,Car / Sedan,2,Sedan / jeep / station wagon,normal,52.6%,34.033,35.167,1.133,15.9
+132,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.1%,34.233,36.0,1.767,10.2
+120,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,90.1%,34.433,36.233,1.8,10.0
+139,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.1%,35.967,35.033,0.933,19.3
+145,Car / Sedan,2,Sedan / jeep / station wagon,normal,38.8%,35.467,36.833,1.367,13.2
+140,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.3%,37.333,35.867,1.467,12.3
+149,Car / Sedan,2,Sedan / jeep / station wagon,normal,50.0%,36.3,37.633,1.333,13.5
+156,Bus,5,Bus,normal,75.2%,37.0,38.367,1.367,13.2
+166,Car / Sedan,2,Sedan / jeep / station wagon,normal,33.4%,39.567,40.967,1.4,12.9
+170,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.5%,40.1,41.733,1.633,11.0
+179,Car / Sedan,2,Sedan / jeep / station wagon,normal,87.0%,42.767,44.333,1.567,11.5
+180,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,90.0%,44.233,43.133,1.1,16.4
+190,Car / Sedan,2,Sedan / jeep / station wagon,normal,56.7%,45.6,46.967,1.367,13.2
+189,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.3%,46.467,45.7,0.767,23.5
+195,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.0%,48.933,50.067,1.133,15.9
+200,Public Transportation (Angkot),3,Medium passenger vehicle,normal,70.5%,50.0,51.5,1.5,12.0
+196,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,91.9%,50.933,50.033,0.9,20.0
+199,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.2%,50.267,51.1,0.833,21.6
+211,Bus,5,Bus,normal,47.6%,53.233,54.033,0.8,22.5
+216,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,63.1%,54.567,57.067,2.5,7.2
+214,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,81.7%,56.1,55.067,1.033,17.4
+231,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.8%,58.1,59.2,1.1,16.4
+240,Car / Sedan,2,Sedan / jeep / station wagon,normal,52.6%,58.633,59.467,0.833,21.6
+248,Public Transportation (Angkot),3,Medium passenger vehicle,normal,64.7%,59.067,60.167,1.1,16.4
+251,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.1%,59.6,60.467,0.867,20.8
+255,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.2%,60.167,61.2,1.033,17.4
+270,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.9%,61.733,62.967,1.233,14.6
+271,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.7%,61.833,62.7,0.867,20.8
+264,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,61.1%,63.033,61.833,1.2,15.0
+274,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,47.7%,63.867,65.267,1.4,12.9
+292,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.1%,65.367,66.467,1.1,16.4
+295,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.3%,66.933,65.833,1.1,16.4
+298,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,80.8%,66.5,67.567,1.067,16.9
+293,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,84.7%,68.4,66.533,1.867,9.6
+315,Car / Sedan,2,Sedan / jeep / station wagon,normal,31.6%,67.633,68.467,0.833,21.6
+311,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.1%,67.7,68.967,1.267,14.2
+326,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.3%,69.867,71.267,1.4,12.9
+340,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,63.4%,72.9,72.033,0.867,20.8
+347,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.0%,72.533,73.233,0.7,25.7
+362,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.7%,83.267,84.233,0.967,18.6
+378,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.4%,88.067,88.867,0.8,22.5
+382,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.0%,88.933,89.9,0.967,18.6
+383,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,83.3%,90.867,91.767,0.9,20.0
+390,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.1%,90.867,91.6,0.733,24.5
+399,Car / Sedan,2,Sedan / jeep / station wagon,normal,43.9%,93.367,94.233,0.867,20.8
+404,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.2%,94.833,94.133,0.7,25.7
+426,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.3%,100.0,100.533,0.533,33.8
+431,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.6%,102.467,103.8,1.333,13.5
+446,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,42.1%,107.967,109.2,1.233,14.6
+445,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.5%,108.133,109.1,0.967,18.6
+475,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,90.1%,113.267,112.733,0.533,33.7
+477,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.4%,112.933,113.567,0.633,28.4
+479,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,66.6%,114.567,113.433,1.133,15.9
+484,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,50.1%,115.033,116.1,1.067,16.9
+517,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.2%,120.9,121.733,0.833,21.6
+525,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.2%,126.233,127.533,1.3,13.8
+528,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,91.2%,129.4,127.5,1.9,9.5
+537,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.4%,130.733,129.933,0.8,22.5
+540,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.2%,130.5,131.367,0.867,20.8
+542,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.4%,132.2,133.0,0.8,22.5
+545,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.3%,134.033,133.1,0.933,19.3
+556,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,89.3%,139.233,141.867,2.633,6.8
+576,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,66.5%,142.9,143.733,0.833,21.6
+584,Public Transportation (Angkot),3,Medium passenger vehicle,normal,73.9%,145.933,146.767,0.833,21.6
+585,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.9%,146.8,147.8,1.0,18.0
+601,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,90.6%,147.867,147.2,0.667,27.0
+602,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,87.8%,147.733,149.267,1.533,11.7
+628,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,76.4%,153.433,151.1,2.333,7.7
+638,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.0%,152.2,151.333,0.867,20.8
+690,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.5%,154.267,155.367,1.1,16.4
+688,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,85.7%,156.0,154.433,1.567,11.5
+704,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.3%,156.533,157.467,0.933,19.3
+711,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.6%,158.267,159.167,0.9,20.0
+717,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.6%,160.967,162.0,1.033,17.4
+731,Car / Sedan,2,Sedan / jeep / station wagon,normal,42.9%,162.0,163.9,1.9,9.5
+729,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,70.1%,163.967,162.8,1.167,15.4
+750,Car / Sedan,2,Sedan / jeep / station wagon,normal,38.1%,163.867,164.833,0.967,18.6
+760,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.2%,172.9,169.867,3.033,5.9
+773,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,51.1%,171.767,173.9,2.133,8.4
+797,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.4%,172.167,174.0,1.833,9.8
+808,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.7%,173.8,174.567,0.767,23.5
+827,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.1%,175.9,176.7,0.8,22.5
+832,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.9%,177.3,178.2,0.9,20.0
+831,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.5%,177.667,178.333,0.667,27.0
+867,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,64.0%,182.733,184.133,1.4,12.9
+881,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.9%,184.967,185.4,0.433,41.5
+897,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.1%,190.433,191.333,0.9,20.0
+903,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,80.7%,193.5,192.233,1.267,14.2
+957,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.7%,204.833,205.4,0.567,31.8
+981,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,54.9%,209.133,207.633,1.5,12.0
+1002,Bus,5,Bus,normal,81.7%,208.567,209.767,1.2,15.0
+1019,Bus,5,Bus,opposite,91.5%,218.0,217.1,0.9,20.0
+1021,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.6%,218.533,217.1,1.433,12.6
+1041,Bus,5,Bus,opposite,92.0%,224.167,223.233,0.933,19.3
+1048,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.2%,225.467,224.3,1.167,15.4
+1058,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,58.7%,225.567,227.033,1.467,12.3
+1052,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,83.8%,225.633,227.0,1.367,13.2
+1059,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.9%,226.467,227.5,1.033,17.4
+1074,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,91.2%,229.7,228.5,1.2,15.0
+1101,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,82.3%,233.433,234.767,1.333,13.5
+1137,Car / Sedan,2,Sedan / jeep / station wagon,normal,51.0%,235.967,236.767,0.8,22.5
+1141,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.0%,236.9,237.8,0.9,20.0
+1157,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.5%,248.367,247.233,1.133,15.9
+1209,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.6%,251.4,252.9,1.5,12.0
+1217,Car / Sedan,2,Sedan / jeep / station wagon,normal,41.5%,251.833,252.667,0.833,21.6
+1242,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.3%,255.1,255.8,0.7,25.7
+1270,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.2%,258.0,259.1,1.1,16.4
+1284,Car / Sedan,2,Sedan / jeep / station wagon,normal,36.8%,260.4,261.367,0.967,18.6
+1292,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.4%,263.133,264.033,0.9,20.0
+1295,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,66.8%,264.7,268.9,4.2,4.3
+1296,Car / Sedan,2,Sedan / jeep / station wagon,normal,52.7%,266.333,267.067,0.733,24.5
+1303,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.7%,266.833,267.733,0.9,20.0
+1315,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.4%,268.9,269.933,1.033,17.4
+1318,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.0%,269.633,270.933,1.3,13.8
+1319,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.5%,271.867,270.633,1.233,14.6
+1335,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,82.5%,273.3,272.267,1.033,17.4
+1377,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.8%,279.0,280.0,1.0,18.0
+1381,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.4%,281.3,282.033,0.733,24.5
+1384,Car / Sedan,2,Sedan / jeep / station wagon,normal,85.8%,281.9,283.8,1.9,9.5
+1408,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.2%,285.3,286.033,0.733,24.5
+1424,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.6%,289.5,290.333,0.833,21.6
+1427,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.6%,292.2,293.667,1.467,12.3
+1434,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.6%,292.2,293.067,0.867,20.8
+1435,Car / Sedan,2,Sedan / jeep / station wagon,normal,85.3%,293.267,294.1,0.833,21.6
+1441,Car / Sedan,2,Sedan / jeep / station wagon,opposite,86.6%,294.833,294.067,0.767,23.5
+1446,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.4%,296.1,296.9,0.8,22.5
+1452,Car / Sedan,2,Sedan / jeep / station wagon,normal,39.2%,299.933,300.7,0.767,23.5
+1465,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.1%,304.867,305.667,0.8,22.5
+1469,Car / Sedan,2,Sedan / jeep / station wagon,normal,39.1%,306.9,307.667,0.767,23.5
+1480,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.6%,309.967,310.8,0.833,21.6
+1470,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.5%,310.733,312.867,2.133,8.4
+1490,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,75.6%,311.833,313.0,1.167,15.4
+1495,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.1%,313.267,314.5,1.233,14.6
+1499,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.9%,314.267,315.067,0.8,22.5
+1515,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.5%,318.933,319.867,0.933,19.3
+1520,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.0%,320.333,321.5,1.167,15.4
+1521,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.0%,321.567,320.667,0.9,20.0
+1526,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.8%,321.433,322.4,0.967,18.6
+1519,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.3%,322.067,323.567,1.5,12.0
+1531,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.7%,323.133,322.1,1.033,17.4
+1537,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.3%,323.467,324.933,1.467,12.3
+1558,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,89.0%,325.8,326.7,0.9,20.0
+1577,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.9%,325.8,326.867,1.067,16.9
+1586,Car / Sedan,2,Sedan / jeep / station wagon,normal,30.5%,326.733,327.733,1.0,18.0
+1594,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.7%,329.067,327.7,1.367,13.2
+1596,Car / Sedan,2,Sedan / jeep / station wagon,normal,57.0%,328.233,329.233,1.0,18.0
+1598,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.3%,328.667,329.6,0.933,19.3
+1606,Car / Sedan,2,Sedan / jeep / station wagon,normal,40.0%,332.2,333.067,0.867,20.8
+1608,Bus,5,Bus,opposite,92.5%,334.5,333.467,1.033,17.4
+1614,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.1%,334.933,335.867,0.933,19.3
+1618,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.7%,335.333,336.467,1.133,15.9
+1620,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.7%,336.6,337.467,0.867,20.8
+1622,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.2%,337.067,338.067,1.0,18.0
+1623,Bus,5,Bus,normal,54.8%,337.733,338.633,0.9,20.0
+1640,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,63.1%,341.4,343.2,1.8,10.0
+1663,Car / Sedan,2,Sedan / jeep / station wagon,opposite,54.6%,341.933,342.867,0.933,19.3
+1657,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,83.6%,343.9,342.7,1.2,15.0
+1666,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,88.5%,346.333,344.633,1.7,10.6
+1684,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.2%,348.667,347.733,0.933,19.3
+1689,Car / Sedan,2,Sedan / jeep / station wagon,normal,33.5%,349.733,350.633,0.9,20.0
+1686,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.5%,351.267,350.133,1.133,15.9
+1691,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.0%,351.667,350.767,0.9,20.0
+1703,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.2%,353.833,354.867,1.033,17.4
+1705,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.9%,356.4,355.267,1.133,15.9
+1708,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.8%,355.633,356.467,0.833,21.6
+1714,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.6%,356.233,357.1,0.867,20.8
+1713,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.4%,357.967,356.933,1.033,17.4
+1719,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.2%,357.2,358.067,0.867,20.8
+1739,Car / Sedan,2,Sedan / jeep / station wagon,opposite,57.8%,370.2,369.033,1.167,15.4
+1751,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.4%,372.2,372.933,0.733,24.5
+1767,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.7%,377.433,376.667,0.767,23.5
+1774,Car / Sedan,2,Sedan / jeep / station wagon,normal,51.3%,379.567,380.4,0.833,21.6
+1776,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.0%,381.6,382.467,0.867,20.8
+1777,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.7%,382.267,382.967,0.7,25.7
+1784,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.2%,384.467,385.633,1.167,15.4
+1785,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.1%,387.433,386.233,1.2,15.0
+1796,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.0%,393.8,392.333,1.467,12.3
+1800,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.0%,395.467,396.267,0.8,22.5
+1802,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.3%,397.7,398.6,0.9,20.0
+1804,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.2%,398.9,398.133,0.767,23.5
+1809,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.5%,401.333,402.133,0.8,22.5
+1805,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,87.9%,403.067,404.6,1.533,11.7
+1816,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.2%,403.8,404.7,0.9,20.0
+1814,Bus,5,Bus,opposite,92.5%,406.167,404.9,1.267,14.2
+1819,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.7%,405.0,405.867,0.867,20.8
+1826,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.6%,406.067,407.0,0.933,19.3
+1829,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,83.2%,406.9,408.3,1.4,12.9
+1847,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.0%,407.267,408.2,0.933,19.3
+1845,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,66.3%,407.467,409.467,2.0,9.0
+1853,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.7%,408.667,407.867,0.8,22.5
+1860,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,35.5%,408.4,409.5,1.1,16.4
+1873,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,71.0%,409.8,411.0,1.2,15.0
+1885,Public Transportation (Angkot),3,Medium passenger vehicle,normal,49.4%,413.467,414.467,1.0,18.0
+1907,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.6%,416.0,417.033,1.033,17.4
+1899,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.9%,417.4,416.4,1.0,18.0
+1908,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.8%,416.5,417.467,0.967,18.6
+1909,Car / Sedan,2,Sedan / jeep / station wagon,normal,29.3%,417.9,418.867,0.967,18.6
+1911,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.8%,418.4,419.5,1.1,16.4
+1914,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.2%,421.9,420.167,1.733,10.4
+1921,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.5%,420.333,421.367,1.033,17.4
+1918,Bus,5,Bus,opposite,92.7%,421.6,420.667,0.933,19.3
+1936,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.1%,421.5,422.4,0.9,20.0
+1939,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.6%,422.233,423.233,1.0,18.0
+1953,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,90.2%,426.467,425.067,1.4,12.9
+1960,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.0%,426.1,428.467,2.367,7.6
+1979,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.1%,428.667,429.667,1.0,18.0
+1988,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,50.8%,429.867,431.5,1.633,11.0
+2000,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.1%,431.867,433.1,1.233,14.6
+2011,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.7%,438.233,438.9,0.667,27.0
+2009,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.8%,439.867,438.4,1.467,12.3
+2014,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.4%,441.367,440.4,0.967,18.6
+2015,Car / Sedan,2,Sedan / jeep / station wagon,opposite,75.8%,442.167,441.333,0.833,21.6
+2021,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,77.7%,444.933,443.667,1.267,14.2
+2024,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.2%,443.9,444.833,0.933,19.3
+2023,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.0%,446.433,447.567,1.133,15.9
+2032,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.6%,449.333,448.467,0.867,20.8
+2037,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,70.3%,454.367,456.633,2.267,7.9
+2052,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.8%,455.733,456.7,0.967,18.6
+2054,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,78.8%,457.1,456.033,1.067,16.9
+2061,Bus,5,Bus,opposite,92.0%,460.4,459.233,1.167,15.4
+2070,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.7%,462.6,463.467,0.867,20.8
+2078,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.3%,465.133,464.2,0.933,19.3
+2080,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,77.4%,465.167,466.167,1.0,18.0
+2091,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.1%,466.533,467.4,0.867,20.8
+2092,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.4%,466.8,467.6,0.8,22.5
+2102,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.6%,468.7,469.5,0.8,22.5
+2098,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,89.4%,470.133,469.1,1.033,17.4
+2112,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,34.3%,473.4,474.333,0.933,19.3
+2129,Car / Sedan,2,Sedan / jeep / station wagon,opposite,85.5%,481.133,480.033,1.1,16.4
+2136,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.8%,481.4,482.1,0.7,25.7
+2132,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.6%,482.933,481.767,1.167,15.4
+2137,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.3%,483.4,482.6,0.8,22.5
+2143,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,83.9%,483.167,484.267,1.1,16.4
+2147,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,69.0%,484.767,483.767,1.0,18.0
+2148,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,78.6%,484.2,485.133,0.933,19.3
+2146,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,57.5%,485.6,484.567,1.033,17.4
+2169,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.8%,487.533,488.333,0.8,22.5
+2180,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,88.8%,493.733,493.133,0.6,30.0
+2197,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.6%,497.433,498.133,0.7,25.7
+2195,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,91.9%,499.2,497.5,1.7,10.6
+2198,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,78.4%,500.133,498.733,1.4,12.9
+2211,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.3%,502.633,501.167,1.467,12.3
+2227,Bus,5,Bus,opposite,91.8%,503.2,502.2,1.0,18.0
+2231,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.1%,504.567,503.333,1.233,14.6
+2230,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.5%,505.4,503.933,1.467,12.3
+2253,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.7%,510.267,510.867,0.6,30.0
+2256,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.3%,511.3,510.467,0.833,21.6
+2255,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,62.9%,510.6,511.4,0.8,22.5
+2290,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.0%,519.067,520.1,1.033,17.4
+2293,Public Transportation (Angkot),3,Medium passenger vehicle,normal,77.5%,520.267,521.233,0.967,18.6
+2292,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.6%,522.867,521.233,1.633,11.0
+2308,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,86.7%,523.4,525.0,1.6,11.2
+2312,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,67.5%,523.4,524.367,0.967,18.6
+2321,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.9%,526.533,527.267,0.733,24.5
+2334,Car / Sedan,2,Sedan / jeep / station wagon,normal,55.8%,529.733,530.667,0.933,19.3
+2333,Bus,5,Bus,normal,85.6%,530.033,530.833,0.8,22.5
+2340,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.8%,534.033,533.2,0.833,21.6
+2342,Car / Sedan,2,Sedan / jeep / station wagon,normal,40.6%,534.8,536.867,2.067,8.7
+2353,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.2%,539.933,541.967,2.033,8.9
+2360,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.2%,541.933,543.867,1.933,9.3
+2400,Car / Sedan,2,Sedan / jeep / station wagon,normal,34.7%,545.7,546.367,0.667,27.0
+2407,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,88.5%,547.6,546.867,0.733,24.5
+2411,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.0%,548.833,547.333,1.5,12.0
+2433,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.7%,553.5,554.667,1.167,15.4
+2434,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,79.5%,557.1,555.867,1.233,14.6
+2438,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,87.8%,557.8,556.667,1.133,15.9
+2463,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,58.6%,567.167,568.633,1.467,12.3
+2510,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,91.4%,601.167,598.7,2.467,7.3
+2516,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,44.4%,605.8,603.867,1.933,9.3
+2527,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.3%,605.233,604.2,1.033,17.4
+2532,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,56.9%,607.4,608.967,1.567,11.5
+2533,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.2%,607.4,608.033,0.633,28.4
+2540,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,77.5%,609.167,610.7,1.533,11.7
+2535,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.1%,609.233,610.0,0.767,23.5
+2541,Bus,5,Bus,opposite,89.7%,612.133,611.067,1.067,16.9
+2560,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,76.8%,612.033,613.667,1.633,11.0
+2590,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,89.6%,617.533,616.467,1.067,16.9
+2595,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.9%,619.533,620.2,0.667,27.0
+2593,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.8%,621.233,620.133,1.1,16.4
+2618,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,85.1%,628.133,627.5,0.633,28.4
+2631,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.8%,628.733,627.8,0.933,19.3
+2638,Bus,5,Bus,opposite,92.0%,632.567,631.567,1.0,18.0
+2653,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,66.3%,639.767,640.7,0.933,19.3
+2662,Car / Sedan,2,Sedan / jeep / station wagon,normal,30.5%,641.033,642.167,1.133,15.9
+2661,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,70.8%,643.333,642.267,1.067,16.9
+2718,Car / Sedan,2,Sedan / jeep / station wagon,normal,41.5%,651.167,651.9,0.733,24.5
+2728,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.1%,655.6,656.433,0.833,21.6
+2732,Car / Sedan,2,Sedan / jeep / station wagon,normal,42.8%,656.033,656.767,0.733,24.5
+2736,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,81.4%,660.5,659.633,0.867,20.8
+2741,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,75.8%,663.333,661.767,1.567,11.5
+2757,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.8%,664.1,662.5,1.6,11.2
+2763,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,90.5%,665.433,663.833,1.6,11.2
+2767,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.5%,668.267,666.333,1.933,9.3
+2779,Car / Sedan,2,Sedan / jeep / station wagon,opposite,83.9%,668.567,667.633,0.933,19.3
+2782,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.5%,667.767,668.7,0.933,19.3
+2803,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,63.2%,672.1,673.1,1.0,18.0
+2801,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,86.9%,674.733,673.167,1.567,11.5
+2843,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,56.8%,682.433,684.4,1.967,9.2
+2882,Car / Sedan,2,Sedan / jeep / station wagon,opposite,75.1%,689.6,689.033,0.567,31.8
+2889,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.9%,695.1,693.7,1.4,12.9
+2896,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,54.1%,697.633,698.733,1.1,16.4
+2902,Public Transportation (Angkot),3,Medium passenger vehicle,normal,60.5%,698.333,699.1,0.767,23.5
+2931,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.4%,704.8,705.333,0.533,33.8
+2957,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,77.1%,708.667,709.7,1.033,17.4
+2976,Car / Sedan,2,Sedan / jeep / station wagon,normal,55.1%,710.0,710.9,0.9,20.0
+2982,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.6%,711.667,712.1,0.433,41.5
+3071,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.9%,743.133,742.067,1.067,16.9
+3088,Bus,5,Bus,normal,28.4%,743.733,744.733,1.0,18.0
+3122,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.2%,754.867,755.933,1.067,16.9
+3127,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.1%,756.967,756.1,0.867,20.8
+3119,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,78.4%,758.6,760.967,2.367,7.6
+3159,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,53.4%,762.133,763.167,1.033,17.4
+3151,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,92.3%,764.2,762.533,1.667,10.8
+3163,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.0%,762.7,763.4,0.7,25.7
+3164,Car / Sedan,2,Sedan / jeep / station wagon,normal,43.0%,763.4,765.6,2.2,8.2
+3176,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.5%,765.567,764.533,1.033,17.4
+3186,Car / Sedan,2,Sedan / jeep / station wagon,opposite,76.2%,766.767,765.567,1.2,15.0
+3191,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.8%,766.167,767.267,1.1,16.4
+3184,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,82.8%,766.567,767.933,1.367,13.2
+3190,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.7%,768.167,766.9,1.267,14.2
+3213,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.1%,768.5,769.333,0.833,21.6
+3227,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,58.6%,773.4,775.1,1.7,10.6
+3236,Car / Sedan,2,Sedan / jeep / station wagon,normal,86.7%,774.033,774.833,0.8,22.5
+3241,Bus,5,Bus,normal,42.9%,774.533,775.4,0.867,20.8
+3270,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.7%,779.8,780.167,0.367,49.1
+3286,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.4%,788.433,787.733,0.7,25.7
+3313,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.4%,792.933,793.6,0.667,27.0
+3325,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.8%,802.033,801.233,0.8,22.5
+3327,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,71.8%,801.5,802.5,1.0,18.0
+3333,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.3%,803.633,804.367,0.733,24.5
+3336,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.1%,804.767,805.533,0.767,23.5
+3337,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.0%,805.9,806.6,0.7,25.7
+3338,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.8%,806.433,807.233,0.8,22.5
+3350,Car / Sedan,2,Sedan / jeep / station wagon,normal,40.8%,808.867,809.6,0.733,24.5
+3354,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,91.1%,812.4,811.133,1.267,14.2
+3357,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.5%,811.633,812.467,0.833,21.6
+3363,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.5%,812.667,813.333,0.667,27.0
+3369,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.0%,813.167,813.667,0.5,36.0
+3401,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,41.6%,819.167,820.367,1.2,15.0
+3429,Car / Sedan,2,Sedan / jeep / station wagon,normal,46.0%,820.267,821.167,0.9,20.0
+3434,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,87.7%,820.4,821.733,1.333,13.5
+3441,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.4%,820.767,821.833,1.067,16.9
+3457,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.8%,822.767,823.567,0.8,22.5
+3466,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.4%,823.733,824.8,1.067,16.9
+3462,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.2%,825.6,823.733,1.867,9.6
+3470,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.2%,823.933,824.733,0.8,22.5
+3469,Car / Sedan,2,Sedan / jeep / station wagon,normal,36.7%,824.167,825.067,0.9,20.0
+3475,Car / Sedan,2,Sedan / jeep / station wagon,normal,37.7%,825.8,826.367,0.567,31.8
+3474,Car / Sedan,2,Sedan / jeep / station wagon,opposite,92.4%,827.8,826.667,1.133,15.9
+3481,Car / Sedan,2,Sedan / jeep / station wagon,normal,42.9%,827.833,828.667,0.833,21.6
+3492,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.4%,834.967,836.133,1.167,15.4
+3500,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.5%,836.233,836.967,0.733,24.5
+3517,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.8%,841.7,840.8,0.9,20.0
+3520,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.2%,842.567,843.533,0.967,18.6
+3523,Car / Sedan,2,Sedan / jeep / station wagon,normal,55.7%,844.733,845.633,0.9,20.0
+3525,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.4%,845.533,846.667,1.133,15.9
+3530,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,29.2%,847.367,848.2,0.833,21.6
+3533,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.9%,850.233,849.4,0.833,21.6
+3562,Car / Sedan,2,Sedan / jeep / station wagon,normal,57.1%,856.033,856.733,0.7,25.7
+3553,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.2%,856.433,858.233,1.8,10.0
+3568,Car / Sedan,2,Sedan / jeep / station wagon,normal,42.4%,857.333,858.067,0.733,24.5
+3584,Bus,5,Bus,opposite,91.4%,861.967,861.167,0.8,22.5
+3592,Bus,5,Bus,opposite,92.9%,863.733,862.733,1.0,18.0
+3596,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,37.2%,863.167,863.933,0.767,23.5
+3600,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.1%,865.667,864.533,1.133,15.9
+3606,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,79.6%,865.733,866.5,0.767,23.5
+3610,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.7%,867.5,866.567,0.933,19.3
+3615,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,86.0%,871.433,870.233,1.2,15.0
+3642,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,87.4%,875.933,874.733,1.2,15.0
+3649,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.2%,876.367,875.567,0.8,22.5
+3652,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,74.7%,876.767,877.533,0.767,23.5
+3667,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.4%,877.533,878.233,0.7,25.7
+3676,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.6%,880.733,881.5,0.767,23.5
+3711,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,83.7%,888.867,890.8,1.933,9.3
+3729,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,56.2%,894.167,893.133,1.033,17.4
+3779,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,92.0%,912.433,911.033,1.4,12.9
+3788,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.6%,913.033,912.133,0.9,20.0
+3826,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.8%,926.0,924.767,1.233,14.6
+3832,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.9%,926.067,925.133,0.933,19.3
+3874,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.6%,953.333,952.0,1.333,13.5
+3876,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.8%,956.333,955.267,1.067,16.9
+3887,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.0%,956.167,956.867,0.7,25.7
+3911,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,42.2%,961.6,962.533,0.933,19.3
+3916,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,87.0%,963.1,964.633,1.533,11.7
+3913,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.8%,964.967,963.633,1.333,13.5
+3930,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.1%,965.367,964.167,1.2,15.0
+3966,Car / Sedan,2,Sedan / jeep / station wagon,normal,40.5%,972.767,973.7,0.933,19.3
+3995,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.5%,982.533,981.467,1.067,16.9
+3998,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.2%,982.733,983.667,0.933,19.3
+4001,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.4%,983.967,984.4,0.433,41.5
+4004,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.1%,986.0,986.733,0.733,24.5
+4005,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.2%,986.7,987.367,0.667,27.0
+4023,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.2%,1002.667,1001.2,1.467,12.3
+4026,Bus,5,Bus,normal,79.7%,1001.233,1002.367,1.133,15.9
+4042,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.3%,1007.933,1008.6,0.667,27.0
+4050,Car / Sedan,2,Sedan / jeep / station wagon,normal,40.1%,1013.3,1015.433,2.133,8.4
+4056,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,77.3%,1016.0,1017.5,1.5,12.0
+4065,Car / Sedan,2,Sedan / jeep / station wagon,normal,52.8%,1018.333,1019.3,0.967,18.6
+4103,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,81.3%,1026.2,1027.433,1.233,14.6
+4137,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.5%,1030.7,1031.667,0.967,18.6
+4144,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.8%,1035.067,1034.333,0.733,24.5
+4147,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.2%,1035.067,1035.833,0.767,23.5
+4161,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,78.1%,1036.867,1038.667,1.8,10.0
+4181,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.0%,1038.0,1037.333,0.667,27.0
+4183,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.3%,1037.767,1038.533,0.767,23.5
+4189,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.8%,1039.3,1040.5,1.2,15.0
+4234,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.4%,1043.5,1046.4,2.9,6.2
+4257,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.6%,1049.033,1049.733,0.7,25.7
+4274,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,86.2%,1058.7,1057.533,1.167,15.4
+4280,Bus,5,Bus,normal,31.5%,1060.2,1061.133,0.933,19.3
+4310,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,63.9%,1068.733,1069.5,0.767,23.5
+4322,Car / Sedan,2,Sedan / jeep / station wagon,normal,38.8%,1074.367,1075.033,0.667,27.0
+4327,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.1%,1077.833,1078.333,0.5,36.0
+4325,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.1%,1078.533,1077.9,0.633,28.4
+4328,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.7%,1079.833,1078.633,1.2,15.0
+4329,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,83.4%,1080.333,1081.433,1.1,16.4
+4335,Car / Sedan,2,Sedan / jeep / station wagon,normal,45.8%,1082.133,1082.9,0.767,23.5
+4334,Bus,5,Bus,opposite,92.7%,1083.7,1082.867,0.833,21.6
+4341,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,53.2%,1087.5,1088.467,0.967,18.6
+4346,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,78.6%,1092.267,1090.8,1.467,12.3
+4355,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,81.7%,1093.8,1095.467,1.667,10.8
+4364,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.0%,1097.833,1096.9,0.933,19.3
+4368,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.8%,1097.567,1098.067,0.5,36.0
+4370,Car / Sedan,2,Sedan / jeep / station wagon,normal,36.7%,1098.333,1099.1,0.767,23.5
+4372,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,82.2%,1101.533,1100.333,1.2,15.0
+4375,Car / Sedan,2,Sedan / jeep / station wagon,normal,38.7%,1103.733,1104.533,0.8,22.5
+4381,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,62.2%,1106.667,1108.2,1.533,11.7
+4383,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,89.8%,1109.367,1108.0,1.367,13.2
+4397,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,89.8%,1114.333,1112.733,1.6,11.3
+4425,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.1%,1114.633,1115.367,0.733,24.5
+4448,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.1%,1120.667,1121.567,0.9,20.0
+4443,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,63.3%,1122.1,1120.867,1.233,14.6
+4452,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,51.0%,1124.233,1122.733,1.5,12.0
+4498,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.2%,1135.267,1136.1,0.833,21.6
+4525,Car / Sedan,2,Sedan / jeep / station wagon,normal,41.2%,1139.967,1141.067,1.1,16.4
+4530,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,81.5%,1142.267,1143.5,1.233,14.6
+4546,Car / Sedan,2,Sedan / jeep / station wagon,normal,55.1%,1147.033,1148.133,1.1,16.4
+4547,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.5%,1148.333,1149.167,0.833,21.6
+4556,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.5%,1150.6,1151.533,0.933,19.3
+4559,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,80.0%,1151.567,1153.467,1.9,9.5
+4575,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,65.0%,1154.2,1155.9,1.7,10.6
+4594,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.7%,1156.133,1157.1,0.967,18.6
+4598,Car / Sedan,2,Sedan / jeep / station wagon,normal,40.3%,1157.667,1158.3,0.633,28.4
+4677,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,87.3%,1174.967,1176.267,1.3,13.8
+4679,Car / Sedan,2,Sedan / jeep / station wagon,normal,46.7%,1176.133,1177.033,0.9,20.0
+4702,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.4%,1180.933,1179.833,1.1,16.4
+4699,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,54.0%,1180.033,1182.133,2.1,8.6
+4704,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.8%,1182.1,1180.767,1.333,13.5
+4722,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.3%,1182.4,1183.4,1.0,18.0
+4747,Bus,5,Bus,opposite,92.6%,1186.833,1186.033,0.8,22.5
+4760,Car / Sedan,2,Sedan / jeep / station wagon,normal,39.6%,1188.7,1189.5,0.8,22.5
+4773,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,55.3%,1196.267,1197.167,0.9,20.0
+4774,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.9%,1196.467,1197.067,0.6,30.0
+4775,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.1%,1197.033,1198.0,0.967,18.6
+4777,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,74.8%,1198.833,1201.1,2.267,7.9
+4796,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.5%,1200.533,1201.167,0.633,28.4
+4802,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.7%,1200.867,1201.6,0.733,24.5
+4806,Car / Sedan,2,Sedan / jeep / station wagon,opposite,85.9%,1202.1,1201.167,0.933,19.3
+4792,Car / Sedan,2,Sedan / jeep / station wagon,normal,50.8%,1201.267,1202.1,0.833,21.6
+4807,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,69.5%,1203.133,1205.733,2.6,6.9
+4839,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.2%,1208.167,1207.0,1.167,15.4
+4835,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,77.5%,1207.067,1209.333,2.267,7.9
+4841,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.1%,1210.5,1209.467,1.033,17.4
+4840,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,84.7%,1209.6,1212.067,2.467,7.3
+4845,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,54.2%,1212.367,1214.8,2.433,7.4
+4871,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.9%,1213.5,1214.767,1.267,14.2
+4872,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.1%,1213.5,1214.067,0.567,31.8
+4895,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,87.9%,1221.2,1219.733,1.467,12.3
+4901,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,83.4%,1223.567,1221.8,1.767,10.2
+4928,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.2%,1222.867,1223.667,0.8,22.5
+4953,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.2%,1227.0,1228.1,1.1,16.4
+4954,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,68.3%,1227.0,1228.367,1.367,13.2
+4951,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.0%,1229.533,1228.033,1.5,12.0
+4985,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.8%,1231.467,1232.2,0.733,24.5
+5004,Car / Sedan,2,Sedan / jeep / station wagon,normal,49.4%,1235.533,1236.633,1.1,16.4
+5006,Car / Sedan,2,Sedan / jeep / station wagon,normal,34.7%,1236.933,1237.933,1.0,18.0
+5012,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,58.1%,1239.333,1240.8,1.467,12.3
+5041,Car / Sedan,2,Sedan / jeep / station wagon,normal,51.0%,1240.433,1241.567,1.133,15.9
+5056,Bus,5,Bus,opposite,90.5%,1243.7,1242.8,0.9,20.0
+5093,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.0%,1245.833,1246.667,0.833,21.6
+5082,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.0%,1246.633,1245.867,0.767,23.5
+5095,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.1%,1246.433,1247.3,0.867,20.8
+5096,Car / Sedan,2,Sedan / jeep / station wagon,normal,47.6%,1247.2,1249.667,2.467,7.3
+5085,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,60.1%,1248.4,1250.4,2.0,9.0
+5106,Car / Sedan,2,Sedan / jeep / station wagon,opposite,92.0%,1249.9,1248.833,1.067,16.9
+5114,Car / Sedan,2,Sedan / jeep / station wagon,normal,46.8%,1249.367,1250.3,0.933,19.3
+5122,Car / Sedan,2,Sedan / jeep / station wagon,normal,57.9%,1250.733,1252.1,1.367,13.2
+5155,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,87.8%,1254.367,1255.567,1.2,15.0
+5176,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,74.9%,1264.167,1265.7,1.533,11.7
+5181,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,41.0%,1265.8,1267.7,1.9,9.5
+5206,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.7%,1269.367,1268.733,0.633,28.4
+5208,Car / Sedan,2,Sedan / jeep / station wagon,normal,57.6%,1268.767,1269.4,0.633,28.4
+5220,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.7%,1275.233,1274.4,0.833,21.6
+5223,Car / Sedan,2,Sedan / jeep / station wagon,normal,29.5%,1275.733,1276.367,0.633,28.4
+5225,Public Transportation (Angkot),3,Medium passenger vehicle,normal,62.5%,1277.133,1277.867,0.733,24.5
+5231,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.8%,1278.2,1279.167,0.967,18.6
+5256,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,67.1%,1286.1,1287.267,1.167,15.4
+5272,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.6%,1289.767,1290.5,0.733,24.5
+5275,Car / Sedan,2,Sedan / jeep / station wagon,normal,46.9%,1291.333,1292.267,0.933,19.3
+5279,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.9%,1292.133,1293.433,1.3,13.8
+5295,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,80.9%,1297.567,1295.333,2.233,8.1
+5303,Car / Sedan,2,Sedan / jeep / station wagon,normal,86.8%,1298.567,1299.333,0.767,23.5
+5330,Car / Sedan,2,Sedan / jeep / station wagon,opposite,86.3%,1307.5,1306.1,1.4,12.9
+5324,Bus,5,Bus,opposite,92.6%,1309.3,1307.7,1.6,11.3
+5348,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,83.8%,1310.467,1312.333,1.867,9.6
+5350,Car / Sedan,2,Sedan / jeep / station wagon,normal,57.9%,1310.8,1311.533,0.733,24.5
+5352,Bus,5,Bus,normal,56.3%,1312.6,1313.167,0.567,31.8
+5362,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.5%,1314.667,1316.667,2.0,9.0
+5368,Bus,5,Bus,opposite,93.0%,1317.067,1316.067,1.0,18.0
+5381,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,67.6%,1317.133,1317.8,0.667,27.0
+5376,Bus,5,Bus,opposite,92.5%,1318.767,1317.5,1.267,14.2
+5398,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,66.6%,1323.4,1322.3,1.1,16.4
+5406,Bus,5,Bus,opposite,92.0%,1326.067,1325.233,0.833,21.6
+5407,Bus,5,Bus,opposite,87.6%,1326.433,1325.567,0.867,20.8
+5412,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.0%,1326.833,1326.067,0.767,23.5
+5430,Bus,5,Bus,opposite,92.2%,1332.933,1332.133,0.8,22.5
+5443,Car / Sedan,2,Sedan / jeep / station wagon,normal,33.5%,1338.933,1339.867,0.933,19.3
+5456,Public Transportation (Angkot),3,Medium passenger vehicle,normal,81.1%,1345.267,1346.067,0.8,22.5
+5461,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.2%,1347.133,1348.0,0.867,20.8
+5462,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.5%,1348.267,1349.2,0.933,19.3
+5463,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,72.1%,1349.133,1350.133,1.0,18.0
+5476,Car / Sedan,2,Sedan / jeep / station wagon,normal,42.4%,1353.067,1353.933,0.867,20.8
+5482,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,88.3%,1362.5,1361.567,0.933,19.3
+5485,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.8%,1363.233,1362.133,1.1,16.4
+5501,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,84.0%,1365.467,1364.3,1.167,15.4
+5506,Bus,5,Bus,normal,71.2%,1365.267,1366.333,1.067,16.9
+5505,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.6%,1366.567,1365.433,1.133,15.9
+5511,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.4%,1367.7,1366.567,1.133,15.9
+5514,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.6%,1367.867,1366.967,0.9,20.0
+5515,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,67.4%,1367.867,1369.567,1.7,10.6
+5526,Bus,5,Bus,opposite,92.6%,1372.333,1371.233,1.1,16.4
+5529,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.7%,1372.2,1371.233,0.967,18.6
+5535,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,80.2%,1372.3,1373.8,1.5,12.0
+5547,Bus,5,Bus,normal,74.2%,1374.067,1375.2,1.133,15.9
+5575,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,67.2%,1376.367,1377.667,1.3,13.8
+5583,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,57.0%,1379.967,1380.8,0.833,21.6
+5586,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,89.1%,1382.033,1381.0,1.033,17.4
+5593,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.2%,1382.1,1383.033,0.933,19.3
+5600,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.5%,1386.667,1385.7,0.967,18.6
+5601,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.8%,1388.067,1387.067,1.0,18.0
+5608,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.3%,1389.4,1388.333,1.067,16.9
+5626,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.6%,1394.167,1392.833,1.333,13.5
+5627,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.7%,1393.2,1394.067,0.867,20.8
+5635,Car / Sedan,2,Sedan / jeep / station wagon,normal,51.1%,1395.233,1396.033,0.8,22.5
+5632,Bus,5,Bus,opposite,91.9%,1397.033,1395.967,1.067,16.9
+5629,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,84.6%,1396.0,1397.567,1.567,11.5
+5638,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.4%,1396.033,1397.033,1.0,18.0
+5639,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.6%,1396.433,1397.067,0.633,28.4
+5648,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.8%,1397.2,1398.067,0.867,20.8
+5655,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.6%,1400.4,1399.367,1.033,17.4
+5661,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.6%,1401.233,1400.633,0.6,30.0
+5663,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,71.7%,1400.733,1402.033,1.3,13.8
+5666,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.7%,1402.033,1402.633,0.6,30.0
+5673,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,76.9%,1406.967,1405.633,1.333,13.5
+5678,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.4%,1406.7,1405.933,0.767,23.5
+5687,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.8%,1410.933,1409.233,1.7,10.6
+5688,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.9%,1410.167,1409.433,0.733,24.5
+5700,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.8%,1411.633,1412.667,1.033,17.4
+5705,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,79.2%,1416.733,1415.533,1.2,15.0
+5707,Car / Sedan,2,Sedan / jeep / station wagon,normal,39.4%,1417.867,1418.667,0.8,22.5
+5708,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.2%,1419.367,1418.4,0.967,18.6
+5711,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,32.7%,1420.867,1421.767,0.9,20.0
+5713,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.0%,1421.567,1422.4,0.833,21.6
+5717,Car / Sedan,2,Sedan / jeep / station wagon,normal,50.0%,1422.433,1423.2,0.767,23.5
+5731,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.6%,1425.467,1426.333,0.867,20.8
+5729,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,81.6%,1426.067,1427.267,1.2,15.0
+5725,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.6%,1426.8,1428.3,1.5,12.0
+5750,Car / Sedan,2,Sedan / jeep / station wagon,opposite,84.0%,1429.967,1429.233,0.733,24.5
+5759,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,70.1%,1432.4,1431.033,1.367,13.2
+5768,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,63.9%,1433.633,1432.567,1.067,16.9
+5778,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.9%,1435.467,1434.6,0.867,20.8
+5782,Car / Sedan,2,Sedan / jeep / station wagon,opposite,73.9%,1439.167,1438.0,1.167,15.4
+5788,Car / Sedan,2,Sedan / jeep / station wagon,normal,33.8%,1439.1,1440.067,0.967,18.6
+5791,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.4%,1440.033,1439.133,0.9,20.0
+5799,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,86.7%,1441.833,1440.8,1.033,17.4
+5811,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.5%,1445.167,1445.867,0.7,25.7
+5812,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.4%,1445.733,1446.467,0.733,24.5
+5805,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.6%,1446.933,1445.733,1.2,15.0
+5816,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.1%,1447.9,1446.667,1.233,14.6
+5817,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.1%,1448.533,1447.333,1.2,15.0
+5827,Bus,5,Bus,opposite,91.7%,1451.967,1450.967,1.0,18.0
+5840,Car / Sedan,2,Sedan / jeep / station wagon,normal,42.0%,1451.267,1452.033,0.767,23.5
+5842,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.8%,1452.833,1451.967,0.867,20.8
+5853,Bus,5,Bus,opposite,91.8%,1454.533,1453.567,0.967,18.6
+5861,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.3%,1457.433,1458.567,1.133,15.9
+5864,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.8%,1458.133,1458.867,0.733,24.5
+5874,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.3%,1461.733,1462.733,1.0,18.0
+5880,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,37.2%,1469.333,1470.5,1.167,15.4
+5883,Public Transportation (Angkot),3,Medium passenger vehicle,normal,33.9%,1470.233,1471.333,1.1,16.4
+5893,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.3%,1474.7,1473.933,0.767,23.5
+5896,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.5%,1477.0,1475.967,1.033,17.4
+5898,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.8%,1476.6,1477.333,0.733,24.5
+5900,Public Transportation (Angkot),3,Medium passenger vehicle,normal,77.0%,1477.833,1478.867,1.033,17.4
+5904,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,88.0%,1480.433,1479.333,1.1,16.4
+5909,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.9%,1481.033,1481.933,0.9,20.0
+5918,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.0%,1484.3,1485.3,1.0,18.0
+5919,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,28.4%,1484.833,1486.4,1.567,11.5
+5933,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,77.8%,1488.733,1487.767,0.967,18.6
+5938,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,90.1%,1490.1,1491.633,1.533,11.7
+5947,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,65.7%,1492.1,1494.533,2.433,7.4
+5955,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.0%,1493.133,1494.1,0.967,18.6
+5953,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.1%,1494.233,1493.2,1.033,17.4
+5957,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,75.3%,1495.1,1494.167,0.933,19.3
+5989,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,78.9%,1501.5,1502.567,1.067,16.9
+5992,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.6%,1503.867,1502.433,1.433,12.6
+5994,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,62.6%,1505.067,1506.767,1.7,10.6
+6018,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,37.1%,1505.833,1506.833,1.0,18.0
+6016,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,88.4%,1508.933,1506.867,2.067,8.7
+6020,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,87.8%,1508.133,1509.1,0.967,18.6
+6047,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,85.0%,1512.167,1511.1,1.067,16.9
+6058,Car / Sedan,2,Sedan / jeep / station wagon,normal,32.6%,1511.233,1512.2,0.967,18.6
+6060,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.1%,1512.567,1513.7,1.133,15.9
+6064,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.0%,1515.567,1514.667,0.9,20.0
+6067,Car / Sedan,2,Sedan / jeep / station wagon,normal,56.4%,1515.367,1516.067,0.7,25.7
+6078,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.8%,1521.3,1522.033,0.733,24.5
+6079,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,33.3%,1523.733,1526.067,2.333,7.7
+6089,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.4%,1524.033,1524.867,0.833,21.6
+6088,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,71.6%,1524.067,1525.333,1.267,14.2
+6100,Car / Sedan,2,Sedan / jeep / station wagon,normal,56.6%,1525.433,1526.367,0.933,19.3
+6105,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.7%,1526.2,1527.1,0.9,20.0
+6113,Public Transportation (Angkot),3,Medium passenger vehicle,normal,77.1%,1527.367,1528.633,1.267,14.2
+6109,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,88.0%,1528.4,1527.367,1.033,17.4
+6117,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.0%,1527.467,1528.433,0.967,18.6
+6120,Car / Sedan,2,Sedan / jeep / station wagon,normal,37.9%,1529.0,1529.867,0.867,20.8
+6129,Car / Sedan,2,Sedan / jeep / station wagon,normal,50.4%,1530.1,1531.367,1.267,14.2
+6139,Car / Sedan,2,Sedan / jeep / station wagon,normal,50.9%,1531.4,1532.233,0.833,21.6
+6150,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.0%,1534.2,1533.2,1.0,18.0
+6161,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,73.4%,1534.2,1535.467,1.267,14.2
+6162,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.1%,1534.567,1535.467,0.9,20.0
+6157,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.6%,1536.933,1535.0,1.933,9.3
+6167,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.8%,1535.667,1536.967,1.3,13.8
+6166,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.5%,1536.033,1537.0,0.967,18.6
+6183,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.4%,1538.3,1539.7,1.4,12.9
+6184,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.6%,1539.9,1538.533,1.367,13.2
+6203,Car / Sedan,2,Sedan / jeep / station wagon,normal,44.2%,1542.2,1543.167,0.967,18.6
+6201,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,89.4%,1544.733,1543.067,1.667,10.8
+6205,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.9%,1543.233,1544.4,1.167,15.4
+6206,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.8%,1544.433,1545.133,0.7,25.7
+6211,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.1%,1546.667,1545.9,0.767,23.5
+6226,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,63.9%,1549.467,1550.9,1.433,12.6
+6286,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.9%,1568.033,1566.7,1.333,13.5
+6330,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.2%,1570.833,1571.7,0.867,20.8
+6332,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.2%,1572.0,1571.233,0.767,23.5
+6342,Car / Sedan,2,Sedan / jeep / station wagon,normal,44.4%,1574.833,1575.7,0.867,20.8
+6345,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.8%,1575.667,1576.3,0.633,28.4
+6348,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,74.1%,1576.833,1578.1,1.267,14.2
+6365,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.7%,1579.7,1580.567,0.867,20.8
+6375,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.9%,1582.267,1583.2,0.933,19.3
+6377,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.6%,1582.6,1583.367,0.767,23.5
+6379,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.1%,1584.267,1585.033,0.767,23.5
+6383,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,61.0%,1589.433,1588.367,1.067,16.9
+6399,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.3%,1591.567,1592.267,0.7,25.7
+6439,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,73.7%,1602.067,1604.267,2.2,8.2
+6447,Public Transportation (Angkot),3,Medium passenger vehicle,normal,61.9%,1604.933,1605.833,0.9,20.0
+6471,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.5%,1609.3,1610.033,0.733,24.5
+6478,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,66.9%,1610.5,1612.233,1.733,10.4
+6482,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.6%,1611.133,1612.067,0.933,19.3
+6492,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,65.3%,1616.0,1617.267,1.267,14.2
+6509,Car / Sedan,2,Sedan / jeep / station wagon,normal,57.9%,1618.367,1619.433,1.067,16.9
+6503,Bus,5,Bus,opposite,92.0%,1619.867,1618.833,1.033,17.4
+6513,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.6%,1620.433,1619.633,0.8,22.5
+6523,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,67.3%,1624.7,1626.767,2.067,8.7
+6541,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.4%,1626.6,1627.467,0.867,20.8
+6561,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,74.2%,1630.367,1631.8,1.433,12.6
+6567,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,88.3%,1634.733,1632.867,1.867,9.6
+6571,Bus,5,Bus,normal,87.6%,1633.033,1633.8,0.767,23.5
+6606,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.8%,1640.267,1641.0,0.733,24.5
+6613,Car / Sedan,2,Sedan / jeep / station wagon,normal,49.6%,1642.633,1643.433,0.8,22.5
+6614,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.3%,1644.2,1644.767,0.567,31.8
+6624,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,81.9%,1647.267,1648.267,1.0,18.0
+6627,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.2%,1648.567,1649.7,1.133,15.9
+6638,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.2%,1652.667,1653.567,0.9,20.0
+6641,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,59.1%,1655.033,1654.467,0.567,31.8
+6670,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,83.4%,1663.367,1662.0,1.367,13.2
+6678,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.2%,1665.967,1664.267,1.7,10.6
+6695,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.5%,1667.4,1668.633,1.233,14.6
+6705,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.5%,1669.7,1670.667,0.967,18.6
+6717,Car / Sedan,2,Sedan / jeep / station wagon,normal,85.4%,1672.2,1673.167,0.967,18.6
+6720,Car / Sedan,2,Sedan / jeep / station wagon,normal,57.3%,1673.6,1674.433,0.833,21.6
+6725,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.9%,1675.267,1676.2,0.933,19.3
+6730,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.7%,1676.167,1676.967,0.8,22.5
+6733,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.4%,1677.167,1677.967,0.8,22.5
+6738,Car / Sedan,2,Sedan / jeep / station wagon,normal,50.2%,1678.067,1678.967,0.9,20.0
+6729,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,45.9%,1679.433,1681.367,1.933,9.3
+6758,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,65.4%,1682.567,1681.4,1.167,15.4
+6765,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.1%,1684.0,1682.7,1.3,13.8
+6773,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.5%,1683.8,1684.767,0.967,18.6
+6776,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,88.2%,1687.567,1686.167,1.4,12.9
+6775,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.2%,1686.767,1688.2,1.433,12.6
+6789,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.6%,1688.2,1689.167,0.967,18.6
+6809,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.7%,1693.933,1694.8,0.867,20.8
+6814,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.1%,1694.567,1695.9,1.333,13.5
+6822,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,31.7%,1696.033,1697.267,1.233,14.6
+6821,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,64.5%,1696.1,1697.533,1.433,12.6
+6823,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.5%,1698.4,1697.433,0.967,18.6
+6825,Car / Sedan,2,Sedan / jeep / station wagon,normal,31.8%,1698.1,1699.0,0.9,20.0
+6829,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.0%,1698.9,1700.1,1.2,15.0
+6835,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,59.7%,1700.833,1702.567,1.733,10.4
+6844,Car / Sedan,2,Sedan / jeep / station wagon,normal,49.2%,1702.0,1702.767,0.767,23.5
+6847,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.1%,1703.833,1704.6,0.767,23.5
+6857,Car / Sedan,2,Sedan / jeep / station wagon,normal,27.4%,1705.467,1706.267,0.8,22.5
+6858,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.1%,1706.2,1707.0,0.8,22.5
+6864,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.5%,1710.033,1708.567,1.467,12.3
+6869,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.9%,1708.967,1709.8,0.833,21.6
+6878,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,83.8%,1712.4,1713.567,1.167,15.4
+6894,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.0%,1716.033,1715.3,0.733,24.5
+6897,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.7%,1717.867,1718.767,0.9,20.0
+6904,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.5%,1719.633,1718.8,0.833,21.6
+6900,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,88.5%,1720.333,1718.967,1.367,13.2
+6909,Car / Sedan,2,Sedan / jeep / station wagon,normal,42.8%,1720.567,1721.5,0.933,19.3
+6919,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.6%,1726.6,1725.7,0.9,20.0
+6942,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.4%,1731.133,1732.033,0.9,20.0
+6946,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.1%,1732.633,1733.4,0.767,23.5
+6948,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.4%,1736.067,1734.733,1.333,13.5
+6962,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.5%,1735.1,1736.867,1.767,10.2
+6964,Bus,5,Bus,normal,66.9%,1735.667,1736.767,1.1,16.4
+6983,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,79.7%,1739.2,1740.8,1.6,11.3
+6989,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.2%,1739.4,1740.433,1.033,17.4
+6990,Public Transportation (Angkot),3,Medium passenger vehicle,normal,50.0%,1741.333,1742.233,0.9,20.0
+7002,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.2%,1744.567,1743.2,1.367,13.2
+7001,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.2%,1744.5,1743.4,1.1,16.4
+7004,Car / Sedan,2,Sedan / jeep / station wagon,normal,30.8%,1744.567,1745.433,0.867,20.8
+7006,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.5%,1746.5,1747.367,0.867,20.8
+7021,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.6%,1750.633,1752.2,1.567,11.5
+7018,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.7%,1750.933,1751.7,0.767,23.5
+7019,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.0%,1752.233,1751.333,0.9,20.0
+7036,Car / Sedan,2,Sedan / jeep / station wagon,opposite,73.8%,1753.4,1752.4,1.0,18.0
+7048,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.6%,1753.333,1754.067,0.733,24.5
+7055,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.6%,1755.433,1757.433,2.0,9.0
+7078,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.8%,1760.2,1761.167,0.967,18.6
+7081,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,68.2%,1763.533,1764.5,0.967,18.6
+7086,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.4%,1764.2,1765.167,0.967,18.6
+7088,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.7%,1764.567,1765.567,1.0,18.0
+7091,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.5%,1766.5,1765.567,0.933,19.3
+7097,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.6%,1767.767,1768.767,1.0,18.0
+7117,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,87.5%,1776.0,1774.933,1.067,16.9
+7120,Public Transportation (Angkot),3,Medium passenger vehicle,normal,74.9%,1775.267,1776.167,0.9,20.0
+7127,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.2%,1776.767,1777.633,0.867,20.8
+7131,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,82.8%,1777.567,1779.233,1.667,10.8
+7140,Bus,5,Bus,opposite,89.7%,1781.267,1780.1,1.167,15.4
+7159,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,90.1%,1783.467,1785.0,1.533,11.7
+7196,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.8%,1788.6,1789.633,1.033,17.4
+7201,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.1%,1789.267,1791.2,1.933,9.3
+7237,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,77.5%,1798.367,1799.867,1.5,12.0
+7268,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.5%,1804.467,1806.0,1.533,11.7
+7271,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.7%,1806.7,1805.7,1.0,18.0
+7273,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.6%,1806.033,1807.633,1.6,11.3
+7280,Car / Sedan,2,Sedan / jeep / station wagon,normal,47.6%,1806.4,1807.2,0.8,22.5
+7275,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,64.6%,1809.133,1807.2,1.933,9.3
+7295,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,78.2%,1809.567,1810.467,0.9,20.0
+7305,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.3%,1813.967,1813.5,0.467,38.6
+7304,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,63.8%,1816.0,1814.467,1.533,11.7
+7322,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.5%,1823.667,1824.467,0.8,22.5
+7334,Car / Sedan,2,Sedan / jeep / station wagon,normal,29.8%,1825.867,1826.767,0.9,20.0
+7335,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.7%,1826.6,1827.433,0.833,21.6
+7336,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,81.3%,1827.6,1828.5,0.9,20.0
+7337,Bus,5,Bus,normal,87.6%,1828.0,1829.233,1.233,14.6
+7345,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.5%,1829.6,1830.433,0.833,21.6
+7347,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.6%,1829.9,1830.6,0.7,25.7
+7357,Car / Sedan,2,Sedan / jeep / station wagon,normal,47.1%,1831.033,1832.133,1.1,16.4
+7371,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,49.4%,1834.833,1835.833,1.0,18.0
+7393,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,84.9%,1838.4,1837.4,1.0,18.0
+7421,Car / Sedan,2,Sedan / jeep / station wagon,normal,45.4%,1843.3,1844.233,0.933,19.3
+7427,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.6%,1844.233,1845.233,1.0,18.0
+7423,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.0%,1846.6,1844.867,1.733,10.4
+7434,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.5%,1848.067,1848.733,0.667,27.0
+7456,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.8%,1853.267,1854.067,0.8,22.5
+7461,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,68.5%,1853.667,1855.267,1.6,11.3
+7468,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.6%,1854.167,1855.933,1.767,10.2
+7477,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.2%,1856.9,1857.733,0.833,21.6
+7491,Car / Sedan,2,Sedan / jeep / station wagon,normal,52.9%,1857.833,1858.9,1.067,16.9
+7486,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.7%,1857.9,1858.9,1.0,18.0
+7521,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.3%,1866.567,1867.667,1.1,16.4
+7534,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.7%,1873.0,1873.833,0.833,21.6
+7540,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.6%,1877.2,1878.133,0.933,19.3
+7552,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.4%,1883.933,1883.1,0.833,21.6
+7560,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.7%,1883.167,1883.933,0.767,23.5
+7546,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,64.7%,1883.967,1886.867,2.9,6.2
+7568,Car / Sedan,2,Sedan / jeep / station wagon,normal,45.8%,1884.3,1884.833,0.533,33.8
+7588,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,89.0%,1887.7,1886.7,1.0,18.0
+7591,Public Transportation (Angkot),3,Medium passenger vehicle,normal,82.8%,1886.733,1887.8,1.067,16.9
+7604,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,57.8%,1887.8,1888.467,0.667,27.0
+7621,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.4%,1891.7,1892.533,0.833,21.6
+7634,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.7%,1904.533,1903.7,0.833,21.6
+7638,Car / Sedan,2,Sedan / jeep / station wagon,normal,45.7%,1904.833,1905.9,1.067,16.9
+7660,Bus,5,Bus,opposite,91.5%,1911.533,1910.2,1.333,13.5
+7694,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,62.7%,1917.6,1918.7,1.1,16.4
+7698,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.5%,1918.8,1919.567,0.767,23.5
+7707,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.6%,1920.633,1921.2,0.567,31.8
+7700,Bus,5,Bus,opposite,87.8%,1922.033,1920.733,1.3,13.8
+7730,Bus,5,Bus,opposite,86.2%,1924.933,1923.667,1.267,14.2
+7713,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,83.1%,1923.833,1925.367,1.533,11.7
+7736,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.4%,1924.9,1925.267,0.367,49.1
+7739,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.4%,1925.233,1925.733,0.5,36.0
+7738,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.8%,1926.767,1925.533,1.233,14.6
+7742,Public Transportation (Angkot),3,Medium passenger vehicle,normal,66.1%,1927.2,1928.267,1.067,16.9
+7755,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,71.9%,1931.733,1933.533,1.8,10.0
+7780,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,61.9%,1933.867,1932.9,0.967,18.6
+7795,Bus,5,Bus,normal,30.4%,1934.1,1935.133,1.033,17.4
+7848,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.0%,1947.9,1949.767,1.867,9.6
+7887,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,58.3%,1959.6,1958.467,1.133,15.9
+7886,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,90.2%,1959.9,1958.767,1.133,15.9
+7901,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,39.2%,1959.733,1961.133,1.4,12.9
+7914,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,63.1%,1962.5,1961.667,0.833,21.6
+7918,Car / Sedan,2,Sedan / jeep / station wagon,normal,39.5%,1962.433,1963.267,0.833,21.6
+7929,Bus,5,Bus,opposite,89.5%,1966.667,1965.8,0.867,20.8
+7948,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,88.7%,1974.8,1973.7,1.1,16.4
+7991,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.3%,1980.267,1978.933,1.333,13.5
+8003,Public Transportation (Angkot),3,Medium passenger vehicle,normal,87.2%,1979.9,1980.733,0.833,21.6
+7993,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,60.3%,1981.333,1979.9,1.433,12.6
+8021,Bus,5,Bus,opposite,90.8%,1984.533,1983.2,1.333,13.5
+8025,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.6%,1984.067,1984.967,0.9,20.0
+8042,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.3%,1985.3,1986.433,1.133,15.9
+8041,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.9%,1986.0,1986.9,0.9,20.0
+8043,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,67.8%,1986.467,1987.433,0.967,18.6
+8044,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,55.5%,1987.433,1988.467,1.033,17.4
+8049,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.5%,1990.2,1991.033,0.833,21.6
+8052,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.9%,1993.767,1994.433,0.667,27.0
+8050,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.9%,1993.867,1994.7,0.833,21.6
+8060,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.9%,1994.633,1995.533,0.9,20.0
+8053,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,73.8%,1996.167,1994.833,1.333,13.5
+8058,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.3%,1995.2,1995.967,0.767,23.5
+8062,Car / Sedan,2,Sedan / jeep / station wagon,opposite,86.5%,1996.833,1995.967,0.867,20.8
+8072,Bus,5,Bus,opposite,92.8%,1997.833,1996.9,0.933,19.3
+8085,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.0%,2000.767,2001.567,0.8,22.5
+8095,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,84.0%,2008.033,2006.8,1.233,14.6
+8094,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,57.9%,2008.033,2009.767,1.733,10.4
+8123,Public Transportation (Angkot),3,Medium passenger vehicle,normal,61.9%,2011.767,2012.433,0.667,27.0
+8127,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,65.8%,2011.967,2013.133,1.167,15.4
+8129,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.9%,2012.833,2013.733,0.9,20.0
+8126,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.4%,2014.233,2015.467,1.233,14.6
+8142,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.7%,2014.9,2015.667,0.767,23.5
+8135,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,89.2%,2015.433,2016.933,1.5,12.0
+8152,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.8%,2017.233,2018.033,0.8,22.5
+8153,Public Transportation (Angkot),3,Medium passenger vehicle,normal,84.3%,2017.633,2018.833,1.2,15.0
+8157,Car / Sedan,2,Sedan / jeep / station wagon,opposite,84.8%,2022.3,2021.1,1.2,15.0
+8156,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,83.0%,2023.0,2021.5,1.5,12.0
+8164,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.8%,2024.233,2023.233,1.0,18.0
+8174,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.2%,2023.967,2024.767,0.8,22.5
+8177,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.1%,2025.1,2026.2,1.1,16.4
+8181,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.0%,2025.6,2026.633,1.033,17.4
+8193,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,41.8%,2027.967,2028.9,0.933,19.3
+8203,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.4%,2029.3,2030.167,0.867,20.8
+8219,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.3%,2030.367,2031.467,1.1,16.4
+8225,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.6%,2031.767,2032.767,1.0,18.0
+8228,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.3%,2032.967,2033.967,1.0,18.0
+8229,Car / Sedan,2,Sedan / jeep / station wagon,normal,44.8%,2033.133,2034.1,0.967,18.6
+8236,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.4%,2033.7,2034.633,0.933,19.3
+8237,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.2%,2033.833,2034.8,0.967,18.6
+8244,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,52.7%,2034.333,2035.867,1.533,11.7
+8255,Car / Sedan,2,Sedan / jeep / station wagon,normal,56.9%,2035.633,2036.633,1.0,18.0
+8258,Car / Sedan,2,Sedan / jeep / station wagon,normal,39.2%,2037.033,2038.1,1.067,16.9
+8259,Car / Sedan,2,Sedan / jeep / station wagon,normal,57.3%,2037.1,2038.167,1.067,16.9
+8261,Public Transportation (Angkot),3,Medium passenger vehicle,normal,52.0%,2038.4,2039.433,1.033,17.4
+8270,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.9%,2040.067,2041.167,1.1,16.4
+8273,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.5%,2042.433,2041.633,0.8,22.5
+8276,Bus,5,Bus,normal,64.1%,2043.0,2044.0,1.0,18.0
+8286,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.1%,2045.233,2046.3,1.067,16.9
+8292,Car / Sedan,2,Sedan / jeep / station wagon,normal,56.0%,2046.267,2047.333,1.067,16.9
+8291,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.3%,2046.467,2047.7,1.233,14.6
+8293,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.3%,2047.3,2048.367,1.067,16.9
+8299,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,82.7%,2050.9,2052.3,1.4,12.9
+8314,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.1%,2053.033,2051.667,1.367,13.2
+8328,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,71.2%,2054.267,2055.733,1.467,12.3
+8340,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.0%,2058.233,2059.167,0.933,19.3
+8343,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.4%,2060.033,2058.767,1.267,14.2
+8345,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,36.1%,2060.2,2061.6,1.4,12.9
+8359,Public Transportation (Angkot),3,Medium passenger vehicle,normal,61.7%,2062.033,2063.1,1.067,16.9
+8360,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.9%,2064.733,2063.633,1.1,16.4
+8368,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.9%,2064.533,2065.633,1.1,16.4
+8370,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.4%,2064.8,2065.8,1.0,18.0
+8367,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,73.5%,2066.667,2065.233,1.433,12.6
+8380,Car / Sedan,2,Sedan / jeep / station wagon,normal,51.2%,2066.167,2067.167,1.0,18.0
+8383,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.8%,2067.767,2066.933,0.833,21.6
+8386,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.5%,2067.167,2068.033,0.867,20.8
+8391,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.5%,2067.9,2069.067,1.167,15.4
+8402,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.0%,2070.967,2071.8,0.833,21.6
+8403,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,82.0%,2072.0,2073.167,1.167,15.4
+8406,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.8%,2073.233,2072.433,0.8,22.5
+8416,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.7%,2074.767,2075.6,0.833,21.6
+8417,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.4%,2076.967,2075.733,1.233,14.6
+8424,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.8%,2077.267,2078.2,0.933,19.3
+8442,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.7%,2081.467,2080.633,0.833,21.6
+8447,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.8%,2081.0,2082.033,1.033,17.4
+8450,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.5%,2083.6,2082.5,1.1,16.4
+8453,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.0%,2083.733,2082.8,0.933,19.3
+8458,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.6%,2087.1,2084.467,2.633,6.8
+8479,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,33.8%,2088.0,2089.067,1.067,16.9
+8499,Car / Sedan,2,Sedan / jeep / station wagon,opposite,84.8%,2091.967,2091.167,0.8,22.5
+8504,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.7%,2091.8,2092.633,0.833,21.6
+8514,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.6%,2093.0,2093.767,0.767,23.5
+8517,Car / Sedan,2,Sedan / jeep / station wagon,normal,85.3%,2093.6,2094.3,0.7,25.7
+8522,Bus,5,Bus,opposite,87.8%,2096.667,2095.833,0.833,21.6
+8518,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,59.3%,2097.533,2095.933,1.6,11.3
+8526,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.9%,2098.0,2096.2,1.8,10.0
+8536,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,47.7%,2098.5,2097.467,1.033,17.4
+8541,Car / Sedan,2,Sedan / jeep / station wagon,normal,30.1%,2098.467,2099.2,0.733,24.5
+8552,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.0%,2098.833,2099.633,0.8,22.5
+8576,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.8%,2104.3,2105.067,0.767,23.5
+8575,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,91.6%,2107.567,2105.7,1.867,9.6
+8581,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.0%,2106.867,2107.8,0.933,19.3
+8604,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.0%,2109.033,2109.9,0.867,20.8
+8605,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.5%,2109.4,2110.267,0.867,20.8
+8610,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.2%,2110.267,2111.233,0.967,18.6
+8617,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.5%,2114.633,2113.733,0.9,20.0
+8620,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.5%,2114.067,2114.9,0.833,21.6
+8626,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.5%,2116.267,2114.5,1.767,10.2
+8636,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.5%,2115.733,2116.4,0.667,27.0
+8625,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,77.5%,2116.767,2118.867,2.1,8.6
+8656,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.7%,2117.067,2117.867,0.8,22.5
+8634,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,92.2%,2118.8,2117.3,1.5,12.0
+8654,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.2%,2118.667,2117.7,0.967,18.6
+8663,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,60.4%,2118.633,2119.567,0.933,19.3
+8658,Bus,5,Bus,opposite,88.5%,2120.467,2119.067,1.4,12.9
+8675,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,63.8%,2122.067,2120.467,1.6,11.3
+8687,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.4%,2121.1,2121.833,0.733,24.5
+8684,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.5%,2121.267,2122.067,0.8,22.5
+8699,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.7%,2124.967,2125.8,0.833,21.6
+8705,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.1%,2125.767,2126.867,1.1,16.4
+8706,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.4%,2125.767,2126.6,0.833,21.6
+8709,Car / Sedan,2,Sedan / jeep / station wagon,normal,36.1%,2126.533,2127.3,0.767,23.5
+8722,Car / Sedan,2,Sedan / jeep / station wagon,opposite,86.8%,2131.1,2130.2,0.9,20.0
+8731,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.1%,2131.867,2132.567,0.7,25.7
+8732,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.6%,2132.133,2133.167,1.033,17.4
+8738,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.0%,2136.033,2137.033,1.0,18.0
+8737,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,88.5%,2137.6,2136.767,0.833,21.6
+8747,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,73.6%,2141.467,2140.433,1.033,17.4
+8744,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.4%,2140.467,2141.5,1.033,17.4
+8755,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.7%,2141.267,2142.133,0.867,20.8
+8761,Public Transportation (Angkot),3,Medium passenger vehicle,normal,33.2%,2141.367,2142.067,0.7,25.7
+8766,Bus,5,Bus,opposite,92.3%,2143.833,2142.7,1.133,15.9
+8782,Car / Sedan,2,Sedan / jeep / station wagon,opposite,85.6%,2145.4,2144.567,0.833,21.6
+8787,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.5%,2145.0,2145.7,0.7,25.7
+8793,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.0%,2145.967,2146.867,0.9,20.0
+8783,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,89.1%,2146.067,2149.033,2.967,6.1
+8822,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.2%,2150.567,2151.333,0.767,23.5
+8827,Public Transportation (Angkot),3,Medium passenger vehicle,normal,84.1%,2152.3,2153.3,1.0,18.0
+8831,Car / Sedan,2,Sedan / jeep / station wagon,normal,51.8%,2152.567,2153.533,0.967,18.6
+8835,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.1%,2153.4,2154.233,0.833,21.6
+8832,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,58.9%,2155.267,2153.7,1.567,11.5
+8838,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,51.9%,2154.733,2155.533,0.8,22.5
+8852,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.2%,2155.1,2156.1,1.0,18.0
+8859,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.7%,2156.4,2157.267,0.867,20.8
+8860,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.5%,2156.5,2157.433,0.933,19.3
+8853,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,89.8%,2157.633,2159.167,1.533,11.7
+8863,Bus,5,Bus,opposite,91.2%,2158.833,2157.8,1.033,17.4
+8873,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.2%,2158.0,2158.967,0.967,18.6
+8880,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.7%,2161.433,2159.9,1.533,11.7
+8905,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,77.8%,2160.133,2161.033,0.9,20.0
+8913,Car / Sedan,2,Sedan / jeep / station wagon,normal,46.9%,2160.667,2161.667,1.0,18.0
+8944,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.5%,2165.067,2163.967,1.1,16.4
+8955,Public Transportation (Angkot),3,Medium passenger vehicle,normal,56.7%,2168.5,2169.533,1.033,17.4
+8965,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.1%,2173.7,2172.267,1.433,12.6
+8981,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.6%,2176.233,2175.5,0.733,24.5
+8978,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,88.0%,2176.933,2175.567,1.367,13.2
+8983,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.4%,2178.1,2179.233,1.133,15.9
+9007,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,80.0%,2183.667,2182.967,0.7,25.7
+9010,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.3%,2183.533,2184.567,1.033,17.4
+9013,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.5%,2186.0,2185.2,0.8,22.5
+9036,Bus,5,Bus,opposite,91.8%,2189.1,2188.467,0.633,28.4
+9040,Public Transportation (Angkot),3,Medium passenger vehicle,normal,74.7%,2189.867,2190.833,0.967,18.6
+9044,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.7%,2190.667,2191.833,1.167,15.4
+9045,Public Transportation (Angkot),3,Medium passenger vehicle,normal,76.5%,2191.833,2192.4,0.567,31.8
+9061,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.7%,2194.133,2194.967,0.833,21.6
+9082,Public Transportation (Angkot),3,Medium passenger vehicle,normal,37.6%,2198.5,2199.467,0.967,18.6
+9080,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,72.1%,2198.9,2200.767,1.867,9.6
+9090,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,90.3%,2201.367,2200.367,1.0,18.0
+9101,Public Transportation (Angkot),3,Medium passenger vehicle,normal,87.8%,2201.8,2202.733,0.933,19.3
+9144,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.1%,2205.367,2206.433,1.067,16.9
+9138,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.7%,2206.5,2205.567,0.933,19.3
+9147,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.6%,2206.367,2207.3,0.933,19.3
+9108,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.8%,2207.433,2209.467,2.033,8.9
+9158,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.7%,2208.167,2209.167,1.0,18.0
+9166,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.8%,2210.733,2211.667,0.933,19.3
+9179,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.6%,2212.667,2213.733,1.067,16.9
+9184,Car / Sedan,2,Sedan / jeep / station wagon,normal,42.6%,2214.667,2215.633,0.967,18.6
+9191,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,72.3%,2218.433,2217.933,0.5,36.0
+9194,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.4%,2219.767,2218.833,0.933,19.3
+9214,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,75.9%,2225.567,2224.467,1.1,16.4
+9222,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.6%,2226.9,2225.8,1.1,16.4
+9225,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.0%,2227.133,2226.0,1.133,15.9
+9219,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,90.8%,2228.7,2226.267,2.433,7.4
+9221,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,80.5%,2228.767,2230.267,1.5,12.0
+9248,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.6%,2230.967,2230.167,0.8,22.5
+9254,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.4%,2231.4,2232.1,0.7,25.7
+9269,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.6%,2233.467,2233.9,0.433,41.5
+9275,Car / Sedan,2,Sedan / jeep / station wagon,normal,55.3%,2234.233,2235.167,0.933,19.3
+9290,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,61.0%,2240.533,2239.133,1.4,12.9
+9296,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,70.0%,2240.333,2239.367,0.967,18.6
+9347,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,92.2%,2247.933,2246.6,1.333,13.5
+9360,Bus,5,Bus,normal,48.1%,2248.9,2249.867,0.967,18.6
+9356,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.2%,2250.0,2248.9,1.1,16.4
+9384,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.6%,2251.7,2252.467,0.767,23.5
+9386,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.0%,2253.7,2252.633,1.067,16.9
+9392,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,75.5%,2256.5,2254.9,1.6,11.3
+9396,Car / Sedan,2,Sedan / jeep / station wagon,normal,43.0%,2257.267,2258.333,1.067,16.9
+9407,Bus,5,Bus,opposite,92.7%,2260.6,2259.833,0.767,23.5
+9419,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,58.0%,2260.5,2261.3,0.8,22.5
+9430,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.8%,2265.533,2264.4,1.133,15.9
+9432,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.7%,2264.733,2265.7,0.967,18.6
+9433,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,71.0%,2267.067,2268.4,1.333,13.5
+9435,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.2%,2267.733,2268.367,0.633,28.4
+9436,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.3%,2269.167,2270.1,0.933,19.3
+9438,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,42.5%,2270.267,2271.667,1.4,12.9
+9450,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.7%,2273.367,2274.033,0.667,27.0
+9459,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.3%,2277.8,2278.633,0.833,21.6
+9463,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.0%,2281.367,2279.933,1.433,12.6
+9461,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,57.2%,2280.967,2282.433,1.467,12.3
+9484,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.8%,2284.267,2282.967,1.3,13.8
+9494,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,88.3%,2286.8,2285.433,1.367,13.2
+9516,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,79.7%,2289.367,2288.4,0.967,18.6
+9529,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.7%,2291.5,2290.2,1.3,13.8
+9557,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.0%,2296.767,2295.633,1.133,15.9
+9603,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,89.2%,2302.633,2303.967,1.333,13.5
+9657,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.7%,2307.9,2309.833,1.933,9.3
+9665,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.2%,2309.133,2310.5,1.367,13.2
+9649,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.8%,2309.633,2311.667,2.033,8.9
+9677,Car / Sedan,2,Sedan / jeep / station wagon,normal,39.8%,2311.7,2313.433,1.733,10.4
+9700,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,92.2%,2318.6,2317.367,1.233,14.6
+9719,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,88.3%,2319.367,2320.4,1.033,17.4
+9726,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.5%,2320.133,2320.967,0.833,21.6
+9730,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,54.2%,2322.433,2324.433,2.0,9.0
+9780,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.3%,2334.5,2335.1,0.6,30.0
+9782,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.0%,2336.867,2335.933,0.933,19.3
+9803,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.1%,2339.267,2339.933,0.667,27.0
+9805,Car / Sedan,2,Sedan / jeep / station wagon,normal,45.9%,2340.067,2340.933,0.867,20.8
+9829,Public Transportation (Angkot),3,Medium passenger vehicle,normal,40.5%,2345.1,2346.133,1.033,17.4
+9835,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.0%,2346.367,2347.267,0.9,20.0
+9836,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,69.3%,2347.633,2348.933,1.3,13.8
+9849,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.8%,2350.233,2349.533,0.7,25.7
+9850,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.4%,2350.7,2350.067,0.633,28.4
+9852,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.5%,2353.233,2351.733,1.5,12.0
+9869,Car / Sedan,2,Sedan / jeep / station wagon,normal,44.3%,2354.4,2355.233,0.833,21.6
+9872,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.4%,2355.867,2356.567,0.7,25.7
+9874,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.4%,2356.733,2357.633,0.9,20.0
+9889,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,82.4%,2364.933,2366.933,2.0,9.0
+9901,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,59.9%,2366.167,2367.633,1.467,12.3
+9908,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.3%,2368.767,2367.8,0.967,18.6
+9911,Car / Sedan,2,Sedan / jeep / station wagon,normal,38.9%,2368.4,2369.1,0.7,25.7
+9921,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.5%,2372.667,2373.5,0.833,21.6
+9932,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,87.8%,2380.433,2381.4,0.967,18.6
+9934,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,78.8%,2383.667,2382.233,1.433,12.6
+9954,Car / Sedan,2,Sedan / jeep / station wagon,normal,55.3%,2393.167,2394.0,0.833,21.6
+9955,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,76.6%,2393.233,2394.567,1.333,13.5
+9956,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.0%,2393.7,2394.567,0.867,20.8
+9971,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.6%,2399.6,2397.933,1.667,10.8
+9981,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.2%,2403.033,2401.7,1.333,13.5
+9987,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.4%,2405.633,2405.033,0.6,30.0
+10018,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.6%,2412.833,2413.567,0.733,24.5
+10023,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,74.8%,2414.8,2413.8,1.0,18.0
+10047,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,88.5%,2435.667,2436.933,1.267,14.2
+10057,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.3%,2440.9,2439.433,1.467,12.3
+10073,Public Transportation (Angkot),3,Medium passenger vehicle,normal,67.1%,2448.5,2449.4,0.9,20.0
+10094,Car / Sedan,2,Sedan / jeep / station wagon,normal,46.3%,2452.9,2453.833,0.933,19.3
+10107,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.0%,2466.333,2464.967,1.367,13.2
+10119,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.0%,2469.367,2470.267,0.9,20.0
+10120,Bus,5,Bus,opposite,93.5%,2471.533,2470.6,0.933,19.3
+10130,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.4%,2476.167,2474.833,1.333,13.5
+10135,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.9%,2477.167,2476.033,1.133,15.9
+10138,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.0%,2476.867,2476.067,0.8,22.5
+10144,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.5%,2478.267,2477.5,0.767,23.5
+10134,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,88.4%,2477.833,2479.967,2.133,8.4
+10153,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.1%,2483.1,2481.467,1.633,11.0
+10155,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.6%,2481.667,2482.433,0.767,23.5
+10156,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.4%,2483.0,2482.167,0.833,21.6
+10162,Car / Sedan,2,Sedan / jeep / station wagon,normal,52.4%,2483.167,2483.833,0.667,27.0
+10177,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.2%,2487.433,2488.167,0.733,24.5
+10180,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.7%,2488.467,2489.5,1.033,17.4
+10198,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,55.1%,2491.5,2494.033,2.533,7.1
+10203,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.7%,2493.233,2494.0,0.767,23.5
+10202,Car / Sedan,2,Sedan / jeep / station wagon,normal,39.3%,2493.433,2494.167,0.733,24.5
+10214,Car / Sedan,2,Sedan / jeep / station wagon,normal,40.3%,2496.5,2497.167,0.667,27.0
+10215,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.9%,2497.633,2496.9,0.733,24.5
+10213,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,91.9%,2498.4,2497.067,1.333,13.5
+10217,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.6%,2498.333,2497.567,0.767,23.5
+10222,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.0%,2498.9,2499.433,0.533,33.8
+10228,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.0%,2500.6,2501.267,0.667,27.0
+10242,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.6%,2507.8,2508.4,0.6,30.0
+10244,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.5%,2513.8,2515.233,1.433,12.6
+10256,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.5%,2516.5,2515.467,1.033,17.4
+10264,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.3%,2516.333,2517.233,0.9,20.0
+10295,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,89.8%,2529.6,2528.533,1.067,16.9
+10332,Car / Sedan,2,Sedan / jeep / station wagon,normal,56.2%,2533.0,2533.667,0.667,27.0
+10328,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,90.4%,2533.767,2535.2,1.433,12.6
+10352,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.0%,2534.667,2538.333,3.667,4.9
+10384,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,87.0%,2545.667,2547.167,1.5,12.0
+10388,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,76.5%,2549.167,2551.533,2.367,7.6
+10428,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.4%,2557.6,2558.767,1.167,15.4
+10439,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,92.0%,2561.267,2560.233,1.033,17.4
+10441,Car / Sedan,2,Sedan / jeep / station wagon,normal,43.1%,2560.267,2561.033,0.767,23.5
+10477,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.9%,2569.067,2567.8,1.267,14.2
+10489,Bus,5,Bus,opposite,78.0%,2573.1,2571.833,1.267,14.2
+10505,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.9%,2576.367,2577.067,0.7,25.7
+10570,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.3%,2591.4,2591.933,0.533,33.8
+10576,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.0%,2591.7,2592.567,0.867,20.8
+10599,Car / Sedan,2,Sedan / jeep / station wagon,normal,42.2%,2597.067,2597.767,0.7,25.7
+10616,Car / Sedan,2,Sedan / jeep / station wagon,opposite,70.0%,2604.6,2603.933,0.667,27.0
+10618,Car / Sedan,2,Sedan / jeep / station wagon,normal,42.1%,2604.333,2605.533,1.2,15.0
+10619,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.4%,2605.9,2606.6,0.7,25.7
+10626,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,71.9%,2606.467,2608.067,1.6,11.3
+10628,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.2%,2608.967,2607.633,1.333,13.5
+10632,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.1%,2610.167,2611.8,1.633,11.0
+10642,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.5%,2612.8,2613.8,1.0,18.0
+10682,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.1%,2629.133,2630.433,1.3,13.8
+10692,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.1%,2630.8,2631.6,0.8,22.5
+10695,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,61.8%,2631.533,2633.967,2.433,7.4
+10698,Car / Sedan,2,Sedan / jeep / station wagon,normal,86.0%,2632.9,2633.933,1.033,17.4
+10709,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.9%,2633.3,2635.267,1.967,9.2
+10716,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.5%,2634.467,2637.067,2.6,6.9
+10714,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,81.8%,2637.067,2639.433,2.367,7.6
+10774,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.8%,2641.833,2643.0,1.167,15.4
+10794,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.1%,2643.133,2644.367,1.233,14.6
+10793,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,62.4%,2644.3,2646.833,2.533,7.1
+10819,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.5%,2648.4,2647.567,0.833,21.6
+10831,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.4%,2649.8,2650.8,1.0,18.0
+10842,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.9%,2651.267,2652.133,0.867,20.8
+10845,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.6%,2653.0,2654.0,1.0,18.0
+10849,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,93.0%,2655.867,2654.633,1.233,14.6
+10853,Car / Sedan,2,Sedan / jeep / station wagon,normal,51.7%,2657.067,2657.933,0.867,20.8
+10861,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,42.5%,2660.6,2661.467,0.867,20.8
+10864,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,49.0%,2665.8,2667.733,1.933,9.3
+10882,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,85.4%,2669.033,2668.033,1.0,18.0
+10889,Car / Sedan,2,Sedan / jeep / station wagon,normal,51.0%,2669.633,2670.433,0.8,22.5
+10888,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,91.8%,2670.933,2670.4,0.533,33.8
+10891,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.1%,2671.333,2672.4,1.067,16.9
+10898,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.9%,2672.433,2673.5,1.067,16.9
+10899,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.2%,2672.867,2673.8,0.933,19.3
+10895,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,72.7%,2674.2,2672.933,1.267,14.2
+10920,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.9%,2677.433,2678.333,0.9,20.0
+10921,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,56.0%,2677.9,2678.933,1.033,17.4
+10931,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,83.7%,2680.1,2681.233,1.133,15.9
+10936,Car / Sedan,2,Sedan / jeep / station wagon,normal,39.7%,2680.633,2681.533,0.9,20.0
+10939,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.3%,2683.033,2684.067,1.033,17.4
+10940,Car / Sedan,2,Sedan / jeep / station wagon,normal,34.4%,2683.533,2684.233,0.7,25.7
+10941,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.6%,2685.667,2684.433,1.233,14.6
+10942,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.9%,2684.633,2685.6,0.967,18.6
+10946,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,80.3%,2686.033,2687.2,1.167,15.4
+10947,Car / Sedan,2,Sedan / jeep / station wagon,normal,56.1%,2686.333,2687.3,0.967,18.6
+10948,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,71.6%,2687.733,2689.7,1.967,9.2
+10966,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,83.8%,2690.433,2688.867,1.567,11.5
+10981,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,85.1%,2691.0,2690.2,0.8,22.5
+10972,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,62.2%,2690.533,2692.4,1.867,9.6
+10992,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.8%,2691.4,2692.367,0.967,18.6
+11020,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,70.9%,2694.933,2693.933,1.0,18.0
+11021,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,30.2%,2694.3,2695.167,0.867,20.8
+11024,Public Transportation (Angkot),3,Medium passenger vehicle,normal,42.0%,2694.533,2695.467,0.933,19.3
+11026,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,68.1%,2695.6,2696.733,1.133,15.9
+11033,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.7%,2697.067,2698.167,1.1,16.4
+11034,Car / Sedan,2,Sedan / jeep / station wagon,normal,55.9%,2697.733,2698.8,1.067,16.9
+11043,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.0%,2698.433,2699.7,1.267,14.2
+11036,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,90.1%,2699.9,2698.933,0.967,18.6
+11058,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.1%,2699.833,2701.1,1.267,14.2
+11063,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.3%,2700.367,2701.6,1.233,14.6
+11059,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.6%,2700.833,2701.833,1.0,18.0
+11064,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.7%,2701.667,2700.833,0.833,21.6
+11065,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.3%,2701.1,2702.2,1.1,16.4
+11069,Car / Sedan,2,Sedan / jeep / station wagon,normal,47.2%,2702.233,2703.2,0.967,18.6
+11081,Car / Sedan,2,Sedan / jeep / station wagon,normal,55.2%,2704.4,2705.4,1.0,18.0
+11084,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.4%,2705.4,2706.4,1.0,18.0
+11099,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.9%,2709.2,2710.7,1.5,12.0
+11112,Car / Sedan,2,Sedan / jeep / station wagon,normal,39.6%,2710.533,2711.633,1.1,16.4
+11115,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,55.8%,2711.967,2713.4,1.433,12.6
+11125,Car / Sedan,2,Sedan / jeep / station wagon,normal,47.2%,2712.9,2714.0,1.1,16.4
+11131,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.1%,2715.2,2713.9,1.3,13.8
+11137,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.0%,2714.233,2715.233,1.0,18.0
+11169,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.9%,2719.833,2720.667,0.833,21.6
+11172,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.1%,2722.667,2721.8,0.867,20.8
+11174,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.5%,2722.0,2722.7,0.7,25.7
+11171,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,92.6%,2723.333,2722.2,1.133,15.9
+11182,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.7%,2725.0,2725.833,0.833,21.6
+11191,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.1%,2728.533,2729.333,0.8,22.5
+11189,Car / Sedan,2,Sedan / jeep / station wagon,opposite,91.7%,2731.733,2730.0,1.733,10.4
+11198,Bus,5,Bus,normal,90.3%,2736.033,2736.7,0.667,27.0
+11207,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,35.0%,2737.433,2738.3,0.867,20.8
+11212,Car / Sedan,2,Sedan / jeep / station wagon,normal,44.7%,2740.7,2741.733,1.033,17.4
+11213,Bus,5,Bus,normal,69.0%,2741.4,2742.3,0.9,20.0
+11217,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.5%,2742.7,2743.567,0.867,20.8
+11221,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,44.1%,2742.8,2743.867,1.067,16.9
+11232,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.5%,2745.133,2746.033,0.9,20.0
+11234,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.8%,2747.033,2746.1,0.933,19.3
+11235,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.0%,2746.7,2747.7,1.0,18.0
+11240,Car / Sedan,2,Sedan / jeep / station wagon,normal,46.9%,2750.0,2750.9,0.9,20.0
+11245,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,60.1%,2752.5,2753.4,0.9,20.0
+11242,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,70.0%,2752.8,2754.233,1.433,12.6
+11251,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.0%,2757.033,2757.933,0.9,20.0
+11253,Car / Sedan,2,Sedan / jeep / station wagon,normal,45.4%,2757.1,2757.833,0.733,24.5
+11258,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.7%,2764.333,2765.5,1.167,15.4
+11267,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.2%,2768.4,2767.333,1.067,16.9
+11268,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.6%,2768.4,2769.2,0.8,22.5
+11270,Car / Sedan,2,Sedan / jeep / station wagon,normal,41.4%,2768.933,2769.9,0.967,18.6
+11271,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.6%,2771.2,2769.9,1.3,13.8
+11275,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.8%,2770.133,2771.1,0.967,18.6
+11276,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.0%,2770.3,2771.133,0.833,21.6
+11283,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,79.5%,2773.9,2774.833,0.933,19.3
+11289,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.9%,2774.633,2775.6,0.967,18.6
+11290,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.8%,2774.767,2775.6,0.833,21.6
+11294,Car / Sedan,2,Sedan / jeep / station wagon,normal,33.4%,2777.233,2778.1,0.867,20.8
+11299,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.2%,2778.033,2778.933,0.9,20.0
+11304,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.0%,2778.6,2779.433,0.833,21.6
+11314,Car / Sedan,2,Sedan / jeep / station wagon,normal,33.4%,2779.233,2780.1,0.867,20.8
+11307,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.4%,2779.267,2780.133,0.867,20.8
+11313,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.7%,2779.633,2780.6,0.967,18.6
+11320,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,66.4%,2783.267,2784.5,1.233,14.6
+11331,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.1%,2786.3,2787.2,0.9,20.0
+11334,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,81.7%,2787.233,2788.167,0.933,19.3
+11337,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.0%,2787.9,2788.767,0.867,20.8
+11336,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.8%,2788.533,2789.4,0.867,20.8
+11350,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.7%,2794.567,2796.133,1.567,11.5
+11353,Public Transportation (Angkot),3,Medium passenger vehicle,normal,39.1%,2795.933,2796.8,0.867,20.8
+11365,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.8%,2799.2,2800.0,0.8,22.5
+11361,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,89.4%,2801.4,2799.8,1.6,11.3
+11368,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.4%,2801.4,2800.6,0.8,22.5
+11366,Public Transportation (Angkot),3,Medium passenger vehicle,normal,83.8%,2800.8,2801.667,0.867,20.8
+11371,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.0%,2802.533,2801.533,1.0,18.0
+11384,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.8%,2804.3,2803.267,1.033,17.4
+11391,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.2%,2803.767,2804.633,0.867,20.8
+11390,Bus,5,Bus,opposite,91.7%,2805.633,2804.467,1.167,15.4
+11397,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.6%,2807.867,2809.1,1.233,14.6
+11413,3-Axle Truck (Jumbo),7,3-Axle Truck,normal,53.0%,2810.2,2812.0,1.8,10.0
+11414,Car / Sedan,2,Sedan / jeep / station wagon,normal,46.0%,2810.367,2811.2,0.833,21.6
+11418,Car / Sedan,2,Sedan / jeep / station wagon,normal,34.7%,2812.1,2812.867,0.767,23.5
+11422,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.4%,2813.2,2814.033,0.833,21.6
+11430,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.4%,2815.367,2816.933,1.567,11.5
+11433,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.1%,2815.467,2816.367,0.9,20.0
+11434,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.6%,2817.2,2816.067,1.133,15.9
+11453,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,50.7%,2821.633,2820.033,1.6,11.3
+11451,Bus,5,Bus,opposite,90.3%,2821.5,2820.2,1.3,13.8
+11463,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.2%,2822.933,2822.1,0.833,21.6
+11461,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,89.2%,2822.233,2823.4,1.167,15.4
+11482,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.6%,2826.4,2827.267,0.867,20.8
+11493,Car / Sedan,2,Sedan / jeep / station wagon,normal,39.6%,2829.067,2829.933,0.867,20.8
+11496,Car / Sedan,2,Sedan / jeep / station wagon,normal,85.3%,2829.567,2830.5,0.933,19.3
+11498,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.6%,2830.867,2831.633,0.767,23.5
+11508,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,56.1%,2833.8,2834.6,0.8,22.5
+11511,Bus,5,Bus,opposite,92.0%,2837.2,2836.0,1.2,15.0
+11510,Bus,5,Bus,opposite,89.1%,2837.433,2836.4,1.033,17.4
+11529,Car / Sedan,2,Sedan / jeep / station wagon,opposite,79.1%,2838.3,2837.167,1.133,15.9
+11534,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.5%,2839.2,2838.233,0.967,18.6
+11552,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.3%,2839.233,2840.2,0.967,18.6
+11553,Car / Sedan,2,Sedan / jeep / station wagon,normal,36.5%,2839.433,2840.333,0.9,20.0
+11554,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.1%,2841.9,2840.733,1.167,15.4
+11559,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.0%,2841.3,2842.2,0.9,20.0
+11560,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.5%,2843.833,2843.1,0.733,24.5
+11567,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,85.3%,2846.733,2845.633,1.1,16.4
+11565,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.4%,2845.8,2847.333,1.533,11.7
+11586,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.8%,2846.6,2847.533,0.933,19.3
+11578,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,88.5%,2849.8,2847.733,2.067,8.7
+11574,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.9%,2848.0,2849.4,1.4,12.9
+11597,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.0%,2849.267,2850.333,1.067,16.9
+11620,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.5%,2852.9,2853.8,0.9,20.0
+11632,Car / Sedan,2,Sedan / jeep / station wagon,normal,43.0%,2855.033,2856.467,1.433,12.6
+11636,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.1%,2857.8,2858.667,0.867,20.8
+11638,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.7%,2858.233,2859.2,0.967,18.6
+11641,Car / Sedan,2,Sedan / jeep / station wagon,normal,60.5%,2859.4,2860.333,0.933,19.3
+11642,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,58.9%,2860.533,2861.9,1.367,13.2
+11644,Car / Sedan,2,Sedan / jeep / station wagon,normal,32.4%,2862.433,2863.533,1.1,16.4
+11659,Car / Sedan,2,Sedan / jeep / station wagon,normal,31.8%,2865.533,2866.4,0.867,20.8
+11651,Bus,5,Bus,opposite,92.2%,2866.9,2865.667,1.233,14.6
+11652,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.0%,2865.767,2866.867,1.1,16.4
+11662,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.7%,2867.6,2868.533,0.933,19.3
+11665,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,73.6%,2868.567,2867.667,0.9,20.0
+11674,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.0%,2870.167,2871.167,1.0,18.0
+11676,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.3%,2872.1,2871.167,0.933,19.3
+11683,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.4%,2871.4,2872.333,0.933,19.3
+11685,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.7%,2872.233,2873.033,0.8,22.5
+11696,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.5%,2873.333,2874.233,0.9,20.0
+11693,Car / Sedan,2,Sedan / jeep / station wagon,opposite,80.3%,2874.233,2873.533,0.7,25.7
+11701,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.5%,2873.867,2874.733,0.867,20.8
+11711,Car / Sedan,2,Sedan / jeep / station wagon,opposite,85.8%,2874.867,2874.0,0.867,20.8
+11721,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,57.8%,2875.233,2876.6,1.367,13.2
+11700,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.3%,2877.367,2875.4,1.967,9.2
+11726,Car / Sedan,2,Sedan / jeep / station wagon,normal,49.4%,2875.533,2876.8,1.267,14.2
+11740,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.2%,2876.633,2877.767,1.133,15.9
+11742,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.4%,2877.167,2878.033,0.867,20.8
+11767,Car / Sedan,2,Sedan / jeep / station wagon,normal,43.6%,2881.0,2882.0,1.0,18.0
+11776,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,76.6%,2881.833,2883.033,1.2,15.0
+11783,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.0%,2882.667,2883.667,1.0,18.0
+11822,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.3%,2888.3,2889.467,1.167,15.4
+11824,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.8%,2889.167,2890.3,1.133,15.9
+11823,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.0%,2889.533,2890.933,1.4,12.9
+11835,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.1%,2891.067,2890.033,1.033,17.4
+11844,Car / Sedan,2,Sedan / jeep / station wagon,normal,43.5%,2893.833,2894.7,0.867,20.8
+11847,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.6%,2894.433,2895.367,0.933,19.3
+11836,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.3%,2895.7,2897.633,1.933,9.3
+11861,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.0%,2900.9,2901.533,0.633,28.4
+11865,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.6%,2901.467,2902.4,0.933,19.3
+11874,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.0%,2909.033,2907.333,1.7,10.6
+11878,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,63.6%,2910.1,2911.833,1.733,10.4
+11897,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.5%,2914.467,2912.833,1.633,11.0
+11890,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.0%,2913.633,2915.133,1.5,12.0
+11910,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.2%,2914.3,2915.267,0.967,18.6
+11918,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.0%,2914.9,2915.6,0.7,25.7
+11904,Car / Sedan,2,Sedan / jeep / station wagon,opposite,82.8%,2916.9,2914.9,2.0,9.0
+11921,Car / Sedan,2,Sedan / jeep / station wagon,opposite,68.9%,2916.133,2915.067,1.067,16.9
+11944,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.8%,2917.467,2918.267,0.8,22.5
+11928,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,89.8%,2919.533,2917.7,1.833,9.8
+11950,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.6%,2918.0,2918.867,0.867,20.8
+11943,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,79.4%,2918.033,2919.333,1.3,13.8
+11957,Car / Sedan,2,Sedan / jeep / station wagon,normal,42.7%,2919.467,2920.267,0.8,22.5
+11968,Car / Sedan,2,Sedan / jeep / station wagon,normal,57.9%,2920.5,2921.367,0.867,20.8
+11969,Bus,5,Bus,normal,88.9%,2921.3,2922.3,1.0,18.0
+11982,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.8%,2921.4,2922.367,0.967,18.6
+11977,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,74.3%,2921.833,2922.933,1.1,16.4
+11995,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.4%,2922.933,2924.167,1.233,14.6
+11993,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.7%,2924.233,2923.1,1.133,15.9
+12000,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.8%,2923.867,2924.8,0.933,19.3
+12005,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.1%,2924.267,2925.333,1.067,16.9
+12007,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.6%,2924.433,2925.433,1.0,18.0
+12040,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,79.0%,2928.367,2927.1,1.267,14.2
+12037,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.3%,2927.167,2928.167,1.0,18.0
+12041,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.1%,2927.733,2928.5,0.767,23.5
+12061,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,76.5%,2932.667,2931.167,1.5,12.0
+12067,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.8%,2935.8,2936.767,0.967,18.6
+12068,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.4%,2936.067,2936.9,0.833,21.6
+12093,Car / Sedan,2,Sedan / jeep / station wagon,normal,41.5%,2938.767,2939.667,0.9,20.0
+12094,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.0%,2939.5,2940.267,0.767,23.5
+12101,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.8%,2943.833,2942.733,1.1,16.4
+12121,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.0%,2946.8,2947.433,0.633,28.4
+12127,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,91.4%,2951.8,2950.267,1.533,11.7
+12128,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.2%,2952.7,2951.867,0.833,21.6
+12132,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.8%,2952.267,2953.2,0.933,19.3
+12129,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.5%,2953.567,2952.5,1.067,16.9
+12135,Car / Sedan,2,Sedan / jeep / station wagon,normal,47.6%,2953.233,2953.933,0.7,25.7
+12149,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,78.4%,2957.2,2959.133,1.933,9.3
+12166,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.3%,2965.667,2966.4,0.733,24.5
+12167,Bus,5,Bus,normal,76.3%,2967.1,2968.033,0.933,19.3
+12176,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.4%,2969.767,2968.733,1.033,17.4
+12183,Bus,5,Bus,normal,80.1%,2968.8,2969.767,0.967,18.6
+12191,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.4%,2976.2,2975.1,1.1,16.4
+12207,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.7%,2977.267,2978.133,0.867,20.8
+12209,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,78.0%,2977.9,2978.967,1.067,16.9
+12215,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,74.5%,2981.1,2982.2,1.1,16.4
+12225,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,67.0%,2984.0,2985.033,1.033,17.4
+12231,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,83.1%,2985.667,2987.233,1.567,11.5
+12232,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,91.0%,2986.267,2987.8,1.533,11.7
+12242,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.9%,2986.9,2987.6,0.7,25.7
+12249,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,76.9%,2987.9,2989.5,1.6,11.3
+12248,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.8%,2988.133,2989.2,1.067,16.9
+12254,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,75.5%,2989.5,2991.1,1.6,11.3
+12253,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.5%,2989.7,2990.767,1.067,16.9
+12258,Car / Sedan,2,Sedan / jeep / station wagon,normal,51.5%,2990.667,2991.733,1.067,16.9
+12257,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,87.0%,2990.9,2992.467,1.567,11.5
+12273,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.5%,2992.8,2994.0,1.2,15.0
+12275,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.3%,2993.4,2994.6,1.2,15.0
+12279,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.9%,2994.567,2995.433,0.867,20.8
+12283,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.7%,2995.033,2996.033,1.0,18.0
+12284,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.1%,2995.533,2996.5,0.967,18.6
+12285,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.5%,2995.767,2997.067,1.3,13.8
+12286,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,78.6%,2996.533,2998.333,1.8,10.0
+12293,Car / Sedan,2,Sedan / jeep / station wagon,normal,51.1%,2996.667,2997.9,1.233,14.6
+12294,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.9%,2996.9,2998.0,1.1,16.4
+12303,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.9%,2999.667,3000.8,1.133,15.9
+12307,Car / Sedan,2,Sedan / jeep / station wagon,normal,50.3%,2999.867,3001.1,1.233,14.6
+12320,Car / Sedan,2,Sedan / jeep / station wagon,normal,28.7%,3001.067,3002.3,1.233,14.6
+12316,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,91.1%,3002.867,3001.867,1.0,18.0
+12333,Car / Sedan,2,Sedan / jeep / station wagon,normal,51.7%,3005.867,3006.867,1.0,18.0
+12340,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.6%,3010.067,3010.867,0.8,22.5
+12342,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.0%,3010.9,3011.8,0.9,20.0
+12355,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.1%,3016.067,3016.867,0.8,22.5
+12356,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.2%,3019.1,3018.133,0.967,18.6
+12359,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.5%,3020.633,3019.7,0.933,19.3
+12360,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.7%,3021.067,3021.833,0.767,23.5
+12363,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.7%,3021.5,3022.333,0.833,21.6
+12375,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.3%,3023.667,3024.467,0.8,22.5
+12372,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,66.1%,3025.3,3024.167,1.133,15.9
+12373,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.5%,3025.5,3024.2,1.3,13.8
+12378,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,77.9%,3025.333,3026.4,1.067,16.9
+12394,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.5%,3026.467,3027.3,0.833,21.6
+12404,Car / Sedan,2,Sedan / jeep / station wagon,normal,50.2%,3027.6,3028.2,0.6,30.0
+12409,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.5%,3028.3,3029.333,1.033,17.4
+12407,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,51.0%,3028.333,3029.2,0.867,20.8
+12411,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,66.7%,3029.067,3030.5,1.433,12.6
+12422,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.4%,3030.267,3031.133,0.867,20.8
+12431,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,89.6%,3038.467,3039.533,1.067,16.9
+12436,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,92.2%,3042.9,3041.6,1.3,13.8
+12438,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.1%,3042.533,3041.667,0.867,20.8
+12440,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.9%,3043.433,3044.067,0.633,28.4
+12443,Car / Sedan,2,Sedan / jeep / station wagon,opposite,86.0%,3044.667,3043.867,0.8,22.5
+12452,Car / Sedan,2,Sedan / jeep / station wagon,normal,67.8%,3047.9,3048.567,0.667,27.0
+12456,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,92.1%,3051.867,3050.633,1.233,14.6
+12463,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.0%,3051.867,3052.9,1.033,17.4
+12467,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.8%,3053.4,3052.3,1.1,16.4
+12466,Car / Sedan,2,Sedan / jeep / station wagon,normal,85.0%,3052.4,3053.133,0.733,24.5
+12475,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.2%,3055.267,3054.267,1.0,18.0
+12482,Car / Sedan,2,Sedan / jeep / station wagon,normal,49.5%,3054.7,3055.467,0.767,23.5
+12484,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.2%,3056.433,3055.533,0.9,20.0
+12486,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,74.8%,3057.1,3058.1,1.0,18.0
+12500,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.5%,3061.3,3062.167,0.867,20.8
+12499,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,83.8%,3062.667,3064.467,1.8,10.0
+12515,Car / Sedan,2,Sedan / jeep / station wagon,opposite,86.6%,3068.867,3067.9,0.967,18.6
+12522,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.7%,3072.0,3070.667,1.333,13.5
+12527,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.3%,3072.067,3071.267,0.8,22.5
+12544,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,28.6%,3078.633,3079.7,1.067,16.9
+12573,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.5%,3083.8,3084.733,0.933,19.3
+12578,Car / Sedan,2,Sedan / jeep / station wagon,normal,73.0%,3084.8,3085.5,0.7,25.7
+12577,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.3%,3085.333,3086.233,0.9,20.0
+12580,Car / Sedan,2,Sedan / jeep / station wagon,normal,52.9%,3087.5,3088.267,0.767,23.5
+12581,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.9%,3088.533,3087.733,0.8,22.5
+12583,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,88.5%,3091.067,3089.6,1.467,12.3
+12587,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,89.5%,3092.4,3090.933,1.467,12.3
+12594,Car / Sedan,2,Sedan / jeep / station wagon,normal,82.3%,3095.033,3095.933,0.9,20.0
+12601,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.7%,3098.367,3099.167,0.8,22.5
+12602,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.3%,3100.3,3099.467,0.833,21.6
+12605,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.0%,3107.933,3106.867,1.067,16.9
+12608,Public Transportation (Angkot),3,Medium passenger vehicle,normal,42.4%,3110.267,3111.1,0.833,21.6
+12606,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.9%,3111.9,3110.633,1.267,14.2
+12615,Car / Sedan,2,Sedan / jeep / station wagon,normal,47.4%,3112.333,3113.1,0.767,23.5
+12634,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,32.6%,3113.4,3114.2,0.8,22.5
+12610,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,90.7%,3115.3,3113.433,1.867,9.6
+12632,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.8%,3114.8,3113.6,1.2,15.0
+12657,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.5%,3117.033,3117.867,0.833,21.6
+12655,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,88.6%,3118.333,3120.1,1.767,10.2
+12672,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.7%,3119.867,3120.633,0.767,23.5
+12673,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.3%,3120.867,3121.633,0.767,23.5
+12674,Car / Sedan,2,Sedan / jeep / station wagon,normal,57.3%,3121.4,3122.067,0.667,27.0
+12683,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.5%,3124.2,3124.8,0.6,30.0
+12686,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,90.4%,3127.133,3126.067,1.067,16.9
+12694,Car / Sedan,2,Sedan / jeep / station wagon,normal,41.7%,3127.5,3128.333,0.833,21.6
+12695,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.5%,3129.467,3130.3,0.833,21.6
+12700,Car / Sedan,2,Sedan / jeep / station wagon,normal,76.6%,3130.7,3131.467,0.767,23.5
+12704,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.8%,3131.333,3132.433,1.1,16.4
+12707,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.7%,3132.467,3133.2,0.733,24.5
+12705,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,63.7%,3134.767,3136.067,1.3,13.8
+12727,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.4%,3135.1,3135.867,0.767,23.5
+12731,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,67.3%,3137.0,3137.867,0.867,20.8
+12730,Car / Sedan,2,Sedan / jeep / station wagon,opposite,82.5%,3138.133,3137.267,0.867,20.8
+12737,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.0%,3139.667,3138.7,0.967,18.6
+12744,Car / Sedan,2,Sedan / jeep / station wagon,normal,71.7%,3139.2,3140.067,0.867,20.8
+12747,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.3%,3139.7,3140.6,0.9,20.0
+12745,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,71.1%,3140.033,3141.467,1.433,12.6
+12765,Car / Sedan,2,Sedan / jeep / station wagon,normal,32.0%,3144.467,3145.233,0.767,23.5
+12771,Car / Sedan,2,Sedan / jeep / station wagon,normal,72.6%,3148.267,3149.067,0.8,22.5
+12773,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.3%,3149.3,3148.6,0.7,25.7
+12781,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.4%,3153.633,3154.633,1.0,18.0
+12782,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,33.2%,3154.133,3155.333,1.2,15.0
+12793,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,69.0%,3154.433,3155.467,1.033,17.4
+12794,Bus,5,Bus,normal,48.1%,3154.533,3155.333,0.8,22.5
+12796,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.2%,3155.967,3155.167,0.8,22.5
+12804,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.0%,3157.567,3156.867,0.7,25.7
+12806,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.9%,3157.1,3157.867,0.767,23.5
+12805,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,89.6%,3158.767,3157.7,1.067,16.9
+12809,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.4%,3158.167,3159.1,0.933,19.3
+12812,Car / Sedan,2,Sedan / jeep / station wagon,normal,30.5%,3158.733,3159.533,0.8,22.5
+12823,Car / Sedan,2,Sedan / jeep / station wagon,opposite,67.8%,3161.133,3160.067,1.067,16.9
+12835,Bus,5,Bus,normal,85.1%,3160.367,3161.233,0.867,20.8
+12848,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.8%,3164.9,3166.933,2.033,8.9
+12856,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.2%,3167.733,3168.533,0.8,22.5
+12872,Car / Sedan,2,Sedan / jeep / station wagon,normal,69.8%,3169.5,3170.4,0.9,20.0
+12881,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,81.3%,3171.233,3173.267,2.033,8.9
+12900,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.9%,3172.6,3173.567,0.967,18.6
+12907,Car / Sedan,2,Sedan / jeep / station wagon,normal,49.1%,3175.467,3176.267,0.8,22.5
+12922,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.8%,3178.167,3178.967,0.8,22.5
+12923,Car / Sedan,2,Sedan / jeep / station wagon,normal,84.3%,3179.3,3180.133,0.833,21.6
+12929,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.5%,3180.0,3180.767,0.767,23.5
+12937,Car / Sedan,2,Sedan / jeep / station wagon,normal,62.1%,3184.333,3185.067,0.733,24.5
+12938,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.5%,3184.733,3185.567,0.833,21.6
+12953,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.7%,3189.267,3188.067,1.2,15.0
+12957,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.3%,3188.333,3189.133,0.8,22.5
+12964,Car / Sedan,2,Sedan / jeep / station wagon,normal,45.0%,3189.467,3190.133,0.667,27.0
+12976,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,82.8%,3194.333,3195.767,1.433,12.6
+12986,Car / Sedan,2,Sedan / jeep / station wagon,normal,33.1%,3194.9,3195.833,0.933,19.3
+12989,Car / Sedan,2,Sedan / jeep / station wagon,opposite,55.9%,3197.3,3196.167,1.133,15.9
+12994,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.5%,3197.567,3196.767,0.8,22.5
+13005,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.8%,3198.133,3198.967,0.833,21.6
+13006,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.0%,3198.733,3199.8,1.067,16.9
+13010,Car / Sedan,2,Sedan / jeep / station wagon,normal,44.6%,3199.767,3200.5,0.733,24.5
+13030,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.3%,3201.333,3202.133,0.8,22.5
+13026,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.6%,3203.033,3201.8,1.233,14.6
+13034,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,45.5%,3204.067,3205.567,1.5,12.0
+13037,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.9%,3205.367,3204.367,1.0,18.0
+13047,Bus,5,Bus,normal,44.4%,3206.667,3207.467,0.8,22.5
+13054,Car / Sedan,2,Sedan / jeep / station wagon,normal,39.9%,3208.2,3209.333,1.133,15.9
+13055,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.4%,3208.4,3209.3,0.9,20.0
+13061,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,51.1%,3209.567,3210.8,1.233,14.6
+13060,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.8%,3209.667,3210.467,0.8,22.5
+13064,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,76.4%,3210.567,3211.733,1.167,15.4
+13067,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,73.5%,3215.7,3217.2,1.5,12.0
+13086,Public Transportation (Angkot),3,Medium passenger vehicle,normal,75.5%,3215.933,3216.7,0.767,23.5
+13096,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,52.1%,3217.133,3217.933,0.8,22.5
+13102,Bus,5,Bus,opposite,85.1%,3220.333,3219.333,1.0,18.0
+13103,Bus,5,Bus,normal,58.7%,3219.567,3220.467,0.9,20.0
+13104,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,74.3%,3220.733,3219.767,0.967,18.6
+13110,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.2%,3221.767,3220.9,0.867,20.8
+13114,Car / Sedan,2,Sedan / jeep / station wagon,normal,65.5%,3221.067,3221.867,0.8,22.5
+13112,Car / Sedan,2,Sedan / jeep / station wagon,opposite,88.9%,3222.633,3221.6,1.033,17.4
+13119,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.7%,3223.467,3222.367,1.1,16.4
+13127,Car / Sedan,2,Sedan / jeep / station wagon,normal,63.6%,3223.933,3224.733,0.8,22.5
+13132,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,70.9%,3229.333,3230.533,1.2,15.0
+13133,Car / Sedan,2,Sedan / jeep / station wagon,normal,54.2%,3229.733,3230.533,0.8,22.5
+13137,Car / Sedan,2,Sedan / jeep / station wagon,normal,44.9%,3231.6,3232.533,0.933,19.3
+13138,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.8%,3234.333,3235.067,0.733,24.5
+13139,Car / Sedan,2,Sedan / jeep / station wagon,normal,83.7%,3235.133,3235.867,0.733,24.5
+13140,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,41.2%,3236.533,3237.633,1.1,16.4
+13147,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.9%,3238.867,3237.967,0.9,20.0
+13157,Car / Sedan,2,Sedan / jeep / station wagon,normal,66.2%,3238.567,3239.367,0.8,22.5
+13173,Car / Sedan,2,Sedan / jeep / station wagon,normal,52.7%,3240.667,3241.333,0.667,27.0
+13178,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.5%,3242.2,3243.1,0.9,20.0
+13179,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.1%,3243.567,3242.733,0.833,21.6
+13187,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.5%,3244.533,3245.467,0.933,19.3
+13189,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.3%,3244.967,3245.9,0.933,19.3
+13196,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.7%,3247.133,3247.967,0.833,21.6
+13211,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.9%,3248.533,3249.367,0.833,21.6
+13214,Car / Sedan,2,Sedan / jeep / station wagon,opposite,87.6%,3250.367,3249.333,1.033,17.4
+13216,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.7%,3249.933,3250.8,0.867,20.8
+13218,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,66.9%,3253.733,3252.3,1.433,12.6
+13232,Car / Sedan,2,Sedan / jeep / station wagon,normal,74.6%,3258.5,3259.167,0.667,27.0
+13237,Car / Sedan,2,Sedan / jeep / station wagon,normal,78.7%,3259.4,3260.133,0.733,24.5
+13248,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.0%,3262.3,3261.467,0.833,21.6
+13251,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,88.4%,3264.067,3263.167,0.9,20.0
+13253,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.2%,3265.333,3264.367,0.967,18.6
+13258,Bus,5,Bus,opposite,93.1%,3265.6,3264.533,1.067,16.9
+13260,Car / Sedan,2,Sedan / jeep / station wagon,normal,47.6%,3265.767,3266.667,0.9,20.0
+13259,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,85.4%,3266.0,3267.133,1.133,15.9
+13262,Car / Sedan,2,Sedan / jeep / station wagon,normal,29.8%,3267.367,3268.133,0.767,23.5
+13265,Car / Sedan,2,Sedan / jeep / station wagon,opposite,90.2%,3268.867,3267.9,0.967,18.6
+13264,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.3%,3268.033,3268.9,0.867,20.8
+13269,Car / Sedan,2,Sedan / jeep / station wagon,opposite,89.5%,3271.1,3270.1,1.0,18.0
+13278,Car / Sedan,2,Sedan / jeep / station wagon,normal,45.7%,3273.067,3273.933,0.867,20.8
+13282,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,61.5%,3277.067,3278.333,1.267,14.2
+13299,Car / Sedan,2,Sedan / jeep / station wagon,opposite,85.7%,3279.133,3278.333,0.8,22.5
+13300,Car / Sedan,2,Sedan / jeep / station wagon,normal,58.4%,3278.767,3279.6,0.833,21.6
+13303,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.0%,3280.7,3281.333,0.633,28.4
+13319,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,77.9%,3289.433,3288.0,1.433,12.6
+13325,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,74.3%,3288.9,3289.567,0.667,27.0
+13363,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.5%,3301.633,3302.5,0.867,20.8
+13370,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.3%,3302.567,3303.333,0.767,23.5
+13369,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,65.3%,3303.367,3305.733,2.367,7.6
+13378,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.5%,3303.733,3304.833,1.1,16.4
+13380,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.4%,3304.033,3304.9,0.867,20.8
+13383,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.0%,3307.033,3306.0,1.033,17.4
+13392,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.8%,3307.533,3308.4,0.867,20.8
+13414,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,65.2%,3311.8,3312.867,1.067,16.9
+13446,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.7%,3313.167,3313.967,0.8,22.5
+13434,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.2%,3313.667,3314.967,1.3,13.8
+13451,Car / Sedan,2,Sedan / jeep / station wagon,normal,53.9%,3314.2,3315.167,0.967,18.6
+13468,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,82.2%,3325.767,3326.867,1.1,16.4
+13470,Car / Sedan,2,Sedan / jeep / station wagon,normal,68.0%,3326.167,3326.833,0.667,27.0
+13475,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,84.6%,3328.033,3326.867,1.167,15.4
+13501,Bus,5,Bus,normal,67.7%,3330.9,3331.733,0.833,21.6
+13519,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,86.2%,3336.233,3335.433,0.8,22.5
+13528,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,84.6%,3339.667,3341.233,1.567,11.5
+13559,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,85.6%,3340.367,3341.067,0.7,25.7
+13561,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,68.6%,3343.667,3342.767,0.9,20.0
+13580,Bus,5,Bus,normal,77.8%,3346.833,3347.967,1.133,15.9
+13645,Car / Sedan,2,Sedan / jeep / station wagon,normal,48.4%,3366.933,3367.533,0.6,30.0
+13661,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,87.2%,3377.633,3376.4,1.233,14.6
+13676,Car / Sedan,2,Sedan / jeep / station wagon,normal,79.2%,3381.067,3381.833,0.767,23.5
+13693,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.7%,3386.167,3387.0,0.833,21.6
+13718,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.0%,3394.0,3393.067,0.933,19.3
+13733,Bus,5,Bus,opposite,92.5%,3398.067,3397.267,0.8,22.5
+13756,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,90.4%,3402.4,3401.033,1.367,13.2
+13758,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,62.3%,3401.2,3402.0,0.8,22.5
+13763,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,92.1%,3405.2,3403.633,1.567,11.5
+13767,Bus,5,Bus,normal,72.5%,3405.3,3406.0,0.7,25.7
+13787,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,80.0%,3412.733,3411.933,0.8,22.5
+13791,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,79.5%,3412.6,3413.633,1.033,17.4
+13803,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,81.6%,3415.4,3416.433,1.033,17.4
+13805,Car / Sedan,2,Sedan / jeep / station wagon,normal,59.5%,3415.533,3416.5,0.967,18.6
+13806,Car / Sedan,2,Sedan / jeep / station wagon,normal,57.0%,3415.567,3416.6,1.033,17.4
+13807,Car / Sedan,2,Sedan / jeep / station wagon,normal,77.2%,3416.367,3417.133,0.767,23.5
+13801,2-Axle Truck (Jumbo),6,2-Axle Truck,opposite,80.5%,3418.267,3416.567,1.7,10.6
+13851,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,63.7%,3424.567,3425.9,1.333,13.5
+13852,Car / Sedan,2,Sedan / jeep / station wagon,normal,70.4%,3424.933,3425.8,0.867,20.8
+13858,Car / Sedan,2,Sedan / jeep / station wagon,normal,64.3%,3426.567,3427.333,0.767,23.5
+13887,Car / Sedan,2,Sedan / jeep / station wagon,normal,75.5%,3430.567,3431.6,1.033,17.4
+13886,Bus,5,Bus,opposite,92.8%,3432.533,3431.433,1.1,16.4
+13892,Car / Sedan,2,Sedan / jeep / station wagon,normal,61.7%,3432.133,3433.067,0.933,19.3
+13896,Car / Sedan,2,Sedan / jeep / station wagon,normal,81.2%,3432.833,3434.367,1.533,11.7
+13905,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,86.6%,3435.7,3434.9,0.8,22.5
+13931,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,48.3%,3443.267,3444.2,0.933,19.3
+13930,Public Transportation (Angkot),3,Medium passenger vehicle,opposite,90.1%,3444.333,3443.3,1.033,17.4
+13934,Pickup / Micro Truck,4,Pickup / micro truck / delivery,opposite,91.9%,3447.267,3446.167,1.1,16.4
+13939,Car / Sedan,2,Sedan / jeep / station wagon,normal,80.7%,3446.267,3446.733,0.467,38.6
+13940,2-Axle Truck (Jumbo),6,2-Axle Truck,normal,86.8%,3446.5,3447.6,1.1,16.4
+13949,Car / Sedan,2,Sedan / jeep / station wagon,opposite,86.8%,3449.9,3449.1,0.8,22.5
+13945,Pickup / Micro Truck,4,Pickup / micro truck / delivery,normal,90.2%,3450.6,3451.867,1.267,14.2

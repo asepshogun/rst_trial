@@ -346,8 +346,8 @@ def _persist_vehicle_events(
 def build_process_config(overrides: Optional[dict] = None) -> ProcessConfig:
     settings = get_settings()
     overrides = overrides or {}
-    configured_model_path = str(overrides.get("model_path") or settings.default_model_path).strip() or "yolov8s.pt"
-    if configured_model_path == "yolov8n.pt":
+    configured_model_path = str(overrides.get("model_path") or settings.default_model_path).strip() or "v7.pt"
+    if configured_model_path == "v7.pt":
         configured_model_path = "yolov8s.pt"
     target_analysis_fps = max(
         float(
